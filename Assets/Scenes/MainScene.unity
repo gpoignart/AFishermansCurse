@@ -999,11 +999,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 1664535151}
-  startButton: {fileID: 590207534}
-  hookButton: {fileID: 22660171}
   minigame: {fileID: 857684073}
   session: {fileID: 166026294}
-  hookDuration: 2
 --- !u!4 &245881735
 Transform:
   m_ObjectHideFlags: 0
@@ -2047,7 +2044,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 429446790}
-  m_Father: {fileID: 1065369853}
+  m_Father: {fileID: 1948728443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2176,7 +2173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &602846749
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2770,7 +2767,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 590207533}
   - {fileID: 1948728443}
   - {fileID: 602846749}
   - {fileID: 1049316229}
@@ -3773,7 +3769,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 590207533}
   m_Father: {fileID: 1065369853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
