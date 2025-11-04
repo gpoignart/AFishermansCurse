@@ -2,14 +2,17 @@ using UnityEngine;
 
 public class DragMinigame : MonoBehaviour
 {
+    public GameManager gameManager;
+
     public Transform pointA;
     public Transform pointB;
+    public Transform startPoint;
     public RectTransform safeZone;
     public float moveSpeed = 100f;
-    public float nudgeDistance = 20f;  
+    public float nudgeDistance = 80f;  
   
-    public float lockThreshold = 3f;   
-    public float outLoseTime = 1.5f;
+    public float lockThreshold = 3f;
+    public float outLoseTime = 3f;
     private float inSafeTimer = 0f;
     private float outTimer = 0f;
     private bool locked = false;
@@ -17,15 +20,24 @@ public class DragMinigame : MonoBehaviour
     private float direction = 1f;      
     private RectTransform pointerTransform;
     private Vector3 targetPosition;
-    public System.Action onDragSuccess;
-    public System.Action onDragFail;
-    void Start()
+
+    void Awake()
     {
         pointerTransform = GetComponent<RectTransform>();
-        targetPosition   = pointB.position;
     }
 
-    void Update()
+    public void StartMiniGame()
+    {
+        locked = false;
+        inSafeTimer = 0f;
+        outTimer = 0f;
+        direction = 1f;
+
+        pointerTransform.position = startPoint.position;
+        targetPosition = pointB.position;
+    }
+
+    public void UpdateMiniGame()
     {
         if (locked) return;
         pointerTransform.position = Vector3.MoveTowards(
@@ -47,13 +59,12 @@ public class DragMinigame : MonoBehaviour
             var backTarget = (direction > 0f) ? pointA.position : pointB.position;
             pointerTransform.position = Vector3.MoveTowards(
                 pointerTransform.position, backTarget, nudgeDistance);
-
-            CheckSuccess(); //check qte
         }
 
-        //time in safe zone
+        // Time in safe zone
         bool inSafe = RectTransformUtility.RectangleContainsScreenPoint(
-            safeZone, pointerTransform.position, null); 
+            safeZone, pointerTransform.position, null);
+
         if (inSafe)
         {
             inSafeTimer += Time.deltaTime;
@@ -63,7 +74,7 @@ public class DragMinigame : MonoBehaviour
             {
                 locked = true;
                 Debug.Log("Locked: stayed in safe zone for " + lockThreshold + "s");
-                onDragSuccess?.Invoke();   //call GameManager: win
+                gameManager.OnDragSuccess();
             }
         }
         else
@@ -75,26 +86,8 @@ public class DragMinigame : MonoBehaviour
             {
                 locked = true;
                 Debug.Log("Drag Lose (out of safe zone too long)");
-                onDragFail?.Invoke();      //call GameManager: lose
+                gameManager.OnDragFail();
             }
         }
-    }
-
-    void CheckSuccess()
-    {
-        bool inSafe = RectTransformUtility.RectangleContainsScreenPoint(
-            safeZone, pointerTransform.position, null);
-
-        if (inSafe) Debug.Log("Success!");
-        else        Debug.Log("Fail!");
-    }
-
-    
-    public void ResetPointer()
-    {
-        locked = false;
-        inSafeTimer = 0f;
-        direction = 1f;
-        targetPosition = pointB.position;
     }
 }
