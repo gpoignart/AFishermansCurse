@@ -8,7 +8,7 @@ public class DragMinigame : MonoBehaviour
     public float moveSpeed = 100f;
     public float nudgeDistance = 20f;  
   
-    public float lockThreshold = 3f;   // số giây cần ở trong safe zone
+    public float lockThreshold = 3f;   
     public float outLoseTime = 1.5f;
     private float inSafeTimer = 0f;
     private float outTimer = 0f;
@@ -48,13 +48,12 @@ public class DragMinigame : MonoBehaviour
             pointerTransform.position = Vector3.MoveTowards(
                 pointerTransform.position, backTarget, nudgeDistance);
 
-            CheckSuccess(); // vẫn check QTE nếu bạn muốn
+            CheckSuccess(); //check qte
         }
 
-        // 4) Đếm thời gian ở trong safe zone rồi khóa sau lockThreshold giây
+        //time in safe zone
         bool inSafe = RectTransformUtility.RectangleContainsScreenPoint(
-            safeZone, pointerTransform.position, null); // nếu Canvas có Camera, truyền camera thay null
-
+            safeZone, pointerTransform.position, null); 
         if (inSafe)
         {
             inSafeTimer += Time.deltaTime;
@@ -64,7 +63,7 @@ public class DragMinigame : MonoBehaviour
             {
                 locked = true;
                 Debug.Log("Locked: stayed in safe zone for " + lockThreshold + "s");
-                onDragSuccess?.Invoke();   // báo GameManager: thắng
+                onDragSuccess?.Invoke();   //call GameManager: win
             }
         }
         else
@@ -76,7 +75,7 @@ public class DragMinigame : MonoBehaviour
             {
                 locked = true;
                 Debug.Log("Drag Lose (out of safe zone too long)");
-                onDragFail?.Invoke();      // báo GameManager: thua
+                onDragFail?.Invoke();      //call GameManager: lose
             }
         }
     }
@@ -90,7 +89,7 @@ public class DragMinigame : MonoBehaviour
         else        Debug.Log("Fail!");
     }
 
-    // Gọi hàm này khi muốn chơi lại lượt mới
+    
     public void ResetPointer()
     {
         locked = false;
