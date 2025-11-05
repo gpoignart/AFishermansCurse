@@ -30,6 +30,15 @@ public class UIManager : MonoBehaviour
     private GameObject FishCounter;
 
     [SerializeField]
+    private GameObject FishBasicImage;
+
+    [SerializeField]
+    private GameObject FishWorriedImage;
+
+    [SerializeField]
+    private GameObject FishAngryImage;
+
+    [SerializeField]
     private GameObject Character;
 
     [SerializeField]
@@ -59,6 +68,8 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         CharacterCatchingImage.SetActive(false);
+        FishAngryImage.SetActive(false);
+        FishWorriedImage.SetActive(false);
         // We start on the idle panel
         ShowIdlePanel();
     }
@@ -120,6 +131,8 @@ public class UIManager : MonoBehaviour
 
         // Set in-game elements active
         SetInGameElementsActive();
+        FishBasicImage.SetActive(false);
+        FishWorriedImage.SetActive(true);
     }
 
     // This method shows the timeout panel
@@ -173,11 +186,15 @@ public class UIManager : MonoBehaviour
     {
         CharacterCatchingImage.SetActive(true);
         CharacterWaitingImage.SetActive(false);
+        FishAngryImage.SetActive(true);
+        FishBasicImage.SetActive(false);
 
         yield return new WaitForSeconds(1f);
 
         CharacterCatchingImage.SetActive(false);
         CharacterWaitingImage.SetActive(true);
+        FishAngryImage.SetActive(false);
+        FishBasicImage.SetActive(true);
     }
 
     // This method sets in-game ui element active and positionate top-right the fish counter
@@ -192,6 +209,9 @@ public class UIManager : MonoBehaviour
         Timer.SetActive(true);
         FishCounter.SetActive(true);
         Character.SetActive(true);
+        FishBasicImage.SetActive(true);
+        FishWorriedImage.SetActive(false);
+        FishAngryImage.SetActive(false);
     }
 
     // This method sets the hookButton at a random position in the canvas (in the 3/4 from the bottom)
