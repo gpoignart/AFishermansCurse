@@ -1,173 +1,176 @@
-using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class FishingGameManager : MonoBehaviour
 {
+    // Allow to call FishingGameManager.Instance anywhere (singleton)
     public static FishingGameManager Instance { get; private set; }
 
-    // References
-    public FishingUIManager uiManager;
-    public FishingMinigame minigame; // Your drag minigame script
-    public FishingGameSession session; // Timer + fish
-
     // States
-    private bool gameStarted = false; // Is the game started
-    private bool miniGameStarted = false; // Is the drag mini game started
-    private bool hookPhaseActive = false; // Is the hook phrase is active
-
-    void Awake()
+    private enum FishingGameState
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        Moving,
+        Hooking,
+        Fishing
+    }
+    private FishingGameState currentState;
+
+    // Internal parameters
+    private float startTime = 60f;
+    private float timeRemaining;
+    private Transform currentFishBelow = null;
+
+    // Make this class a singleton
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
-    // Called when the game start, start the game mecanisms loop
+    // Start the game mecanisms loop (called when the game start)
     void Start()
     {
-        // Init HUD from session
-        session.Reset();
+        // Timer setup
+        timeRemaining = startTime;
+        FishingUIManager.Instance.UpdateTimerUI(timeRemaining);
 
-        // Show the idle screen first
-        uiManager.ShowIdlePanel();
+        // First state
+        ChangeState(FishingGameState.Moving);
     }
 
-    // Called at each frame of the game
+    // Update the game (called at each frame of the game)
     void Update()
     {
-        // Only update the timer if the game has started
-        if (gameStarted)
-        {
-            session.UpdateTimer(Time.deltaTime);
-        }
+        // Update the timer
+        timeRemaining -= Time.deltaTime;
+        if (timeRemaining <= 0f) { timeRemaining = 0f; }
+        FishingUIManager.Instance.UpdateTimerUI(timeRemaining);
 
-        // Only update the minigame is the minigame has started
-        if (miniGameStarted)
+        // Handle the game update logic for states
+        switch (currentState)
         {
-            minigame.UpdateMiniGame();
+            case FishingGameState.Moving:
+                PlayerController.Instance.UpdatePlayer();
+                break;
+
+            case FishingGameState.Hooking:
+                PlayerController.Instance.UpdatePlayer();
+                break;
+
+            case FishingGameState.Fishing:
+                FishingMinigameManager.Instance.UpdateMiniGame();
+                break;
         }
     }
 
-    // Called when the player clicks the Start button
-    public void OnStartButtonPressed()
+    // Pass from one state to another
+    private void ChangeState(FishingGameState newState)
     {
-        // Start the actual game loop
-        gameStarted = true;
+        // Exit logic for the previous state
+        OnStateExit(currentState);
 
-        // Go to the wait screen
-        Instance.OnWaitScreen();
+        currentState = newState;
+
+        // Enter logic for the new state
+        OnStateEnter(currentState);
     }
 
-    // Handle the wait screen
-    public void OnWaitScreen()
+    // Handle the game logic when entering states
+    private void OnStateEnter(FishingGameState state)
     {
-        // Show the wait screen
-        uiManager.ShowWaitPanel();
-
-        // Start a coroutine to handle the waiting phase
-        StartCoroutine(WaitBeforeHook());
-    }
-
-    // Coroutine that waits a few seconds before showing the hook screen
-    private IEnumerator WaitBeforeHook()
-    {
-        // Wait between 1 and 3 seconds
-        float waitTime = Random.Range(1f, 3f);
-        yield return new WaitForSeconds(waitTime);
-
-        // Hook phase
-        hookPhaseActive = true;
-        uiManager.ShowHookPanel();
-
-        // The hook phase only last between 1 and 2 seconds
-        float hookDuration = Random.Range(1f, 2f);
-        yield return new WaitForSeconds(hookDuration);
-
-        // If the player haven't click (= if the hook phase is again active)
-        if (hookPhaseActive)
+        switch (state)
         {
-            uiManager.ShowWaitPanel();
-            hookPhaseActive = false;
+            case FishingGameState.Moving:
+                Debug.Log("Entering Moving state");
+                break;
 
-            // We restart the coroutine
-            StartCoroutine(WaitBeforeHook());
+            case FishingGameState.Hooking:
+                FishingUIManager.Instance.ShowHookingStateUI();
+                Debug.Log("Entering Hooking state");
+                break;
+
+            case FishingGameState.Fishing:
+                FishingUIManager.Instance.ShowFishingStateUI();
+                FishingMinigameManager.Instance.StartMiniGame();
+                Debug.Log("Entering Fishing state");
+                break;
         }
+    }
+
+    // Handle the game logic when exiting states
+    private void OnStateExit(FishingGameState state)
+    {
+        switch (state)
+        {
+            case FishingGameState.Moving:
+                Debug.Log("Exiting Moving state");
+                break;
+
+            case FishingGameState.Hooking:
+                FishingUIManager.Instance.HideHookingStateUI();
+                Debug.Log("Exiting Hooking state");
+                break;
+
+            case FishingGameState.Fishing:
+                FishingUIManager.Instance.HideFishingStateUI();
+                Debug.Log("Exiting Fishing state");
+                break;
+        }
+    }
+
+    // Called by the PlayerController if the player is above a fish, keep the fish in memory
+    public void PlayerAboveFish(Transform fishBelow)
+    {
+        if (currentState != FishingGameState.Hooking)
+        {
+            ChangeState(FishingGameState.Hooking);
+        }
+        currentFishBelow = fishBelow;
+    }
+
+    // Called by the PlayerController if the player is not above a fish, no fish in memory
+    public void PlayerNotAboveFish()
+    {
+        if (currentState != FishingGameState.Moving)
+        {
+            ChangeState(FishingGameState.Moving);
+        }
+        currentFishBelow = null;
     }
 
     // Called when the player clicks the Hook button
     public void OnHookButtonPressed()
     {
-        // The player has clicked so we desactive the hook phase
-        hookPhaseActive = false;
-
-        // Show the drag screen
-        uiManager.ShowDragPanel();
-
-        // Start the mini-game
-        minigame.StartMiniGame();
-
-        // Update the mini game state
-        miniGameStarted = true;
+        ChangeState(FishingGameState.Fishing);
     }
 
-    // Called when DragMinigam invokes OnDragSuccess
-    public void OnDragSuccess()
+    // Called by the FishingMinigameManager when success
+    public void FishingMinigameSuccess()
     {
-        // Add a catch
-        session.AddCatch();
+        ChangeState(FishingGameState.Moving);
 
-        // Return to the wait screen
-        Instance.OnWaitScreen();
+        // Delete the fish
+        if (currentFishBelow != null)
+        {
+            Destroy(currentFishBelow.gameObject);
+            currentFishBelow = null;
+        }
     }
 
-    // Called when DragMinigame invokes OnDragFail
-    public void OnDragFail()
+    // Called by the FishingMinigameManager when fail
+    public void FishingMinigameFail()
     {
-        // Stop the minigame
-        miniGameStarted = false;
+        ChangeState(FishingGameState.Moving);
 
-        // Return to the wait screen
-        Instance.OnWaitScreen();
-    }
-
-    // Called when GameSession invokes OnTimeout
-    public void OnTimeout()
-    {
-        // Stop the game and the minigame
-        gameStarted = false;
-        miniGameStarted = false;
-        StopAllCoroutines();
-
-        // Go to the timeout screen
-        uiManager.ShowTimeOutPanel();
-    }
-
-    // Called when the player clicks the replay button
-    public void OnReplayButtonPressed()
-    {
-        // Initialize game's states
-        miniGameStarted = false;
-        hookPhaseActive = false;
-        gameStarted = true;
-
-        // Reinitialize the HUD from session
-        session.Reset();
-
-        // We goes to the wait Screen
-        Instance.OnWaitScreen();
-    }
-
-    // Called when the player clicks the exit button
-    public void OnExitButtonPressed()
-    {
-        // Quit the game if running inside the Unity Editor
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        // Quit the application in a built version
-        Application.Quit();
-#endif
+        // Delete the fish
+        if (currentFishBelow != null)
+        {
+            Destroy(currentFishBelow.gameObject);
+            currentFishBelow = null;
+        }
     }
 }
