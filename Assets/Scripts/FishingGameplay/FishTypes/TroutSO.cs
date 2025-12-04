@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "FishType/Trout")]
-public class Trout : FishType
+public class TroutSO : FishTypeSO
 {
     private void OnEnable()
     {

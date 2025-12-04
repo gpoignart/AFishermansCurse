@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: MidnightCatfish
   m_EditorClassIdentifier: 
   fishName: MidnightCatfish
-  sprite: {fileID: 0}
-  spawnAreas: 01000000
+  sprite: {fileID: 7482667652216324306, guid: 5ae66d6920ef1ed458be709f860c07dd, type: 3}
+  color: {r: 1, g: 0, b: 1, a: 1}
+  spawnMaps: 01000000
   spawnTimes: 01000000
   drops: 05000000
   spawnChance: 15
+  catchingDifficulties:
+  - time: 1
+    safeZoneMoveSpeed: 170
+    requiredTimeInsideZone: 3
+    allowedTimeOutsideZone: 2.5
+    safeZoneWidth: 100

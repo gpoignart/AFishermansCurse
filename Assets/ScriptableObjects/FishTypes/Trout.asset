@@ -13,8 +13,20 @@ MonoBehaviour:
   m_Name: Trout
   m_EditorClassIdentifier: 
   fishName: Trout
+  sprite: {fileID: 7482667652216324306, guid: 5ae66d6920ef1ed458be709f860c07dd, type: 3}
   color: {r: 1, g: 0, b: 0, a: 1}
   spawnMaps: 0000000002000000
   spawnTimes: 0000000001000000
   drops: 0200000003000000
   spawnChance: 70
+  catchingDifficulties:
+  - time: 0
+    safeZoneMoveSpeed: 100
+    requiredTimeInsideZone: 1.5
+    allowedTimeOutsideZone: 3.5
+    safeZoneWidth: 170
+  - time: 1
+    safeZoneMoveSpeed: 120
+    requiredTimeInsideZone: 2
+    allowedTimeOutsideZone: 3
+    safeZoneWidth: 170

@@ -13,8 +13,20 @@ MonoBehaviour:
   m_Name: GoldenSalmon
   m_EditorClassIdentifier: 
   fishName: GoldenSalmon
-  sprite: {fileID: 0}
-  spawnAreas: 00000000
+  sprite: {fileID: 7482667652216324306, guid: 5ae66d6920ef1ed458be709f860c07dd, type: 3}
+  color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  spawnMaps: 00000000
   spawnTimes: 0000000001000000
   drops: 04000000
   spawnChance: 30
+  catchingDifficulties:
+  - time: 0
+    safeZoneMoveSpeed: 130
+    requiredTimeInsideZone: 2.5
+    allowedTimeOutsideZone: 2.5
+    safeZoneWidth: 130
+  - time: 1
+    safeZoneMoveSpeed: 150
+    requiredTimeInsideZone: 3
+    allowedTimeOutsideZone: 2
+    safeZoneWidth: 130

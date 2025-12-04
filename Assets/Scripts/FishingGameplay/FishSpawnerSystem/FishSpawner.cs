@@ -8,7 +8,7 @@ public class FishSpawner : MonoBehaviour
     private GameObject fishPrefab;
 
     [SerializeField]
-    private FishType[] fishTypes;
+    private FishTypeSO[] fishTypes;
 
     [SerializeField]
     private BoxCollider2D spawnZone;
@@ -16,11 +16,11 @@ public class FishSpawner : MonoBehaviour
     [SerializeField]
     private Transform fishContainer;
 
-    private int minFish = 3;
-    private int maxFish = 7;
-    private int targetFishCount = 5;
-    private float updateInterval = 5f;
-    private float minDistBetweenFish = 2f;
+    [SerializeField] private int minFish = 3;
+    [SerializeField] private int maxFish = 7;
+    [SerializeField] private int targetFishCount = 5;
+    [SerializeField] private float updateInterval = 5f;
+    [SerializeField] private float minDistBetweenFish = 2f;
 
     private Vector2 zoneSize;
     private Vector2 zoneOffset;
@@ -53,7 +53,7 @@ public class FishSpawner : MonoBehaviour
     {
         Vector2 spawnPosition = selectSpawnPosition();
 
-        FishType fishType = selectFishType();
+        FishTypeSO fishType = selectFishType();
 
         GameObject newFish = Instantiate(fishPrefab, spawnPosition, Quaternion.identity, fishContainer);
         
@@ -91,10 +91,10 @@ public class FishSpawner : MonoBehaviour
     }
 
     // Select a valid fish type to be spawned + depending of the spawn chance
-    private FishType selectFishType()
+    private FishTypeSO selectFishType()
     {
         // Filter valid types fish depending of the map and time of the day
-        FishType[] validFishes = fishTypes
+        FishTypeSO[] validFishes = fishTypes
             .Where(f => (f.spawnMaps.Contains(GameManager.Instance.CurrentMap)
                      && f.spawnTimes.Contains(GameManager.Instance.CurrentTimeOfDay)))
             .ToArray();
@@ -102,7 +102,7 @@ public class FishSpawner : MonoBehaviour
         // Tirage pondéré selon spawnChance
         int totalWeight = validFishes.Sum(f => f.spawnChance);
         int rand = Random.Range(0, totalWeight);
-        FishType selectedType = null;
+        FishTypeSO selectedType = null;
 
         foreach (var fish in validFishes)
         {

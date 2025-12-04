@@ -39,7 +39,7 @@ public class InventoryManager : MonoBehaviour
 
         foreach (Ingredient ingredient in System.Enum.GetValues(typeof(Ingredient)))
         {
-            ingredientsPossessed[ingredient] = 1;
+            ingredientsPossessed[ingredient] = 0;
         };
     }
 

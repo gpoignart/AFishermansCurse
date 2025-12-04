@@ -6,13 +6,14 @@ public class FishingMinigameManager : MonoBehaviour
     // Allows to call FishingMinigameManager.Instance anywhere (singleton)
     public static FishingMinigameManager Instance { get; private set; }
 
+    [SerializeField] private float needleMoveSpeed = 200f;
+
     // Counters of times
     private float timeInsideZone = 0f;
     private float timeOutsideZone = 0f;
 
     // Internal references
     private FishCatchingDifficulty difficulty;
-    private float needleMoveSpeed = 200f;
     
     private Vector2 needleTargetPosition;
     private Vector2 safeZoneTargetPosition;

@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     public int NightsCount => nightsCount;
     public bool IsFirstDay => isFirstDay;
     public bool IsFirstNight => isFirstNight;
-    public bool IsRecipeBookUnlocker => isRecipeBookUnlocked;
+    public bool IsRecipeBookUnlocked => isRecipeBookUnlocked;
 
     // Internal states
     private enum GameState
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         nightsCount = 0;
         isFirstDay = true;
         isFirstNight = false;
-        isRecipeBookUnlocked = true;
+        isRecipeBookUnlocked = false;
 
         // First state
         // TO CHANGE BY WHEN THE INTRO EVENT MADE : ChangeState(GameState.IntroEvent);
@@ -120,30 +120,31 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.MonsterView);
     }
 
-    // Called in the MonsterView Scene the first night in case of death
-    public void FirstDeath()
-    {
-        ChangeState(GameState.MonsterView);
-    }
-
-    // Called in the MonsterView Scene the first night in case of win
-    public void FirstWinAgainstMonster()
-    {
-        ChangeCurrentTimeOfDay();
-        // TO CHANGE BY WHEN THE RECIPE BOOK EVENT MADE : ChangeState(GameState.RecipeBookEvent);
-        ChangeState(GameState.MapSelection);
-    }
-
-    // Called in the MonsterView Scene after fending off the monster (except the first night)
+    // Called in the MonsterView Scene after winning
     public void WinAgainstMonster()
     {
-        ChangeState(GameState.FishingView);
+        if (isFirstNight)
+        {
+            ChangeCurrentTimeOfDay();
+            // TO CHANGE BY WHEN THE RECIPE BOOK EVENT MADE : add ChangeState(GameState.RecipeBookEvent);
+        }
+        else
+        {
+            ChangeState(GameState.FishingView); // The other nights, we go back to fishing
+        }
     }
 
     // Called in the MonsterView Scene after dying
-    public void Death()
+    public void DeathAgainstMonster()
     {
-        ChangeState(GameState.FishingView);
+        if (isFirstNight)
+        {
+            ChangeState(GameState.MonsterView); // The first night, we redo the fight in case of lose
+        }
+        else
+        {
+            ChangeState(GameState.MapSelection); // The other nights, we go back at the begining of the night
+        }
     }
 
     // Called in the InventoryView when the player make the final remedy
@@ -219,7 +220,7 @@ public class GameManager : MonoBehaviour
     // Called when the time is out, we exit the fishing/monster view and return to the map selection
     private void TimeOut()
     {
-        // TO CHANGE WHEN MONSTER VIEW MADE : if (isFirstNight) { return; } // The first night is not influenced by the timer as it's the monster tutorial
+        // TO CHANGE WHEN MONSTER VIEW MADE : add if (isFirstNight) { return; } // The first night is not influenced by the timer as it's the monster tutorial
         ChangeCurrentTimeOfDay();
         ChangeState(GameState.MapSelection);
     }

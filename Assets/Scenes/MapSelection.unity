@@ -589,7 +589,7 @@ GameObject:
   - component: {fileID: 789408119}
   - component: {fileID: 789408118}
   m_Layer: 5
-  m_Name: Map Three Text
+  m_Name: DayAndNightCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -643,7 +643,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294864682
+    rgba: 4281416703
   m_fontColor: {r: 1, g: 0.23012385, b: 0.19182372, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -661,8 +661,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

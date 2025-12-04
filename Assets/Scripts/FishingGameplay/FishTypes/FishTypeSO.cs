@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public abstract class FishType : ScriptableObject
+public abstract class FishTypeSO : ScriptableObject
 {
     public string fishName;
-  //  public Sprite sprite;  To put when we'll got real sprite
+    public Sprite sprite;
     public Color color; // To remove when we'll got real sprite
     public Map[] spawnMaps;
     public TimeOfDay[] spawnTimes;
@@ -12,6 +12,7 @@ public abstract class FishType : ScriptableObject
     public FishCatchingDifficulty[] catchingDifficulties;
 }
 
+[System.Serializable] // Needed for an intern class
 public class FishCatchingDifficulty
 {
     public TimeOfDay time; // Day or night

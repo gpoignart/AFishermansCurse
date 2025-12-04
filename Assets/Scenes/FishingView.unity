@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3bdbeea1b1b554bae57fe0171d9877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  needleMoveSpeed: 200
 --- !u!1 &87277053
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +650,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13450601c6554d043b780592fecb5b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  monsterSpawnChance: 30
+  monsterSpawnCheckInterval: 20
 --- !u!1 &348795477
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +690,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9e4ddc93d3594814fb84e8d588e39489, type: 2}
   spawnZone: {fileID: 995040143}
   fishContainer: {fileID: 2000844019}
+  minFish: 3
+  maxFish: 7
+  targetFishCount: 5
+  updateInterval: 5
+  minDistBetweenFish: 2
 --- !u!4 &348795479
 Transform:
   m_ObjectHideFlags: 0
