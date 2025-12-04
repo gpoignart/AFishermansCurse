@@ -679,7 +679,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishPrefab: {fileID: 5829279136298351726, guid: 798db3be08d0c9a42af0344597ec0414, type: 3}
-  spawnArea: {fileID: 995040143}
+  fishTypes:
+  - {fileID: 11400000, guid: 2c3af255aa496454c9cdf0c0cf9980b6, type: 2}
+  - {fileID: 11400000, guid: 96edd8f44d8010b4d9ceed5a7efbb2cd, type: 2}
+  - {fileID: 11400000, guid: e7cfc286600f73b439958a27d91165fb, type: 2}
+  - {fileID: 11400000, guid: c23a8c368488d634d98fe2a165e3059b, type: 2}
+  - {fileID: 11400000, guid: 9e4ddc93d3594814fb84e8d588e39489, type: 2}
+  spawnZone: {fileID: 995040143}
   fishContainer: {fileID: 2000844019}
 --- !u!4 &348795479
 Transform:
@@ -1790,7 +1796,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -765.93, y: -456}
+  m_AnchoredPosition: {x: -765.9299, y: -456}
   m_SizeDelta: {x: -1601.8544, y: -960}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1798829157

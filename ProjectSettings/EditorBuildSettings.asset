@@ -6,6 +6,18 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 2e6d56504b82ab949bc48b028d58ae39
+  - enabled: 1
+    path: Assets/Scenes/MapSelection.unity
+    guid: 22d28c4e2d65fa6448f9772b08b58869
+  - enabled: 1
+    path: Assets/Scenes/InventoryView.unity
+    guid: 79466f4c4ff6a594fb9fe52b6711bf63
+  - enabled: 1
     path: Assets/Scenes/FishingView.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/MonsterView.unity
+    guid: f4135019077d0df42a97f40dd139b280
   m_configObjects: {}

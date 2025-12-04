@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class MonsterGameManager : MonoBehaviour
+public class InventoryViewUIManager : MonoBehaviour
 {
-    // Allow to call MonsterGameManager.Instance anywhere (singleton)
-    public static MonsterGameManager Instance { get; private set; }
+    // Allow to call InventoryViewUIManager.Instance anywhere (singleton)
+    public static InventoryViewUIManager Instance { get; private set; }
 
     // Make this class a singleton
     private void Awake()

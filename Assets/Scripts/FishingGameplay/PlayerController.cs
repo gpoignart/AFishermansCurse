@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleFlip();
 
-        Transform fishBelow = GetTopFishBelow();
+        Fish fishBelow = GetTopFishBelow();
         if (fishBelow)
         {
             FishingGameManager.Instance.PlayerAboveFish(fishBelow);
@@ -91,23 +91,23 @@ public class PlayerController : MonoBehaviour
 
     // If the player is above a fish, return the fish (if there are several fish, get the top one)
     // Otherwise, return null
-    private Transform GetTopFishBelow()
+    private Fish GetTopFishBelow()
     {
         float fishingRodTipX = fishingRodTip.position.x;
-        Transform topFish = null;
+        Fish topFish = null;
         float highestY = float.NegativeInfinity;
 
-        foreach (Transform fish in fishContainer)
+        foreach (Transform fishTransform in fishContainer)
         {
-            float fishX = fish.position.x;
-            float fishY = fish.position.y;
+            float fishX = fishTransform.position.x;
+            float fishY = fishTransform.position.y;
 
             if (Mathf.Abs(fishingRodTipX - fishX) <= detectionRadius)
             {
                 if (fishY > highestY)
                 {
                     highestY = fishY;
-                    topFish = fish;
+                    topFish = fishTransform.GetComponent<Fish>();
                 }
             }
         }

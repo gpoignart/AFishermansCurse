@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterUIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // Allow to call MonsterUIManager.Instance anywhere (singleton)
+    public static MonsterUIManager Instance { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    // Make this class a singleton
+    private void Awake()
     {
-        
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 }
