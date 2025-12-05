@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float nightDuration = 120f;
 
+    [SerializeField]
+    private IngredientSO[] ingredientSOs;
+
     // Internal attributes
     private float timeRemaining;
     private Map currentMap;
@@ -32,6 +35,7 @@ public class GameManager : MonoBehaviour
     public bool IsFirstDay => isFirstDay;
     public bool IsFirstNight => isFirstNight;
     public bool IsRecipeBookUnlocked => isRecipeBookUnlocked;
+    public IngredientSO[] IngredientSOs => ingredientSOs;
 
     // Internal states
     private enum GameState
@@ -71,7 +75,7 @@ public class GameManager : MonoBehaviour
         nightsCount = 0;
         isFirstDay = true;
         isFirstNight = false;
-        isRecipeBookUnlocked = false;
+        isRecipeBookUnlocked = true; // TO CHANGE : set at false when recipe book event made
 
         // First state
         // TO CHANGE BY WHEN THE INTRO EVENT MADE : ChangeState(GameState.IntroEvent);

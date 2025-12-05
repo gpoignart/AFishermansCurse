@@ -27,14 +27,29 @@ public class InventoryViewGameManager : MonoBehaviour
 
     void Start()
     {
+        InventoryViewUIManager.Instance.HideRecipeBookStateUI();
+        InventoryViewUIManager.Instance.ShowInventoryStateUI();
+
         // First state
         ChangeState(InventoryViewGameState.Inventory);
     }
 
     // Exit inventory
-    public void OnGoBackButtonPressed()
+    public void OnReturnToMapSelectionButtonPressed()
     {
         GameManager.Instance.ExitInventory();
+    }
+
+    // Toggle between Inventory and Recipe book
+    public void OnChangeStateButtonPressed()
+    { 
+        if (currentState == InventoryViewGameState.Inventory)
+        {
+            ChangeState(InventoryViewGameState.RecipeBook);
+        } else
+        {
+            ChangeState(InventoryViewGameState.Inventory);
+        }
     }
 
     // Pass from one state to another
@@ -86,9 +101,6 @@ public class InventoryViewGameManager : MonoBehaviour
 
     private void UpdateInventoryUI()
     {
-        // Update the recipe book button UI
-        InventoryViewUIManager.Instance.UpdateRecipeBookButtonUI(GameManager.Instance.IsRecipeBookUnlocked);
-
         // Update the equipment UI
         int fishingRodLevel = InventoryManager.Instance.EquipmentLevel[PlayerEquipment.FishingRod];
         int boatLevel = InventoryManager.Instance.EquipmentLevel[PlayerEquipment.Boat];
@@ -98,19 +110,20 @@ public class InventoryViewGameManager : MonoBehaviour
         InventoryViewUIManager.Instance.UpdateFlashlightUI(flashinglightLevel);
 
         // Update the ingredients UI
-        int ingredientOneCount = InventoryManager.Instance.IngredientsPossessed[Ingredient.CarpMeat];
-        int ingredientTwoCount = InventoryManager.Instance.IngredientsPossessed[Ingredient.CarpTooth];
-        int ingredientThreeCount = InventoryManager.Instance.IngredientsPossessed[Ingredient.TroutMeat];
-        int ingredientFourCount = InventoryManager.Instance.IngredientsPossessed[Ingredient.ShinyFin];
-        int ingredientFiveCount = InventoryManager.Instance.IngredientsPossessed[Ingredient.GlimmeringScale];
-        int ingredientSixCount = InventoryManager.Instance.IngredientsPossessed[Ingredient.ShadowyEye];
-        int ingredientSevenCount = InventoryManager.Instance.IngredientsPossessed[Ingredient.MysticEssence];
-        InventoryViewUIManager.Instance.UpdateIngredientOneUI(ingredientOneCount);
-        InventoryViewUIManager.Instance.UpdateIngredientTwoUI(ingredientTwoCount);
-        InventoryViewUIManager.Instance.UpdateIngredientThreeUI(ingredientThreeCount);
-        InventoryViewUIManager.Instance.UpdateIngredientFourUI(ingredientFourCount);
-        InventoryViewUIManager.Instance.UpdateIngredientFiveUI(ingredientFiveCount);
-        InventoryViewUIManager.Instance.UpdateIngredientSixUI(ingredientSixCount);
-        InventoryViewUIManager.Instance.UpdateIngredientSevenUI(ingredientSevenCount);
+        Ingredient[] allIngredients =
+        {
+            Ingredient.CarpMeat,
+            Ingredient.CarpTooth,
+            Ingredient.TroutMeat,
+            Ingredient.ShinyFin,
+            Ingredient.GlimmeringScale,
+            Ingredient.ShadowyEye,
+            Ingredient.MysticEssence
+        };
+        for (int i = 0; i < allIngredients.Length; i++)
+        {
+            int count = InventoryManager.Instance.IngredientsPossessed[allIngredients[i]];
+            InventoryViewUIManager.Instance.UpdateIngredientUI(i, count);
+        }
     }
 }
