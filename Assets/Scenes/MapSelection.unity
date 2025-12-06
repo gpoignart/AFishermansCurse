@@ -166,6 +166,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 374cc074fd9a9284499352966b9519f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapButtonTexts:
+  - {fileID: 1585830960}
+  - {fileID: 2064581386}
+  - {fileID: 835394243}
   dayAndNightCounterText: {fileID: 789408118}
 --- !u!1 &11286538
 GameObject:
@@ -256,7 +260,7 @@ GameObject:
   - component: {fileID: 382117252}
   - component: {fileID: 382117254}
   m_Layer: 5
-  m_Name: MapOneButton
+  m_Name: MapButton1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,7 +370,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1117364248}
         m_TargetAssemblyTypeName: MapSelectionGameManager, Assembly-CSharp
-        m_MethodName: OnMapOneButtonPressed
+        m_MethodName: OnMapButton1Pressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -389,7 +393,7 @@ GameObject:
   - component: {fileID: 444729357}
   - component: {fileID: 444729359}
   m_Layer: 5
-  m_Name: MapTwoButton
+  m_Name: MapButton2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,7 +503,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1117364248}
         m_TargetAssemblyTypeName: MapSelectionGameManager, Assembly-CSharp
-        m_MethodName: OnMapTwoButtonPressed
+        m_MethodName: OnMapButton2Pressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -807,7 +811,7 @@ GameObject:
   - component: {fileID: 835394244}
   - component: {fileID: 835394243}
   m_Layer: 5
-  m_Name: Map Three Text
+  m_Name: MapButton3Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1079,7 +1083,7 @@ GameObject:
   - component: {fileID: 1057852246}
   - component: {fileID: 1057852248}
   m_Layer: 5
-  m_Name: MapThreeButton
+  m_Name: MapButton3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1189,7 +1193,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1117364248}
         m_TargetAssemblyTypeName: MapSelectionGameManager, Assembly-CSharp
-        m_MethodName: OnMapThreeButtonPressed
+        m_MethodName: OnMapButton3Pressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1361,7 +1365,7 @@ GameObject:
   - component: {fileID: 1585830961}
   - component: {fileID: 1585830960}
   m_Layer: 5
-  m_Name: Map One Text
+  m_Name: MapButton1Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1627,7 +1631,7 @@ GameObject:
   - component: {fileID: 2064581387}
   - component: {fileID: 2064581386}
   m_Layer: 5
-  m_Name: Map Two Text
+  m_Name: MapButton2Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

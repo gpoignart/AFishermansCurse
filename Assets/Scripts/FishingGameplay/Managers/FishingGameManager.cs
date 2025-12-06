@@ -1,10 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FishingGameManager : MonoBehaviour
 {
     // Allow to call FishingGameManager.Instance anywhere (singleton)
     public static FishingGameManager Instance { get; private set; }
+
+    // Animator
+    [SerializeField] private Animator playerAnimator;
+
+    // Loot
+    [SerializeField] private GameObject lootPrefab;
 
     // Monster apparition
     [SerializeField] private int monsterSpawnChance = 30;
@@ -21,6 +28,7 @@ public class FishingGameManager : MonoBehaviour
 
     // Internal parameters
     private Fish currentFishBelow = null;
+    private IngredientSO pendingLoot = null;
 
     // Make this class a singleton
     private void Awake()
@@ -38,6 +46,7 @@ public class FishingGameManager : MonoBehaviour
     void Start()
     {
         FishingUIManager.Instance.UpdateTimerUI(GameManager.Instance.TimeRemaining);
+        FishingUIManager.Instance.HideLoot();
 
         // Start the monster spawn loop at night
         // TO CHANGE : TO ADD WHEN THE MONSTER VIEW MADE : if (GameManager.Instance.CurrentTimeOfDay == TimeOfDay.Night) { StartCoroutine(MonsterSpawnLoop()); }
@@ -175,9 +184,12 @@ public class FishingGameManager : MonoBehaviour
     {
         ChangeState(FishingGameState.Moving);
 
+        // Trigger player animation
+        playerAnimator.SetTrigger("OnCatch");
+
         // Obtain the ingredient
-        Ingredient ingredient = currentFishBelow.type.drops[Random.Range(0, currentFishBelow.type.drops.Length)];
-        InventoryManager.Instance.AddIngredient(ingredient, 1);
+        pendingLoot = currentFishBelow.fishSO.drops[Random.Range(0, currentFishBelow.fishSO.drops.Length)];
+        GameManager.Instance.AddIngredient(pendingLoot, 1);
 
         // Delete the fish
         Destroy(currentFishBelow.gameObject);
@@ -192,5 +204,17 @@ public class FishingGameManager : MonoBehaviour
         // Delete the fish
         Destroy(currentFishBelow.gameObject);
         currentFishBelow = null;
+    }
+
+    // Show the loot
+    public void ShowLoot()
+    {
+        FishingUIManager.Instance.ShowLoot(pendingLoot);
+    }
+
+    // Hide the loot
+    public void HideLoot()
+    {
+        FishingUIManager.Instance.HideLoot();
     }
 }

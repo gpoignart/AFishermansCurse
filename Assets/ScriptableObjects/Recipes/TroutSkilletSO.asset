@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38f370df5110c294295000b07dd90a0b, type: 3}
+  m_Name: Trout Skillet
+  m_EditorClassIdentifier: 
+  recipeName: Trout Skillet
+  description: Upgrades Flashlight to level 2.
+  ingredients:
+  - ingredientSO: {fileID: 11400000, guid: c5bd151055811c940a2cdcfe2da026a7, type: 2}
+    quantity: 10
+  - ingredientSO: {fileID: 11400000, guid: eea050943ba2ed04f8a11ffd8854b360, type: 2}
+    quantity: 10
+  hasAlreadyBeenUsed: 0
+  isFinalRecipe: 0
+  upgradesEquipment: {fileID: 11400000, guid: 93adbae843a3b7040a45f349885252dd, type: 2}
+  upgradesToLevel: 2

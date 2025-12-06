@@ -122,51 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1012061796
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1012061798}
-  - component: {fileID: 1012061797}
-  m_Layer: 0
-  m_Name: RecipeManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1012061797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012061796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50456c985ece4e947a725ce34e138717, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recipes: []
---- !u!4 &1012061798
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1012061796}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20.137905, y: 38.292896, z: 0.67352974}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1357327459
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,16 +166,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 512d8d66d6564cb4cbe78ef75d00fec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayDuration: 20
-  nightDuration: 20
-  ingredientSOs:
-  - {fileID: 11400000, guid: 57ca48c96a33ea5438a5f71644b5fd30, type: 2}
-  - {fileID: 11400000, guid: 3e8862e06e3b13b41a8f1dcfb4afef01, type: 2}
-  - {fileID: 11400000, guid: c5bd151055811c940a2cdcfe2da026a7, type: 2}
-  - {fileID: 11400000, guid: 58422352caa5cfd4faa44e75b0c86049, type: 2}
-  - {fileID: 11400000, guid: 9cc22c2b47fdaf0439e1be7ce5985b45, type: 2}
-  - {fileID: 11400000, guid: 55def6a609144bb4f8c3bd67dbc8b790, type: 2}
-  - {fileID: 11400000, guid: 3b68ed947b64a8c40bb67dc5b708e4ea, type: 2}
+  timeOfDayRegistry:
+    daySO: {fileID: 11400000, guid: 3c477c3a73369b443af7b7e9632cc91c, type: 2}
+    nightSO: {fileID: 11400000, guid: 5169ba54d93560e43b170091f8176e18, type: 2}
+  mapRegistry:
+    driftwoodRiverSO: {fileID: 11400000, guid: bce46c8000792094fa6fde8765bb8c49, type: 2}
+    shadowmoonMarshSO: {fileID: 11400000, guid: 5ae9edb074f58264691736a7cd7728a7, type: 2}
+    arcaneLakeSO: {fileID: 11400000, guid: 6fbcdfdbf7d32e742ac214e102065a01, type: 2}
+  playerEquipmentRegistry:
+    boatSO: {fileID: 11400000, guid: a34dcce3a53493f4bb448d9a06ee7de0, type: 2}
+    fishingRodSO: {fileID: 11400000, guid: e41250eb295697a49931989a3a1b1c19, type: 2}
+    flashlightSO: {fileID: 11400000, guid: 93adbae843a3b7040a45f349885252dd, type: 2}
+  ingredientRegistry:
+    carpMeatSO: {fileID: 11400000, guid: e19fd054b172dcd47bb1835ad96dcee8, type: 2}
+    carpToothSO: {fileID: 11400000, guid: 3e8862e06e3b13b41a8f1dcfb4afef01, type: 2}
+    troutMeatSO: {fileID: 11400000, guid: c5bd151055811c940a2cdcfe2da026a7, type: 2}
+    shinyFinSO: {fileID: 11400000, guid: eea050943ba2ed04f8a11ffd8854b360, type: 2}
+    glimmeringScaleSO: {fileID: 11400000, guid: e8555d78244bcb74eba09b860f3d39ca, type: 2}
+    shadowingEyeSO: {fileID: 11400000, guid: 4f546e8e782967d4fa04242abd65016c, type: 2}
+    mysticEssenceSO: {fileID: 11400000, guid: 67d8bb5579e8d7f4f8101a73194d3513, type: 2}
+  recipeRegistry:
+    carpSkilletSO: {fileID: 11400000, guid: 442cb02ef508e4d4eb5c760fec33b685, type: 2}
+    troutSkilletSO: {fileID: 11400000, guid: 7f61997a03e264849a9119aefa01115f, type: 2}
+    fishermansMixSO: {fileID: 11400000, guid: 87562fa2c977cd0439ae19698108da1b, type: 2}
+    goldenCarpFilletSO: {fileID: 11400000, guid: 40dc4fd389f88a74ead5dc01479e257f, type: 2}
+    goldenTroutFilletSO: {fileID: 11400000, guid: c76d4ddd9e9530446a53fa99ab5783af, type: 2}
+    catfishNightStewSO: {fileID: 11400000, guid: c5d678fe30a54eb4fba46bb904c0f075, type: 2}
+    elixirOfTheCursedSO: {fileID: 11400000, guid: fcbe74876d4eedb40b8b809066c47717, type: 2}
+  fishRegistry:
+    carpSO: {fileID: 11400000, guid: 2c3af255aa496454c9cdf0c0cf9980b6, type: 2}
+    troutSO: {fileID: 11400000, guid: 96edd8f44d8010b4d9ceed5a7efbb2cd, type: 2}
+    goldenSalmonSO: {fileID: 11400000, guid: e7cfc286600f73b439958a27d91165fb, type: 2}
+    midnightCatfishSO: {fileID: 11400000, guid: c23a8c368488d634d98fe2a165e3059b, type: 2}
+    mysticFishSO: {fileID: 11400000, guid: 9e4ddc93d3594814fb84e8d588e39489, type: 2}
 --- !u!1 &1772532941
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,55 +336,9 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!1 &1788130651
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1788130653}
-  - component: {fileID: 1788130652}
-  m_Layer: 0
-  m_Name: InventoryManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1788130652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788130651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5b4849c899fcbb4d86be44bd7ed70d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1788130653
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788130651}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.75610924, y: -0.009043539, z: 0.43902874}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1772532944}
   - {fileID: 1357327460}
-  - {fileID: 1788130653}
-  - {fileID: 1012061798}

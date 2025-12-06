@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 556434133c912164e8f6fcc0a51ebe49, type: 3}
+  m_Name: Catfish Night Stew
+  m_EditorClassIdentifier: 
+  recipeName: Catfish Night Stew
+  description: Upgrades Boat to level 3.
+  ingredients:
+  - ingredientSO: {fileID: 11400000, guid: e19fd054b172dcd47bb1835ad96dcee8, type: 2}
+    quantity: 5
+  - ingredientSO: {fileID: 11400000, guid: 3e8862e06e3b13b41a8f1dcfb4afef01, type: 2}
+    quantity: 5
+  - ingredientSO: {fileID: 11400000, guid: c5bd151055811c940a2cdcfe2da026a7, type: 2}
+    quantity: 5
+  - ingredientSO: {fileID: 11400000, guid: eea050943ba2ed04f8a11ffd8854b360, type: 2}
+    quantity: 5
+  - ingredientSO: {fileID: 11400000, guid: 4f546e8e782967d4fa04242abd65016c, type: 2}
+    quantity: 3
+  hasAlreadyBeenUsed: 0
+  isFinalRecipe: 0
+  upgradesEquipment: {fileID: 11400000, guid: a34dcce3a53493f4bb448d9a06ee7de0, type: 2}
+  upgradesToLevel: 3

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be2d91f103a795438832dab47d0a302, type: 3}
+  m_Name: Carp Skillet
+  m_EditorClassIdentifier: 
+  recipeName: Carp Skillet
+  description: Upgrades Fishing Rod to level 2.
+  ingredients:
+  - ingredientSO: {fileID: 11400000, guid: e19fd054b172dcd47bb1835ad96dcee8, type: 2}
+    quantity: 10
+  - ingredientSO: {fileID: 11400000, guid: 3e8862e06e3b13b41a8f1dcfb4afef01, type: 2}
+    quantity: 10
+  hasAlreadyBeenUsed: 0
+  isFinalRecipe: 0
+  upgradesEquipment: {fileID: 11400000, guid: e41250eb295697a49931989a3a1b1c19, type: 2}
+  upgradesToLevel: 2

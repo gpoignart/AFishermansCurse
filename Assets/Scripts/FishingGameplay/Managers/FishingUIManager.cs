@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class FishingUIManager : MonoBehaviour
@@ -15,6 +16,12 @@ public class FishingUIManager : MonoBehaviour
 
     [SerializeField]
     private GameObject dragBar;
+
+    [SerializeField]
+    private GameObject loot;
+
+    [SerializeField]
+    private Image lootImage;
 
     // Make this class a singleton
     private void Awake()
@@ -41,6 +48,20 @@ public class FishingUIManager : MonoBehaviour
         int minutes = Mathf.FloorToInt(timeRemaining / 60f);
         int seconds = Mathf.FloorToInt(timeRemaining % 60f);
         timerText.text = string.Format("{0}:{1:00}", minutes, seconds);
+    }
+
+    // Show the loot
+    public void ShowLoot(IngredientSO ingredient)
+    {
+        loot.SetActive(true);
+        lootImage.sprite = ingredient.sprite;
+        lootImage.color = ingredient.color;
+    }
+
+    // Hide the loot
+    public void HideLoot()
+    {
+        loot.SetActive(false);
     }
 
     // Display the UI for the hooking state

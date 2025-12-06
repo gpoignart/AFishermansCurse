@@ -43,7 +43,7 @@ public class FishingMinigameManager : MonoBehaviour
         timeOutsideZone = 0f;
 
         // Initialize difficulty depending the fish and the timeOfDay
-        difficulty = fish.type.catchingDifficulties.FirstOrDefault(t => t.time == GameManager.Instance.CurrentTimeOfDay);
+        difficulty = fish.fishSO.catchingDifficulties.FirstOrDefault(t => t.time == GameManager.Instance.CurrentTimeOfDay);
 
         // Set up needle boundaries positions
         float needleHalfWidth = FishingMinigameUIManager.Instance.GetNeedleWidth() / 2f;

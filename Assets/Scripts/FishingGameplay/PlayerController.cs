@@ -48,6 +48,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Show the player loot (triggered by animator)
+    public void ShowLoot()
+    {
+        Debug.Log("Show Loot");
+        FishingGameManager.Instance.ShowLoot();
+    }
+
+    // Hide the player loot (triggered by animator)
+    public void HideLoot()
+    {
+        Debug.Log("Hide Loot");
+        FishingGameManager.Instance.HideLoot();
+    }
+
     // Calculate edges of screen to force the player inside when moving
     private void CalculateScreenEdges()
     {

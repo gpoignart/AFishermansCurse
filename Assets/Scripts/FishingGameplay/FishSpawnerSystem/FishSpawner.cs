@@ -8,9 +8,6 @@ public class FishSpawner : MonoBehaviour
     private GameObject fishPrefab;
 
     [SerializeField]
-    private FishTypeSO[] fishTypes;
-
-    [SerializeField]
     private BoxCollider2D spawnZone;
 
     [SerializeField]
@@ -53,11 +50,11 @@ public class FishSpawner : MonoBehaviour
     {
         Vector2 spawnPosition = selectSpawnPosition();
 
-        FishTypeSO fishType = selectFishType();
+        FishSO fish = selectFish();
 
         GameObject newFish = Instantiate(fishPrefab, spawnPosition, Quaternion.identity, fishContainer);
         
-        newFish.GetComponent<Fish>().type = fishType;
+        newFish.GetComponent<Fish>().fishSO = fish;
     }
 
     // Select random and valid spawn position (in the spawn zone and fish not too close from each other)
@@ -91,10 +88,10 @@ public class FishSpawner : MonoBehaviour
     }
 
     // Select a valid fish type to be spawned + depending of the spawn chance
-    private FishTypeSO selectFishType()
+    private FishSO selectFish()
     {
         // Filter valid types fish depending of the map and time of the day
-        FishTypeSO[] validFishes = fishTypes
+        FishSO[] validFishes = GameManager.Instance.FishRegistry.AllFish
             .Where(f => (f.spawnMaps.Contains(GameManager.Instance.CurrentMap)
                      && f.spawnTimes.Contains(GameManager.Instance.CurrentTimeOfDay)))
             .ToArray();
@@ -102,7 +99,7 @@ public class FishSpawner : MonoBehaviour
         // Tirage pondéré selon spawnChance
         int totalWeight = validFishes.Sum(f => f.spawnChance);
         int rand = Random.Range(0, totalWeight);
-        FishTypeSO selectedType = null;
+        FishSO selectedType = null;
 
         foreach (var fish in validFishes)
         {

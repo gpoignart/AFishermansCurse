@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,20 +7,18 @@ public class GameManager : MonoBehaviour
     // Allow to call GameManager.Instance anywhere (singleton)
     public static GameManager Instance { get; private set; }
 
-    // Attributes
-    [SerializeField]
-    private float dayDuration = 120f;
-
-    [SerializeField]
-    private float nightDuration = 120f;
-
-    [SerializeField]
-    private IngredientSO[] ingredientSOs;
+    // World content
+    [SerializeField] private TimeOfDayRegistry timeOfDayRegistry;
+    [SerializeField] private MapRegistry mapRegistry;
+    [SerializeField] private PlayerEquipmentRegistry playerEquipmentRegistry;
+    [SerializeField] private IngredientRegistry ingredientRegistry;
+    [SerializeField] private RecipeRegistry recipeRegistry;
+    [SerializeField] private FishRegistry fishRegistry;
 
     // Internal attributes
+    private MapSO currentMap;
+    private TimeOfDaySO currentTimeOfDay;
     private float timeRemaining;
-    private Map currentMap;
-    private TimeOfDay currentTimeOfDay;
     private int daysCount;
     private int nightsCount;
     private bool isFirstDay;
@@ -27,15 +26,20 @@ public class GameManager : MonoBehaviour
     private bool isRecipeBookUnlocked;
 
     // READ-ONLY ATTRIBUTES, CAN BE READ ANYWHERE
-    public Map CurrentMap => currentMap;
-    public TimeOfDay CurrentTimeOfDay => currentTimeOfDay;
+    public TimeOfDayRegistry TimeOfDayRegistry => timeOfDayRegistry;
+    public MapRegistry MapRegistry => mapRegistry;
+    public PlayerEquipmentRegistry PlayerEquipmentRegistry => playerEquipmentRegistry;
+    public IngredientRegistry IngredientRegistry => ingredientRegistry;
+    public RecipeRegistry RecipeRegistry => recipeRegistry;
+    public FishRegistry FishRegistry => fishRegistry;
     public float TimeRemaining => timeRemaining;
+    public MapSO CurrentMap => currentMap;
+    public TimeOfDaySO CurrentTimeOfDay => currentTimeOfDay;
     public int DaysCount => daysCount;
     public int NightsCount => nightsCount;
     public bool IsFirstDay => isFirstDay;
     public bool IsFirstNight => isFirstNight;
     public bool IsRecipeBookUnlocked => isRecipeBookUnlocked;
-    public IngredientSO[] IngredientSOs => ingredientSOs;
 
     // Internal states
     private enum GameState
@@ -49,7 +53,6 @@ public class GameManager : MonoBehaviour
         EndEvent
     }
     private GameState currentState;
-
 
     // Make this class a singleton
     private void Awake()
@@ -69,8 +72,16 @@ public class GameManager : MonoBehaviour
     // Start the game mecanisms loop (called when the game start)
     void Start()
     {
+        // Initialize registers
+        timeOfDayRegistry.Initialize();
+        mapRegistry.Initialize();
+        playerEquipmentRegistry.Initialize();
+        ingredientRegistry.Initialize();
+        recipeRegistry.Initialize();
+        fishRegistry.Initialize();
+
         // Initialize attributes
-        currentTimeOfDay = TimeOfDay.Day;
+        currentTimeOfDay = TimeOfDayRegistry.daySO;
         daysCount = 1;
         nightsCount = 0;
         isFirstDay = true;
@@ -111,7 +122,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Called in the MapSelection Scene when clicking on a map
-    public void SelectMap(Map mapSelected)
+    public void SelectMap(MapSO mapSelected)
     {
         currentMap = mapSelected;
         StartTimer();
@@ -156,6 +167,32 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.EndEvent);
     }
+
+    // Called to add ingredient to inventory
+    public void AddIngredient(IngredientSO ingredient, int amount)
+    {
+        ingredient.playerQuantityPossessed += amount;
+    }
+
+    // Called when removing ingredient from inventory, return true if possible, false otherwise
+    public bool RemoveIngredient(IngredientSO ingredient, int amount)
+    {
+        if (ingredient.playerQuantityPossessed < amount)
+        {
+            return false;
+        }
+
+        ingredient.playerQuantityPossessed -= amount;
+
+        return true;
+    }
+
+    // Called when upgrading equipment
+    public void UpgradeEquipment(PlayerEquipmentSO playerEquipment)
+    {
+        playerEquipment.level ++;
+    }
+
 
     // PRIVATE FONCTIONS
 
@@ -231,13 +268,13 @@ public class GameManager : MonoBehaviour
 
     private void StartTimer()
     {
-        if (currentTimeOfDay == TimeOfDay.Day)
+        if (currentTimeOfDay == TimeOfDayRegistry.daySO)
         {
-            timeRemaining = dayDuration;
+            timeRemaining = TimeOfDayRegistry.daySO.duration;
         }
         else
         {
-            timeRemaining = nightDuration;
+            timeRemaining = TimeOfDayRegistry.nightSO.duration;
         }
     }
 
@@ -253,16 +290,16 @@ public class GameManager : MonoBehaviour
 
     private void ChangeCurrentTimeOfDay()
     {
-        if (currentTimeOfDay == TimeOfDay.Day)
+        if (currentTimeOfDay == TimeOfDayRegistry.daySO)
         {
-            currentTimeOfDay = TimeOfDay.Night;
+            currentTimeOfDay = TimeOfDayRegistry.nightSO;
             nightsCount++;
             if (nightsCount == 1) { isFirstNight = true; }
             else { isFirstNight = false; }
         }
         else
         {
-            currentTimeOfDay = TimeOfDay.Day;
+            currentTimeOfDay = TimeOfDayRegistry.daySO;
             daysCount++;
             if (daysCount == 1) { isFirstDay = true; }
             else { isFirstDay = false; }
