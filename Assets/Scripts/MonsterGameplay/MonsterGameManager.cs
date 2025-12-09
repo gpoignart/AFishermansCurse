@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MonsterGameManager : MonoBehaviour
 {
-    // Singleton 
+    // Singleton
     public static MonsterGameManager Instance { get; private set; }
 
     private void Awake()
@@ -24,6 +24,10 @@ public class MonsterGameManager : MonoBehaviour
 
     private GameObject currentMonster;
 
+    private float loseTime = 3f;      
+    private float loseTimer = 0f;
+    private bool encounterActive = false;
+
     void Start()
     {
         StartEncounter();
@@ -31,29 +35,34 @@ public class MonsterGameManager : MonoBehaviour
 
     public void StartEncounter()
     {
-        //Pick random side (0 = left, 1 = right)
         int side = Random.Range(0, 2);
-
-        //Choose random position inside correct zone
         Vector3 spawnPos = (side == 0)
             ? GetRandomPoint(leftSpawn)
             : GetRandomPoint(rightSpawn);
 
-        //Spawn monster at that position
         currentMonster = Instantiate(TheEyes, spawnPos, Quaternion.identity);
         FlashlightController.Instance.SetMonster(currentMonster.transform);
 
-
-        //Show noise UI
         MonsterUIManager.Instance.ShowNoiseWarning(side);
 
-        //Init monster behavior
         currentMonster.GetComponent<TheEyes>().Init(side);
+
+        loseTimer = 0f;
+        encounterActive = true;
     }
 
+    private void Update()
+    {
+        if (!encounterActive) return;
 
-    //Generate a random point inside a BoxCollider2D area
-  
+        loseTimer += Time.deltaTime;
+
+        if (loseTimer >= loseTime)
+        {
+            PlayerLose();
+        }
+    }
+
     private Vector3 GetRandomPoint(BoxCollider2D zone)
     {
         Bounds b = zone.bounds;
@@ -64,10 +73,22 @@ public class MonsterGameManager : MonoBehaviour
         return new Vector3(x, y, 0f);
     }
 
+   
+    public void PlayerWin()
+    {
+        encounterActive = false;
+        GameManager.Instance.WinAgainstMonster();
+    }
+
+    public void PlayerLose()
+    {
+        encounterActive = false;
+        GameManager.Instance.DeathAgainstMonster();
+    }
+
+    
     public void EndEncounter()
     {
-
-        GameManager.Instance.WinAgainstMonster();
-
+        PlayerWin();
     }
 }
