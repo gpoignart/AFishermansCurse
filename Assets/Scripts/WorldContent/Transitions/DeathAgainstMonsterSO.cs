@@ -7,6 +7,5 @@ public class DeathAgainstMonsterSO : TransitionSO
     {
         this.text = "You wake up, it's morning.\nLast night... that monster got you.\nEverything you caught yesterday is gone.";
         this.duration = 4f;
-        this.nextGameState = GameManager.GameState.MapSelection;
     }
 }

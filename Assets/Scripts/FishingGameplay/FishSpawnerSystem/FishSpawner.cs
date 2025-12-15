@@ -4,6 +4,9 @@ using System.Linq;
 
 public class FishSpawner : MonoBehaviour
 {
+    // Allow to call FishSpawner.Instance anywhere (singleton)
+    public static FishSpawner Instance { get; private set; }
+
     [SerializeField]
     private GameObject fishPrefab;
 
@@ -22,7 +25,39 @@ public class FishSpawner : MonoBehaviour
     private Vector2 zoneSize;
     private Vector2 zoneOffset;
 
-    private void Start()
+    
+    // Make this class a singleton
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
+    // Make one fish spawn for the tutorial
+    public void SpawnTutorialFish()
+    {
+        zoneSize = spawnZone.size;
+        zoneOffset = spawnZone.offset;
+
+        // Spawn position at the right of the screen
+        Vector2 localPoint = new Vector2( zoneSize.x / 2f - 0.5f, zoneSize.y / 2f - 0.5f) + zoneOffset;
+        Vector2 spawnPosition = (Vector2) spawnZone.transform.position + localPoint;
+
+        // Tutorial fish
+        FishSO tutorialFish = GameManager.Instance.FishRegistry.carpSO;
+
+        GameObject newFish = Instantiate(fishPrefab, spawnPosition, Quaternion.identity, fishContainer);
+        
+        newFish.GetComponent<Fish>().fishSO = tutorialFish;
+    }
+
+    // Regular fish spawner
+    public void StartFishSpawner()
     {
         zoneSize = spawnZone.size;
         zoneOffset = spawnZone.offset;
@@ -96,7 +131,7 @@ public class FishSpawner : MonoBehaviour
                      && f.spawnTimes.Contains(GameManager.Instance.CurrentTimeOfDay)))
             .ToArray();
 
-        // Tirage pondéré selon spawnChance
+        // Tirage pondï¿½rï¿½ selon spawnChance
         int totalWeight = validFishes.Sum(f => f.spawnChance);
         int rand = Random.Range(0, totalWeight);
         FishSO selectedType = null;

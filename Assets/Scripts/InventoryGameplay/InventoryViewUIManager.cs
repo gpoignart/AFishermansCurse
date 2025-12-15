@@ -31,19 +31,19 @@ public class InventoryViewUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] ingredientTexts;
 
     // Internal references
-    [SerializeField] private string[] fishingRodDetails =
+    private string[] fishingRodDetails =
     {
         "No special effect",
         "Green zone width increased",
         "Fish are caught more quickly"
     };
-    [SerializeField] private string[] boatDetails =
+    private string[] boatDetails =
     {
         "No special effect",
         "Boat speed increased",
         "Higher chances of rare fish appearing"
     };
-    [SerializeField] private string[] flashlightDetails =
+    private string[] flashlightDetails =
     {
         "No special effect",
         "...",

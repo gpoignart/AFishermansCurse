@@ -31,10 +31,7 @@ public class GameManager : MonoBehaviour
     private TransitionRegistry transitionRegistry;
 
     // Parameters
-    [SerializeField]
     private int monsterSpawnChance = 70;
-
-    [SerializeField]
     private float monsterSpawnCheckInterval = 10f;
 
     // Internal attributes
@@ -46,6 +43,8 @@ public class GameManager : MonoBehaviour
     private int nightsCount;
     private bool isFirstDay;
     private bool isFirstNight;
+    private bool isFishingTutorialEnabled;
+    private bool isMapSelectionExplanationEnabled;
     private bool isRecipeBookUnlocked;
     private Dictionary<IngredientSO, int> obtainedIngredientLastDayAndNight;
 
@@ -65,12 +64,14 @@ public class GameManager : MonoBehaviour
     public int NightsCount => nightsCount;
     public bool IsFirstDay => isFirstDay;
     public bool IsFirstNight => isFirstNight;
+    public bool IsFishingTutorialEnabled => isFishingTutorialEnabled;
+    public bool IsMapSelectionExplanationEnabled => isMapSelectionExplanationEnabled;
     public bool IsRecipeBookUnlocked => isRecipeBookUnlocked;
     public int MonsterSpawnChance => monsterSpawnChance;
     public float MonsterSpawnCheckInterval => monsterSpawnCheckInterval;
 
-    // Game states
-    public enum GameState
+    // Internal game states
+    private enum GameState
     {
         Main,
         TransitionView,
@@ -114,10 +115,13 @@ public class GameManager : MonoBehaviour
 
         // Initialize attributes
         currentTimeOfDay = TimeOfDayRegistry.daySO;
+        currentMap = MapRegistry.driftwoodRiverSO; // Default map, for the first day of fishing
         daysCount = 1;
         nightsCount = 0;
         isFirstDay = true;
         isFirstNight = false;
+        isFishingTutorialEnabled = true;
+        isMapSelectionExplanationEnabled = true;
         isRecipeBookUnlocked = true; // TO CHANGE : set at false when recipe book event made
         InitializeObtainedIngredientsLastDayAndNight();
     }
@@ -129,7 +133,8 @@ public class GameManager : MonoBehaviour
     public void OnStartButtonPressed()
     {
         // TO CHANGE BY WHEN THE INTRO EVENT MADE : ChangeState(GameState.IntroEvent);
-        ChangeState(GameState.MapSelection);
+        StartTimer();
+        ChangeState(GameState.FishingView);
     }
 
     // Quit game
@@ -145,14 +150,36 @@ public class GameManager : MonoBehaviour
     // Called at the end of the introEvent
     public void ExitIntroEvent()
     {
-        ChangeState(GameState.MapSelection);
+        StartTimer();
+        ChangeState(GameState.FishingView);
     }
 
     // Called at the end of the recipeBookEvent
     public void ExitRecipeBookEvent()
     {
-        ChangeState(GameState.MapSelection);
         isRecipeBookUnlocked = true;
+        currentTransition = transitionRegistry.endRecipeBookEventSO;
+        ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
+    }
+
+    // Called in the FishingView at the end of the tutorial, unblock the timer
+    public void EndOfFishingTutorial()
+    {
+        isFishingTutorialEnabled = false;
+    }
+
+    // Called in the MapSelection Scene when clicking on a map
+    public void SelectMap(MapSO mapSelected)
+    {
+        currentMap = mapSelected;
+        StartTimer();
+        ChangeState(GameState.FishingView);
+    }
+
+    // Called in the MapSelection at the end of the explanations
+    public void EndOfMapSelectionExplanation()
+    {
+        isMapSelectionExplanationEnabled = false;
     }
 
     // Called when clicking on the inventory button
@@ -172,14 +199,6 @@ public class GameManager : MonoBehaviour
         {
             ChangeState(GameState.FishingView);
         }
-    }
-
-    // Called in the MapSelection Scene when clicking on a map
-    public void SelectMap(MapSO mapSelected)
-    {
-        currentMap = mapSelected;
-        StartTimer();
-        ChangeState(GameState.FishingView);
     }
 
     // Called in the FishingView Scene in need of passing in monster view
@@ -208,7 +227,7 @@ public class GameManager : MonoBehaviour
         if (isFirstNight)
         {
             currentTransition = transitionRegistry.firstDeathAgainstMonsterSO;
-            ChangeState(GameState.TransitionView); // Transition manager will change state to MonsterView to redoing the fight because it's first night
+            ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
         }
         else
         {
@@ -219,7 +238,7 @@ public class GameManager : MonoBehaviour
             }
 
             currentTransition = transitionRegistry.deathAgainstMonsterSO;
-            ChangeState(GameState.TransitionView); // Transition manager will change state to Map Selection
+            ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
 
             // The next day start
             ChangeCurrentTimeOfDay();
@@ -229,21 +248,44 @@ public class GameManager : MonoBehaviour
     // Called when the time is out, we exit the fishing/monster view and return to the map selection
     private void TimeOut()
     {
-        if (isFirstNight) { return; } // The first night is not influenced by the timer as it's the monster tutorial
-        
         if (currentTimeOfDay == timeOfDayRegistry.daySO)
         {
             currentTransition = transitionRegistry.endDaySO;
-            ChangeState(GameState.TransitionView); // Transition manager will change state to Map Selection
+            ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
         }
         else
         {            
             currentTransition = transitionRegistry.endNightSO;
-            ChangeState(GameState.TransitionView); // Transition manager will change state to Map Selection 
+            ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
         }
 
         // Change the time of day
         ChangeCurrentTimeOfDay();
+    }
+
+    // Called at the end of a transition, go to the next state
+    public void ExitTransition()
+    {
+        if (currentTransition == transitionRegistry.endDaySO)
+        {
+            ChangeState(GameState.MapSelection);
+        }
+        else if (currentTransition == transitionRegistry.endNightSO)
+        {
+            ChangeState(GameState.MapSelection);   
+        }
+        else if (currentTransition == transitionRegistry.firstDeathAgainstMonsterSO)
+        {
+            ChangeState(GameState.MonsterView);
+        }
+        else if (currentTransition == transitionRegistry.deathAgainstMonsterSO)
+        {
+            ChangeState(GameState.MapSelection);
+        }
+        else if (currentTransition == transitionRegistry.endRecipeBookEventSO)
+        {
+            ChangeState(GameState.MapSelection);
+        }
     }
 
     // Called in the InventoryView when the player make the final remedy
@@ -285,7 +327,7 @@ public class GameManager : MonoBehaviour
     // HELPING FONCTIONS
 
     // Update the game (called at each frame of the game)
-    void Update()
+    private void Update()
     {
         // Handle the game update logic for states
         switch (currentState)
@@ -303,11 +345,11 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.FishingView:
-                UpdateTimerAndCheckIfOut();
+                if (!IsFishingTutorialEnabled) { UpdateTimerAndCheckIfOut(); } // No timer during fishing tutorial
                 break;
 
             case GameState.MonsterView:
-                UpdateTimerAndCheckIfOut();
+                if (!IsFirstNight) { UpdateTimerAndCheckIfOut(); } // No timer during monster tutorial
                 break;
 
             case GameState.IntroEvent:
@@ -322,7 +364,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Pass from one state to another
-    public void ChangeState(GameState newState)
+    private void ChangeState(GameState newState)
     {
         lastState = currentState;
         currentState = newState;

@@ -8,7 +8,11 @@ public class MapSelectionUIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI[] mapButtonTexts;
     [SerializeField] private TextMeshProUGUI dayAndNightCounterText;
-
+    [SerializeField] private TextMeshProUGUI chooseAMapText;
+    [SerializeField] private GameObject explanationPanel;
+    [SerializeField] private TextMeshProUGUI explanationText;
+    [SerializeField] private GameObject explanationNextButton;
+    
     // Make this class a singleton
     private void Awake()
     {
@@ -21,9 +25,9 @@ public class MapSelectionUIManager : MonoBehaviour
         Instance = this;
     }
 
-    public void UpdateMapButtonText(int index, MapSO map)
+    public void UpdateMapButtonText(int index, string mapName)
     {
-        mapButtonTexts[index].text = map.mapName;
+        mapButtonTexts[index].text = mapName;
     }
 
     public void UpdateDayAndNightCounterText()
@@ -36,5 +40,30 @@ public class MapSelectionUIManager : MonoBehaviour
         {
             dayAndNightCounterText.text = $"Night {GameManager.Instance.NightsCount}";
         }
+    }
+
+    public void UpdateExplanationText(string explanationTextContent)
+    {
+        explanationText.text = explanationTextContent;
+    }
+
+    public void ShowExplanationPanel()
+    {
+        explanationPanel.SetActive(true);
+    }
+
+    public void HideExplanationPanel()
+    {
+        explanationPanel.SetActive(false);   
+    }
+    
+    public void HideChooseAMapText()
+    {
+        chooseAMapText.gameObject.SetActive(false);
+    }
+
+    public void HideExplanationNextButton()
+    {
+        explanationNextButton.SetActive(false);
     }
 }

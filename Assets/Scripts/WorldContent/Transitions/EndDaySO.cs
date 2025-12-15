@@ -7,6 +7,5 @@ public class EndDaySO : TransitionSO
     {
         this.text = "The day has ended...";
         this.duration = 2f;
-        this.nextGameState = GameManager.GameState.MapSelection;
     }
 }

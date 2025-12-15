@@ -11,9 +11,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform fishingRodTip;
 
+    // Internal properties
     private float detectionRadius = 0.4f;
     private float speed = 2f;
     private float minX, maxX;
+    private Vector3 firstPosition;
 
     // Make this class a singleton
     private void Awake()
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        firstPosition = transform.position;
         CalculateScreenEdges();
     }
 
@@ -74,18 +77,30 @@ public class PlayerController : MonoBehaviour
 
         // Clamp so the whole player stays visible
         newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
-
+        
+        // Apply the new position
         transform.position = newPosition;
+
+        // Inform the FishingGameManager the player has moved
+        if (Vector3.Distance(transform.position, firstPosition) > 3f)
+        {
+            FishingGameManager.Instance.PlayerHasMoved();
+        }
     }
 
     // Flip player
     private void HandleFlip()
     {
+        if (!FishingGameManager.Instance.CanPlayerFlip()) { return; } // Verifies the player is allowed to flip
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             Vector3 localScale = transform.localScale;
             localScale.x *= -1;
             transform.localScale = localScale;
+
+            // Inform the FishingGameManager the player has flipped
+            FishingGameManager.Instance.PlayerHasFlipped();
         }
     }
 

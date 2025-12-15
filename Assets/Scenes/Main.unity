@@ -976,8 +976,7 @@ MonoBehaviour:
     endNightSO: {fileID: 11400000, guid: a2b0fd5f73fee3f47a56fd6798d6c673, type: 2}
     firstDeathAgainstMonsterSO: {fileID: 11400000, guid: 9a1bd97b8954c3a4790975f16fc0bd12, type: 2}
     deathAgainstMonsterSO: {fileID: 11400000, guid: d8da9ffce92519841bff056bc5731802, type: 2}
-  monsterSpawnChance: 70
-  monsterSpawnCheckInterval: 10
+    endRecipeBookEventSO: {fileID: 11400000, guid: 768a076d60bb8894087e2e75d6971dc9, type: 2}
 --- !u!1 &1457813405
 GameObject:
   m_ObjectHideFlags: 0

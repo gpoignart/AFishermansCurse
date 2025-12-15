@@ -5,6 +5,7 @@ public class TransitionRegistry
     public EndNightSO endNightSO;
     public FirstDeathAgainstMonsterSO firstDeathAgainstMonsterSO;
     public DeathAgainstMonsterSO deathAgainstMonsterSO;
+    public EndRecipeBookEventSO endRecipeBookEventSO;
 
     public void Initialize()
     {
@@ -12,5 +13,6 @@ public class TransitionRegistry
         endNightSO.Initialize();
         firstDeathAgainstMonsterSO.Initialize();
         deathAgainstMonsterSO.Initialize();
+        endRecipeBookEventSO.Initialize();
     }
 }

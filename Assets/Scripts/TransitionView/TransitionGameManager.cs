@@ -26,6 +26,6 @@ public class TransitionGameManager : MonoBehaviour
     public IEnumerator PlayTransition(TransitionSO transition)
     {        
         yield return new WaitForSeconds(transition.duration);
-        GameManager.Instance.ChangeState(transition.nextGameState);
+        GameManager.Instance.ExitTransition();
     }
 }
