@@ -13,11 +13,8 @@ public class InventoryViewUIManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI pageText;
 
-    [SerializeField] private Button changeStateButton;
+    [SerializeField] private GameObject changeStateButton;
     [SerializeField] private TextMeshProUGUI changeStateButtonText;
-    [SerializeField] private Sprite recipeBookButtonLockedSprite;
-    [SerializeField] private Sprite recipeBookButtonUnlockedSprite;
-    [SerializeField] private Sprite inventoryButtonSprite;
 
     [SerializeField] private TextMeshProUGUI fishingRodLevelText;
     [SerializeField] private TextMeshProUGUI boatLevelText;
@@ -117,20 +114,16 @@ public class InventoryViewUIManager : MonoBehaviour
     public void ShowInventoryStateUI()
     {
         inventoryPanel.SetActive(true);
-        pageText.enabled = true;
+        pageText.gameObject.SetActive(true);
         pageText.text = "Inventory";
-        changeStateButton.enabled = true;
         if (GameManager.Instance.IsRecipeBookUnlocked)
         {
-            changeStateButton.interactable = true;
+            changeStateButton.SetActive(true);
             changeStateButtonText.text = "Recipe Book";
-            changeStateButton.GetComponent<Image>().sprite = recipeBookButtonUnlockedSprite;
         }
         else
         {
-            changeStateButton.interactable = false;
-            changeStateButtonText.text = "?";
-            changeStateButton.GetComponent<Image>().sprite = recipeBookButtonLockedSprite;
+            changeStateButton.SetActive(false);
         }
     }
 
@@ -138,27 +131,25 @@ public class InventoryViewUIManager : MonoBehaviour
     public void ShowRecipeBookStateUI()
     {
         recipeBookPanel.SetActive(true);
-        pageText.enabled = true;
+        pageText.gameObject.SetActive(true);
         pageText.text = "Recipe Book";
-        changeStateButton.enabled = true;
-        changeStateButton.interactable = true;
+        changeStateButton.SetActive(true);
         changeStateButtonText.text = "Inventory";
-        changeStateButton.GetComponent<Image>().sprite = inventoryButtonSprite;
     }
 
     // Hide the UI for the Inventory state
     public void HideInventoryStateUI()
     {
         inventoryPanel.SetActive(false);
-        pageText.enabled = false;
-        changeStateButton.enabled = false;
+        pageText.gameObject.SetActive(false);
+        changeStateButton.SetActive(false);
     }
 
     // Hide the UI for the Recipe Book state
     public void HideRecipeBookStateUI()
     {
         recipeBookPanel.SetActive(false);
-        pageText.enabled = false;
-        changeStateButton.enabled = false;
+        pageText.gameObject.SetActive(false);
+        changeStateButton.SetActive(false);
     }
 }

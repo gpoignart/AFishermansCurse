@@ -154,11 +154,8 @@ MonoBehaviour:
   inventoryPanel: {fileID: 245492197}
   recipeBookPanel: {fileID: 1160262032}
   pageText: {fileID: 1257496635}
-  changeStateButton: {fileID: 343134892}
+  changeStateButton: {fileID: 343134890}
   changeStateButtonText: {fileID: 582950915}
-  recipeBookButtonLockedSprite: {fileID: 7482667652216324306, guid: 5ae66d6920ef1ed458be709f860c07dd, type: 3}
-  recipeBookButtonUnlockedSprite: {fileID: 7482667652216324306, guid: 5ae66d6920ef1ed458be709f860c07dd, type: 3}
-  inventoryButtonSprite: {fileID: 7482667652216324306, guid: 5ae66d6920ef1ed458be709f860c07dd, type: 3}
   fishingRodLevelText: {fileID: 150375897}
   boatLevelText: {fileID: 1139243415}
   flashinglightLevelText: {fileID: 1087446544}
@@ -2507,7 +2504,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '?'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

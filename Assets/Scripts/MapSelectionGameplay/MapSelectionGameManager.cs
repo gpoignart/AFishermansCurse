@@ -76,10 +76,15 @@ public class MapSelectionGameManager : MonoBehaviour
         GameManager.Instance.SelectMap(GameManager.Instance.MapRegistry.AllMaps[2]);
     }
 
+    // Called when the player clicks menu button    
+    public void OnMenuButtonPressed()
+    {
+        GameManager.Instance.EnterMenu();
+    }
+
     // Called when the player clicks inventory button
     public void OnInventoryButtonPressed()
     {
-        if (GameManager.Instance.IsMapSelectionExplanationEnabled) { return; }
         GameManager.Instance.EnterInventory();
     }
 

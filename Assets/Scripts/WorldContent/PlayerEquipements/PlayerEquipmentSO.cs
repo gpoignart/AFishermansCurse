@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class PlayerEquipmentSO : ScriptableObject
 {
-    public string equipmentName;
+    public string playerEquipmentName;
     public int level;
     public string[] detailsPerLevel;
     public abstract void Initialize();

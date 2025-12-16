@@ -5,7 +5,7 @@ public class FlashlightSO : PlayerEquipmentSO
 {
     public override void Initialize()
     {
-        this.equipmentName = "Flashlight";
+        this.playerEquipmentName = "Flashlight";
         this.level = 1;
         this.detailsPerLevel = new string[]
         {

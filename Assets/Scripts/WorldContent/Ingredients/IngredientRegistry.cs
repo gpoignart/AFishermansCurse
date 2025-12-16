@@ -1,3 +1,5 @@
+using System.Linq;
+
 [System.Serializable]
 public class IngredientRegistry
 {
@@ -9,7 +11,7 @@ public class IngredientRegistry
     public ShadowingEyeSO shadowingEyeSO;
     public MysticEssenceSO mysticEssenceSO;
 
-    // List of ingredients to display them more easily in inventory
+    // List of ingredients
     public IngredientSO[] AllIngredients =>
         new IngredientSO[]
         {
@@ -31,6 +33,11 @@ public class IngredientRegistry
         glimmeringScaleSO.Initialize();
         shadowingEyeSO.Initialize();
         mysticEssenceSO.Initialize();
+    }
+
+    public IngredientSO GetByName(string ingredientName)
+    {
+        return AllIngredients.FirstOrDefault(i => i.ingredientName == ingredientName);
     }
 }
 

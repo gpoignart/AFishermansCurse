@@ -1,3 +1,5 @@
+using System.Linq;
+
 [System.Serializable]
 public class MapRegistry
 {
@@ -19,5 +21,10 @@ public class MapRegistry
         driftwoodRiverSO.Initialize();
         shadowmoonMarshSO.Initialize();
         arcaneLakeSO.Initialize();
+    }
+
+    public MapSO GetByName(string mapName)
+    {
+        return AllMaps.FirstOrDefault(m => m.mapName == mapName);
     }
 }

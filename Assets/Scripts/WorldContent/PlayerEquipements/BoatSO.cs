@@ -7,7 +7,7 @@ public class BoatSO : PlayerEquipmentSO
 
     public override void Initialize()
     {
-        this.equipmentName = "Boat";
+        this.playerEquipmentName = "Boat";
         this.level = 1;
         this.detailsPerLevel = new string[]
         {

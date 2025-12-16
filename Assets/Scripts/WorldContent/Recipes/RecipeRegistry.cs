@@ -1,3 +1,5 @@
+using System.Linq;
+
 [System.Serializable]
 public class RecipeRegistry
 {
@@ -9,7 +11,7 @@ public class RecipeRegistry
     public CatfishNightStewSO catfishNightStewSO;
     public ElixirOfTheCursedSO elixirOfTheCursedSO;
 
-    // List of recipes to display them more easily in recipe book
+    // List of recipes
     public RecipeSO[] AllRecipes =>
         new RecipeSO[]
         {
@@ -31,5 +33,10 @@ public class RecipeRegistry
         goldenTroutFilletSO.Initialize();
         catfishNightStewSO.Initialize();
         elixirOfTheCursedSO.Initialize();
+    }
+
+    public RecipeSO GetByName(string recipeName)
+    {
+        return AllRecipes.FirstOrDefault(r => r.recipeName == recipeName);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -118,24 +119,41 @@ public class GameManager : MonoBehaviour
         isFirstNight = false;
         isFishingTutorialEnabled = true;
         isMapSelectionExplanationEnabled = true;
-        isRecipeBookUnlocked = true; // TO CHANGE : set at false when recipe book event made
+        isRecipeBookUnlocked = false;
         InitializeObtainedIngredientsLastDayAndNight();
     }
 
 
     // NAVIGATION FONCTIONS
-
-    // Start Game
-    public void OnStartButtonPressed()
+    
+    // Called by map selection to entering menu
+    public void EnterMenu()
     {
+        ChangeState(GameState.Main);
+    }
+
+    // Called by the menu manager to start a new game
+    public void StartNewGame()
+    {
+        SaveSystem.DeleteSave();
+
         // TO CHANGE BY WHEN THE INTRO EVENT MADE : ChangeState(GameState.IntroEvent);
         StartTimer();
         ChangeState(GameState.FishingView);
     }
 
-    // Quit game
-    public void OnExitButtonPressed()
+    // Called by the menu manager to continue game
+    public void ContinueGame()
     {
+        LoadGame();
+        ChangeState(GameState.MapSelection);
+    }
+
+    // Called by the menu manager to quit game
+    public void QuitGame()
+    {
+        SaveGame();
+
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
         #else
@@ -208,8 +226,13 @@ public class GameManager : MonoBehaviour
     {
         if (isFirstNight)
         {
+            // TO CHANGE BY WHEN THE RECIPE BOOK EVENT MADE : add ChangeState(GameState.RecipeBookEvent);
+            isRecipeBookUnlocked = true;
+            currentTransition = transitionRegistry.endRecipeBookEventSO;
+            ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
+            
+            // To keep
             ChangeCurrentTimeOfDay();
-            ChangeState(GameState.MapSelection); // TO CHANGE BY WHEN THE RECIPE BOOK EVENT MADE : add ChangeState(GameState.RecipeBookEvent);
         }
         else
         {
@@ -450,6 +473,8 @@ public class GameManager : MonoBehaviour
                 isFirstDay = false;
             }
         }
+
+        SaveGame();
     }
 
     private void InitializeObtainedIngredientsLastDayAndNight()
@@ -458,6 +483,83 @@ public class GameManager : MonoBehaviour
         foreach (var ingredient in ingredientRegistry.AllIngredients)
         {
             obtainedIngredientLastDayAndNight[ingredient] = 0;
+        }
+    }
+
+    // DATA FUNCTIONS
+
+    private void SaveGame()
+    {
+        SaveData data = new SaveData();
+
+        data.currentTimeOfDayName = currentTimeOfDay.timeOfDayName;
+        data.daysCount = daysCount;
+        data.nightsCount = nightsCount;
+        data.isFirstDay = isFirstDay;
+        data.isFirstNight = isFirstNight;
+        data.isFishingTutorialEnabled = isFishingTutorialEnabled;
+        data.isMapSelectionExplanationEnabled = isMapSelectionExplanationEnabled;
+        data.isRecipeBookUnlocked = isRecipeBookUnlocked;
+
+        data.ingredients = ingredientRegistry.AllIngredients
+            .Select(i => new IngredientSaveData
+            {                
+                ingredientName = i.ingredientName,
+                playerQuantityPossessed = i.playerQuantityPossessed
+            })
+            .ToList();
+        
+        Debug.Log("ingredient:" + data.ingredients);
+
+        data.playerEquipments = playerEquipmentRegistry.AllPlayerEquipments
+            .Select(e => new PlayerEquipmentSaveData
+            {
+                playerEquipmentName = e.playerEquipmentName,
+                level = e.level
+            })
+            .ToList();
+        
+        data.recipes = recipeRegistry.AllRecipes
+            .Select(r => new RecipeSaveData
+            {
+                recipeName = r.recipeName,
+                hasAlreadyBeenUsed = r.hasAlreadyBeenUsed
+            })
+            .ToList();
+
+        SaveSystem.Save(data);
+    }
+
+    private void LoadGame()
+    {
+        SaveData data = SaveSystem.Load();
+        if (data == null) return;
+
+        currentTimeOfDay = timeOfDayRegistry.GetByName(data.currentTimeOfDayName);
+        daysCount = data.daysCount;
+        nightsCount = data.nightsCount;
+        isFirstDay = data.isFirstDay;
+        isFirstNight = data.isFirstNight;
+        isFishingTutorialEnabled = data.isFishingTutorialEnabled;
+        isMapSelectionExplanationEnabled = data.isMapSelectionExplanationEnabled;
+        isRecipeBookUnlocked = data.isRecipeBookUnlocked;
+
+        foreach (var ingredientData in data.ingredients)
+        {
+            IngredientSO ingredient = ingredientRegistry.GetByName(ingredientData.ingredientName);
+            ingredient.playerQuantityPossessed = ingredientData.playerQuantityPossessed;
+        }
+
+        foreach (var playerEquipmentData in data.playerEquipments)
+        {
+            PlayerEquipmentSO playerEquipment = playerEquipmentRegistry.GetByName(playerEquipmentData.playerEquipmentName);
+            playerEquipment.UpgradeTo(playerEquipmentData.level);
+        }
+
+        foreach (var recipeData in data.recipes)
+        {
+            RecipeSO recipe = recipeRegistry.GetByName(recipeData.recipeName);
+            recipe.hasAlreadyBeenUsed = recipeData.hasAlreadyBeenUsed;
         }
     }
 }

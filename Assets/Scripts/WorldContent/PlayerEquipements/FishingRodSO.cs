@@ -5,7 +5,7 @@ public class FishingRodSO : PlayerEquipmentSO
 {
     public override void Initialize()
     {
-        this.equipmentName = "Fishing Rod";
+        this.playerEquipmentName = "Fishing Rod";
         this.level = 1;
         this.detailsPerLevel = new string[]
         {
