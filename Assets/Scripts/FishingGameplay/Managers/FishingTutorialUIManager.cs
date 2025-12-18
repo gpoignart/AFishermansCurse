@@ -13,15 +13,23 @@ public class FishingTutorialUIManager : MonoBehaviour
     [SerializeField] private GameObject tutorialNextButton;
 
     // Tutorial texts
-    private string moveText = "You've arrived at your fishing spot!\nFirst, try moving around the space by holding the horizontal arrow keys, or A and D.";
-    private string flipText = "You can also turn around by clicking on F.";
-    private string detectFishText = "You spot the first fish!\nPosition your fishing rod directly above it to begin fishing.";
-    private string hookText = "Press space or click the hook button to hook the fish.";
-    private string fishingText = "The fish is putting up a fight! Hold down spacebar to move the yellow bar to the right and release to move it to the left.\nKeep your yellow bar inside the green zone as long as possible to catch it. If you leave it outside for too long, the fish will eventually escape.";
-    private string lootText = "By catching this fish, you collected a special ingredient. You can see your loot appear in the bottom right corner.\nEach kind of fish gives different ingredients.";
-    private string inventoryText = "Gathering different ingredients during your journey could prove essential.\nYou can find a list of the ingredients you've collected, as well as your current equipment, in your inventory, which will be accessible at the end of the tutorial.";
-    private string timerText = "As nothing lasts forever, you can see on the timer how much time you have left before nightfall.\nEnjoy the end of the day and keep fishing!"; 
-    
+    private string moveText =
+        "You’ve arrived at your fishing spot.\nTry moving around by holding the horizontal arrow keys, or A and D.";
+    private string flipText =
+        "You can turn around by pressing F.";
+    private string detectFishText =
+        "You notice a fish in the water.\nPosition your fishing rod directly above it to start fishing.";
+    private string hookText =
+        "Press Space or click the hook button to hook the fish.";
+    private string fishingText =
+        "The fish is resisting.\nHold the Spacebar to move the yellow bar to the right, release it to move left.\nKeep the yellow bar inside the green zone as long as possible to catch the fish. Staying outside for too long will cause it to escape.";
+    private string lootText =
+        "By catching this fish, you collect a special ingredient.\nYour loot appears in the bottom right corner.\nDifferent fish provide different ingredients.";
+    private string inventoryText =
+        "Ingredients gathered during your journey may prove essential.\nYou can review your collected ingredients and current equipment in your inventory, accessible at the end of the tutorial.";
+    private string timerText =
+        "As nothing lasts forever, you can see on the timer how much time you have left before nightfall.\nMake the most of the day and keep fishing.";
+
     // Make this class a singleton
     private void Awake()
     {

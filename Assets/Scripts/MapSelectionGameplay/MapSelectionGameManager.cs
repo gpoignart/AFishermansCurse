@@ -8,9 +8,9 @@ public class MapSelectionGameManager : MonoBehaviour
     // Internal references
     private string[] explanationTexts =
     {
-        "Here's the global map. At the beginning of each day and each night, you must choose a place to fish.",
-        "In each location, and depending on whether it is day or night, the types of fish accessible differ. Rare fish are more likely to spawn at night.",
-        "Speaking of which, click on the place where you want to fish tonight!"
+        "Here is the global map. At the start of each day and night, you choose where to fish.",
+        "Each location changes with time. Day and night affect which fish can be found. Rarer fish tend to appear after dark.",
+        "Now… choose where you want to fish tonight."
     };
     private int indexOfExplanation;
 
