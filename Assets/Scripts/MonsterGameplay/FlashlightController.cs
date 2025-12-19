@@ -1,20 +1,20 @@
 using UnityEngine;
+using System.Collections;
 
 public class FlashlightController : MonoBehaviour
 {
     public static FlashlightController Instance { get; private set; }
 
-    [Header("Beam Settings")]
-    public RectTransform beam;        // UI flashlight beam (Image)
-    public float hitRadius = 150f;    // Distance threshold for hit
+    [SerializeField] private RectTransform beam; // UI flashlight beam (Image)
+    [SerializeField] private Transform cam; // Main Camera
 
-    [Header("Camera Pan Settings")]
-    public Transform cam;             // Main Camera
-    public float maxPan = 6f;         // How far camera pans left/right
-    public float followSpeed = 5f;    // Camera movement smoothness
+    // Parameters
+    private float hitRadius = 150f; // Distance threshold for hit
+    private float maxPan = 6f; // How far camera pans left/right
+    private float followSpeed = 5f; // Camera movement smoothness
 
-    private Transform monsterTransform;       // Assigned at runtime
-    private RectTransform beamParent;         // Parent canvas rect
+    // Internal attributes
+    private RectTransform beamParent;
     private float camStartX;
 
     private void Awake()
@@ -27,39 +27,62 @@ public class FlashlightController : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    public void StartFlashlight()
     {
+        StartCoroutine(CenterMouseCoroutine());
+
+        beam.sizeDelta = GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamSize;
+        ShowFlashlightBeam();
         beamParent = beam.parent as RectTransform;
         camStartX = cam.localPosition.x;
     }
 
-    void Update()
+    public void UpdateFlashlight()
     {
         UpdateBeamPosition();
         UpdateCameraPan();
         CheckHitMonster();
     }
 
-
-    //Beam follows mouse inside the UI canvas
- 
-    void UpdateBeamPosition()
+    // Show and hide flashlight beam
+    public void ShowFlashlightBeam()
     {
-        Vector2 uiPos;
+        beam.gameObject.SetActive(true);
+    }
+
+    public void HideFlashlightBeam()
+    {
+        beam.gameObject.SetActive(false);
+    }
+
+    private IEnumerator CenterMouseCoroutine()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        yield return null;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    // Beam follows mouse inside the UI canvas
+    private void UpdateBeamPosition()
+    {
+        Vector2 targetPos;
+
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             beamParent,
             Input.mousePosition,
             Camera.main,
-            out uiPos
+            out targetPos
         );
 
-        beam.localPosition = uiPos;
+        beam.localPosition = Vector2.Lerp(
+            beam.localPosition,
+            targetPos,
+            Time.deltaTime * GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamFollowSpeed
+        );
     }
 
-  
-    //Camera pans horizontally based on mouse X
-
-    void UpdateCameraPan()
+    // Camera pans horizontally based on mouse X
+    private void UpdateCameraPan()
     {
         float mouse01 = Mathf.Clamp01(Input.mousePosition.x / Screen.width);
         float normalized = (mouse01 - 0.5f) * 2f;   // -1 to +1
@@ -73,15 +96,13 @@ public class FlashlightController : MonoBehaviour
         );
     }
 
-   
-    //Check if flashlight beam hits the monster
-  
-    void CheckHitMonster()
+    // Check if flashlight beam hits the monster
+    private void CheckHitMonster()
     {
-        if (monsterTransform == null) return;
-
+        if (MonsterGameManager.Instance.CurrentMonsterObj == null) { return; }
+        
         // Convert monster world position → UI space
-        Vector2 screenPos = Camera.main.WorldToScreenPoint(monsterTransform.position);
+        Vector2 screenPos = Camera.main.WorldToScreenPoint(MonsterGameManager.Instance.CurrentMonsterObj.transform.position);
 
         Vector2 monsterUIpos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -95,14 +116,7 @@ public class FlashlightController : MonoBehaviour
 
         if (distance < hitRadius)
         {
-            monsterTransform.GetComponent<TheEyes>().HitByFlashlight();
+            MonsterGameManager.Instance.CurrentMonsterObj.GetComponent<Monster>().HitByFlashlight();
         }
-    }
-
-
-    // Public function called by MonsterGameManager
-    public void SetMonster(Transform t)
-    {
-        monsterTransform = t;
     }
 }

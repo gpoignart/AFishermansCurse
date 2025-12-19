@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private FishRegistry fishRegistry;
+    
+    [SerializeField]
+    private MonsterRegistry monsterRegistry;
 
     [SerializeField]
     private TransitionRegistry transitionRegistry;
@@ -47,6 +50,8 @@ public class GameManager : MonoBehaviour
     private bool isFishingTutorialEnabled;
     private bool isMapSelectionExplanationEnabled;
     private bool isRecipeBookUnlocked;
+    private Vector2 fishingPlayerPosition;
+    private Vector2 fishingPlayerOrientation;
 
     // READ-ONLY ATTRIBUTES, CAN BE READ ANYWHERE
     public TimeOfDayRegistry TimeOfDayRegistry => timeOfDayRegistry;
@@ -55,6 +60,7 @@ public class GameManager : MonoBehaviour
     public IngredientRegistry IngredientRegistry => ingredientRegistry;
     public RecipeRegistry RecipeRegistry => recipeRegistry;
     public FishRegistry FishRegistry => fishRegistry;
+    public MonsterRegistry MonsterRegistry => monsterRegistry;
     public TransitionRegistry TransitionRegistry => transitionRegistry;
     public EventRegistry EventRegistry => eventRegistry;
     public float TimeRemaining => timeRemaining;
@@ -69,9 +75,13 @@ public class GameManager : MonoBehaviour
     public bool IsFishingTutorialEnabled => isFishingTutorialEnabled;
     public bool IsMapSelectionExplanationEnabled => isMapSelectionExplanationEnabled;
     public bool IsRecipeBookUnlocked => isRecipeBookUnlocked;
+    public Vector2 FishingPlayerPosition => fishingPlayerPosition;
+    public Vector2 FishingPlayerOrientation => fishingPlayerOrientation;
 
     // Internal attributes    
     private Dictionary<IngredientSO, int> obtainedIngredientLastDayAndNight;
+    private Vector2 defaultFishingPlayerPosition;
+    private Vector2 defaultFishingPlayerOrientation;
 
     // Internal game states
     private enum GameState
@@ -106,6 +116,11 @@ public class GameManager : MonoBehaviour
     // Start the game mecanisms loop (called when the game start)
     private void Start()
     {        
+        // Initialize internal references
+        InitializeObtainedIngredientsLastDayAndNight();
+        defaultFishingPlayerPosition = new Vector2(2f, 2.8f);
+        defaultFishingPlayerOrientation = new Vector2(1f, 1f);
+
         // Initialize registers
         timeOfDayRegistry.Initialize();
         mapRegistry.Initialize();
@@ -113,6 +128,7 @@ public class GameManager : MonoBehaviour
         ingredientRegistry.Initialize();
         recipeRegistry.Initialize(); // RecipeRegistry must be initialized after playerEquipmentRegistry and ingredientsRegistry
         fishRegistry.Initialize();
+        monsterRegistry.Initialize();
         transitionRegistry.Initialize();
         eventRegistry.Initialize();
 
@@ -126,7 +142,8 @@ public class GameManager : MonoBehaviour
         isFishingTutorialEnabled = true;
         isMapSelectionExplanationEnabled = true;
         isRecipeBookUnlocked = false;
-        InitializeObtainedIngredientsLastDayAndNight();
+        fishingPlayerPosition = defaultFishingPlayerPosition;
+        fishingPlayerOrientation = defaultFishingPlayerOrientation;
     }
 
 
@@ -191,26 +208,7 @@ public class GameManager : MonoBehaviour
     // Called at the end of a transition, go to the next state
     public void ExitTransition()
     {
-        if (currentTransition == transitionRegistry.endDaySO)
-        {
-            ChangeState(GameState.MapSelectionView);
-        }
-        else if (currentTransition == transitionRegistry.endNightSO)
-        {
-            ChangeState(GameState.MapSelectionView);   
-        }
-        else if (currentTransition == transitionRegistry.firstDeathAgainstMonsterSO)
-        {
-            ChangeState(GameState.MonsterView);
-        }
-        else if (currentTransition == transitionRegistry.deathAgainstMonsterSO)
-        {
-            ChangeState(GameState.MapSelectionView);
-        }
-        else if (currentTransition == transitionRegistry.endRecipeBookEventSO)
-        {
-            ChangeState(GameState.MapSelectionView);
-        }
+        ChangeState(GameState.MapSelectionView);
     }
 
     // Called in the FishingView at the end of the tutorial, unblock the timer
@@ -275,25 +273,17 @@ public class GameManager : MonoBehaviour
     // Called in the MonsterView Scene after dying
     public void DeathAgainstMonster()
     {
-        if (isFirstNight)
+        // The player loses what he obtained last day and that night
+        foreach (var ingredient in ingredientRegistry.AllIngredients)
         {
-            currentTransition = transitionRegistry.firstDeathAgainstMonsterSO;
-            ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
+            RemoveIngredient(ingredient, obtainedIngredientLastDayAndNight[ingredient]);
         }
-        else
-        {
-            // The player loses what he obtained last day and that night
-            foreach (var ingredient in ingredientRegistry.AllIngredients)
-            {
-                RemoveIngredient(ingredient, obtainedIngredientLastDayAndNight[ingredient]);
-            }
 
-            currentTransition = transitionRegistry.deathAgainstMonsterSO;
-            ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
+        currentTransition = transitionRegistry.deathAgainstMonsterSO;
+        ChangeState(GameState.TransitionView); // Next state is in the ExitTransition function
 
-            // The next day start
-            SaveAndChangeCurrentTimeOfDay();
-        }
+        // The next day start
+        SaveAndChangeCurrentTimeOfDay();
     }
 
     // Called when the time is out, we exit the fishing/monster view and return to the map selection
@@ -322,7 +312,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // INVENTORY & EQUIPMENT FUNCTIONS
+    // INVENTORY, EQUIPMENT & PLAYER FUNCTIONS
 
     // Called to add ingredient to inventory and in the temporary ingredients dictionary
     public void AddIngredient(IngredientSO ingredient, int amount)
@@ -350,6 +340,17 @@ public class GameManager : MonoBehaviour
         playerEquipment.UpgradeTo(newLevel);
     }
 
+    // Called when modifying fishing player position
+    public void UpdateFishingPlayerPosition(Vector2 position)
+    {
+        fishingPlayerPosition = position;
+    }
+
+    // Called when modifying fishing player orientation
+    public void UpdateFishingPlayerOrientation(Vector2 orientation)
+    {
+        fishingPlayerOrientation = orientation;
+    }
 
     // HELPING FONCTIONS
 
@@ -476,6 +477,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // Player comes back to his default position & orientation
+        fishingPlayerPosition = defaultFishingPlayerPosition;
+        fishingPlayerOrientation = defaultFishingPlayerOrientation;
+
         SaveGame();
     }
 
@@ -510,8 +515,6 @@ public class GameManager : MonoBehaviour
                 playerQuantityPossessed = i.playerQuantityPossessed
             })
             .ToList();
-        
-        Debug.Log("ingredient:" + data.ingredients);
 
         data.playerEquipments = playerEquipmentRegistry.AllPlayerEquipments
             .Select(e => new PlayerEquipmentSaveData
@@ -555,7 +558,12 @@ public class GameManager : MonoBehaviour
         foreach (var playerEquipmentData in data.playerEquipments)
         {
             PlayerEquipmentSO playerEquipment = playerEquipmentRegistry.GetByName(playerEquipmentData.playerEquipmentName);
-            playerEquipment.UpgradeTo(playerEquipmentData.level);
+            if (playerEquipmentData.level == 2 || playerEquipmentData.level == 3) {
+                playerEquipment.UpgradeTo(2);
+            }
+            if (playerEquipmentData.level == 3) {
+                playerEquipment.UpgradeTo(3);
+            }
         }
 
         foreach (var recipeData in data.recipes)

@@ -130,13 +130,18 @@ public class FishingUIManager : MonoBehaviour
     }
 
     // Show the loot for duration seconds
-    public IEnumerator ShowLootForSeconds(IngredientSO ingredient, float duration)
+    public IEnumerator ShowLootForSeconds(IngredientSO ingredient, float duration, float fadeDuration)
     {
         loot.SetActive(true);
+
         lootImage.sprite = ingredient.sprite;
         lootImage.color = ingredient.color;
 
+        yield return StartCoroutine(FadeIn(loot, fadeDuration));
+
         yield return new WaitForSeconds(duration);
+        
+        yield return StartCoroutine(FadeOut(loot, fadeDuration));
 
         loot.SetActive(false);
     }
@@ -156,11 +161,15 @@ public class FishingUIManager : MonoBehaviour
     }
 
     // Show the loseFishText for duration seconds
-    public IEnumerator ShowLoseFishTextForSeconds(float duration)
+    public IEnumerator ShowLoseFishTextForSeconds(float duration, float fadeDuration)
     {
         loseFishText.SetActive(true);
 
+        yield return StartCoroutine(FadeIn(loseFishText, fadeDuration));
+
         yield return new WaitForSeconds(duration);
+        
+        yield return StartCoroutine(FadeOut(loseFishText, fadeDuration));
 
         loseFishText.SetActive(false);
     }
@@ -253,5 +262,37 @@ public class FishingUIManager : MonoBehaviour
     public void HideExtendedCommands()
     {
         extendedCommands.SetActive(false);
+    }
+
+    // Helping functions
+    
+    private IEnumerator FadeIn(GameObject target, float fadeDuration)
+    {
+        CanvasGroup cg = target.GetComponent<CanvasGroup>();
+        if (cg == null) cg = loot.AddComponent<CanvasGroup>();
+
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(0f, 1f, t / fadeDuration);
+            yield return null;
+        }
+        cg.alpha = 1f;
+    }
+
+    private IEnumerator FadeOut(GameObject target, float fadeDuration)
+    {
+        CanvasGroup cg = target.GetComponent<CanvasGroup>();
+        if (cg == null) cg = loot.AddComponent<CanvasGroup>();
+
+        float t = 0f;
+        while (t < fadeDuration)
+        {
+            t += Time.deltaTime;
+            cg.alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
+            yield return null;
+        }
+        cg.alpha = 0f;
     }
 }

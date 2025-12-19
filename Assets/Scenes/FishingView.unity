@@ -922,7 +922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13450601c6554d043b780592fecb5b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerAnimator: {fileID: 553010391}
 --- !u!1 &348795477
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,7 +948,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 348795477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c9d36e6db6cc14cb3b81cec8a9d009, type: 3}
+  m_Script: {fileID: 11500000, guid: 86e8de87ff11d8b4d813b54c3eefc108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   fishPrefab: {fileID: 5829279136298351726, guid: 798db3be08d0c9a42af0344597ec0414, type: 3}
@@ -1161,6 +1160,7 @@ GameObject:
   - component: {fileID: 538265598}
   - component: {fileID: 538265600}
   - component: {fileID: 538265599}
+  - component: {fileID: 538265601}
   m_Layer: 5
   m_Name: LoseFishText
   m_TagString: Untagged
@@ -1284,6 +1284,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 538265597}
   m_CullTransparentMesh: 1
+--- !u!225 &538265601
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538265597}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &553010386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1312,7 +1324,7 @@ Transform:
   m_GameObject: {fileID: 553010386}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 2.79, z: 0.25213528}
+  m_LocalPosition: {x: 0.97, y: 2.8, z: 0.25213528}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1333,6 +1345,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishContainer: {fileID: 2000844019}
   fishingRodTip: {fileID: 1466426081}
+  playerWaitingSprite: {fileID: 21300000, guid: 8087ce5ae694aa7499d22c7c2c2ae3b3, type: 3}
+  playerCatchingSprite: {fileID: 21300000, guid: c6f32fd867baaa0489f6b386b37bd046, type: 3}
 --- !u!212 &553010390
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1463,17 +1477,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'A/D or arrows to move
+  m_text: 'A/D or horizontal arrows to move
 
 
-    F to flip
+    W or up arrow to turn around
 
 
-    Above a fish: press space
-    to hook
+    Above
+    a fish: press space to hook
 
 
-    During catching: hold or release spacebar to follow the green zone'
+    During catching: hold or release spacebar to
+    follow the green zone'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b57d35d704ce3664d9dbdac709ab8263, type: 2}
   m_sharedMaterial: {fileID: 7303519830868731357, guid: b57d35d704ce3664d9dbdac709ab8263, type: 2}
@@ -2564,6 +2579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1482847094}
+  - component: {fileID: 1482847095}
   m_Layer: 5
   m_Name: Loot
   m_TagString: Untagged
@@ -2592,6 +2608,18 @@ RectTransform:
   m_AnchoredPosition: {x: 818, y: -456}
   m_SizeDelta: {x: -1719.15, y: -980}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1482847095
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482847093}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1499189821
 GameObject:
   m_ObjectHideFlags: 0

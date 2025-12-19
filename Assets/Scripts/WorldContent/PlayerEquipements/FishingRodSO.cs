@@ -10,8 +10,8 @@ public class FishingRodSO : PlayerEquipmentSO
         this.detailsPerLevel = new string[]
         {
             "No bonus",
-            "Increases green zone width",
-            "Decreases needed time in green zone"
+            "Decreases needed time in green zones",
+            "Increases green zones width"
         };
     }
 
@@ -20,23 +20,23 @@ public class FishingRodSO : PlayerEquipmentSO
         this.level = newLevel;
         if (this.level == 2)
         {
-            // Increases the safeZoneWidth of 50% for all fish
-            foreach (FishSO fish in GameManager.Instance.FishRegistry.AllFish)
-            {
-                foreach (FishCatchingDifficulty catchingDifficulty in fish.catchingDifficulties)
-                {
-                    catchingDifficulty.safeZoneWidth *= 1.5f;
-                }
-            }
-        }
-        else if (this.level == 3)
-        {
             // Decreases the requiredTimeInsideZone of 30% for all fish
             foreach (FishSO fish in GameManager.Instance.FishRegistry.AllFish)
             {
                 foreach (FishCatchingDifficulty catchingDifficulty in fish.catchingDifficulties)
                 {
                     catchingDifficulty.requiredTimeInsideZone *= 0.7f;
+                }
+            }
+        }
+        else if (this.level == 3)
+        {
+            // Increases the safeZoneWidth for all fish, inversely proportional
+            foreach (FishSO fish in GameManager.Instance.FishRegistry.AllFish)
+            {
+                foreach (FishCatchingDifficulty catchingDifficulty in fish.catchingDifficulties)
+                {
+                    catchingDifficulty.safeZoneWidth += 2400f / catchingDifficulty.safeZoneWidth;
                 }
             }
         }

@@ -26,10 +26,11 @@ public class EventGameManager : MonoBehaviour
     private void Start()
     {
         indexOfText = 0;
-        numberOfLines = GameManager.Instance.CurrentEvent.eventLines.Length;        
+        numberOfLines = GameManager.Instance.CurrentEvent.eventLines.Length;   
 
         EventUIManager.Instance.UpdateText(GameManager.Instance.CurrentEvent.eventLines[indexOfText].text);
         EventUIManager.Instance.UpdateBackgroundImage(GameManager.Instance.CurrentEvent.eventLines[indexOfText].backgroundImage);
+        EventUIManager.Instance.UpdateNextButtonText("NEXT");
     }
 
     private void Update()
@@ -54,6 +55,11 @@ public class EventGameManager : MonoBehaviour
         {
             EventUIManager.Instance.UpdateText(GameManager.Instance.CurrentEvent.eventLines[indexOfText].text);
             EventUIManager.Instance.UpdateBackgroundImage(GameManager.Instance.CurrentEvent.eventLines[indexOfText].backgroundImage);
+
+            if (indexOfText == numberOfLines - 1)
+            {
+                EventUIManager.Instance.UpdateNextButtonText("END");
+            }
         }
     }
 

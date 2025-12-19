@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 769026021}
   - component: {fileID: 769026022}
   m_Layer: 0
-  m_Name: MenuManager
+  m_Name: MainMenuManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -672,6 +672,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 935049695}
   m_CullTransparentMesh: 1
+--- !u!1 &1126666075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1126666076}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1126666076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126666075}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.13719006, y: -0.2705075, z: 149.05252}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1216056134
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,7 +1130,7 @@ Transform:
   m_GameObject: {fileID: 1357327459}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.75610924, y: -0.009043539, z: 0.43902588}
+  m_LocalPosition: {x: -0.75610924, y: -0.0090435445, z: 0.43902588}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1150,6 +1181,8 @@ MonoBehaviour:
     goldenSalmonSO: {fileID: 11400000, guid: e7cfc286600f73b439958a27d91165fb, type: 2}
     midnightCatfishSO: {fileID: 11400000, guid: c23a8c368488d634d98fe2a165e3059b, type: 2}
     mysticFishSO: {fileID: 11400000, guid: 9e4ddc93d3594814fb84e8d588e39489, type: 2}
+  monsterRegistry:
+    theEyesSO: {fileID: 11400000, guid: 39f29b9a112034c4e807b157b6248f34, type: 2}
   transitionRegistry:
     endDaySO: {fileID: 11400000, guid: 413538ab5894e934ba589c52dd62f857, type: 2}
     endNightSO: {fileID: 11400000, guid: a2b0fd5f73fee3f47a56fd6798d6c673, type: 2}
@@ -1592,4 +1625,5 @@ SceneRoots:
   - {fileID: 350111496}
   - {fileID: 769026021}
   - {fileID: 1357327460}
+  - {fileID: 1126666076}
   - {fileID: 1457813408}

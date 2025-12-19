@@ -3,7 +3,6 @@ public class TransitionRegistry
 {
     public EndDaySO endDaySO;
     public EndNightSO endNightSO;
-    public FirstDeathAgainstMonsterSO firstDeathAgainstMonsterSO;
     public DeathAgainstMonsterSO deathAgainstMonsterSO;
     public EndRecipeBookEventSO endRecipeBookEventSO;
 
@@ -11,7 +10,6 @@ public class TransitionRegistry
     {
         endDaySO.Initialize();
         endNightSO.Initialize();
-        firstDeathAgainstMonsterSO.Initialize();
         deathAgainstMonsterSO.Initialize();
         endRecipeBookEventSO.Initialize();
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "FishType/Carp")]
+[CreateAssetMenu(menuName = "Fish/Carp")]
 public class CarpSO : FishSO
 {
     public override void Initialize()

@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundImage: {fileID: 796649283}
   text: {fileID: 1301441563}
+  nextButtonText: {fileID: 1350867866}
 --- !u!1 &528198278
 GameObject:
   m_ObjectHideFlags: 0

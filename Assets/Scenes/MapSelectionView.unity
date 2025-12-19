@@ -1321,7 +1321,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Choose a place to fish!
+  m_text: Choose where you want to fish.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b57d35d704ce3664d9dbdac709ab8263, type: 2}
   m_sharedMaterial: {fileID: 7303519830868731357, guid: b57d35d704ce3664d9dbdac709ab8263, type: 2}

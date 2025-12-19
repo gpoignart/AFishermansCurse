@@ -12,9 +12,6 @@ public class FishingGameManager : MonoBehaviour
     private int monsterSpawnChance = 50;
     private float monsterSpawnCheckInterval = 10f;
 
-    // Animator
-    [SerializeField] private Animator playerAnimator;
-
 
     // Internal states
     private enum FishingGameState
@@ -239,13 +236,13 @@ public class FishingGameManager : MonoBehaviour
         pendingLoot = currentFishBelow.fishSO.drops[Random.Range(0, currentFishBelow.fishSO.drops.Length)];
         GameManager.Instance.AddIngredient(pendingLoot, 1);
 
-        // Trigger player animation
-        playerAnimator.SetTrigger("OnCatch");
+        // Play catch animation
+        StartCoroutine(PlayerController.Instance.OnCatchAnimation(1.5f));
 
         // Show the loot for a few seconds if not in tutorial
         if (!GameManager.Instance.IsFishingTutorialEnabled)
         {
-            StartCoroutine(FishingUIManager.Instance.ShowLootForSeconds(pendingLoot, 1.5f));
+            StartCoroutine(FishingUIManager.Instance.ShowLootForSeconds(pendingLoot, 1f, 0.25f));
         }
         // Change to loot if in tutorial state (must do after obtained the ingredient)
         else if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState == FishingTutorialState.Fishing)
@@ -254,7 +251,7 @@ public class FishingGameManager : MonoBehaviour
         }
 
         // Delete the fish
-        Destroy(currentFishBelow.gameObject);
+        currentFishBelow.Destroy();
         currentFishBelow = null;
     }
 
@@ -267,10 +264,10 @@ public class FishingGameManager : MonoBehaviour
         ChangeState(FishingGameState.Moving);
 
         // Show the loseFishText
-        StartCoroutine(FishingUIManager.Instance.ShowLoseFishTextForSeconds(1.5f));
+        StartCoroutine(FishingUIManager.Instance.ShowLoseFishTextForSeconds(1.5f, 0.25f));
 
-        // Delete the fish
-        Destroy(currentFishBelow.gameObject);
+        // Delete the fish with fade out
+        currentFishBelow.Destroy();
         currentFishBelow = null;
     }
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -6,8 +7,9 @@ public class PlayerController : MonoBehaviour
     public static PlayerController Instance { get; private set; }
 
     [SerializeField] private Transform fishContainer;
-
     [SerializeField] private Transform fishingRodTip;
+    [SerializeField] private Sprite playerWaitingSprite;
+    [SerializeField] private Sprite playerCatchingSprite;
 
     // Parameters
     private float detectionRadius = 0.4f;
@@ -15,6 +17,7 @@ public class PlayerController : MonoBehaviour
     // Internal properties
     private float minX, maxX;
     private Vector3 firstPosition;
+    private SpriteRenderer spriteRenderer;
 
     // Make this class a singleton
     private void Awake()
@@ -26,11 +29,20 @@ public class PlayerController : MonoBehaviour
         }
 
         Instance = this;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
     {
+        // Initialize player position
+        transform.position = GameManager.Instance.FishingPlayerPosition;
+        transform.localScale = GameManager.Instance.FishingPlayerOrientation;
+        
+        // Initialize internal references
         firstPosition = transform.position;
+        spriteRenderer.sprite = playerWaitingSprite;
+
         CalculateScreenEdges();
     }
 
@@ -39,6 +51,11 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleFlip();
 
+        // Update player position & orientation in game manager
+        GameManager.Instance.UpdateFishingPlayerPosition(transform.position);
+        GameManager.Instance.UpdateFishingPlayerOrientation(transform.localScale);
+
+        // Check fish below
         Fish fishBelow = GetTopFishBelow();
         if (fishBelow)
         {
@@ -48,6 +65,13 @@ public class PlayerController : MonoBehaviour
         {
             FishingGameManager.Instance.PlayerNotAboveFish();
         }
+    }
+
+    public IEnumerator OnCatchAnimation(float duration)
+    {
+        spriteRenderer.sprite = playerCatchingSprite;
+        yield return new WaitForSeconds(duration);
+        spriteRenderer.sprite = playerWaitingSprite;
     }
 
     // Calculate edges of screen to force the player inside when moving
@@ -92,7 +116,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!FishingGameManager.Instance.CanPlayerFlip()) { return; } // Verifies the player is allowed to flip
 
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             Vector3 localScale = transform.localScale;
             localScale.x *= -1;
@@ -125,6 +149,14 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        return topFish;
+
+        if (topFish != null && topFish.IsAvailable()) 
+        { 
+            return topFish;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

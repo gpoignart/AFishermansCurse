@@ -53,10 +53,8 @@ public class FishSpawner : MonoBehaviour
         Vector2 localPoint = new Vector2( zoneSize.x / 2f - 0.5f, zoneSize.y / 2f - 0.5f) + zoneOffset;
         Vector2 spawnPosition = (Vector2) spawnZone.transform.position + localPoint;
 
-        // Tutorial fish
-        GameObject tutorialFish = Instantiate(fishPrefab, spawnPosition, Quaternion.identity, fishContainer);
-        tutorialFish.GetComponent<Fish>().fishSO = GameManager.Instance.FishRegistry.carpSO;
-        tutorialFish.GetComponent<Fish>().DisableLifeTimeRoutine(); // The tutorialFish don't despawn naturally
+        // Spawn tutorial fish
+        SpawnFish(spawnPosition: spawnPosition, fishSO: GameManager.Instance.FishRegistry.carpSO, useLifeTime: false, useFadeIn: true);
     }
 
     // Regular fish spawner
@@ -65,7 +63,7 @@ public class FishSpawner : MonoBehaviour
         zoneSize = spawnZone.size;
         zoneOffset = spawnZone.offset;
 
-        // Immediate spawn
+        // Initial fishes
         SpawnInitialFishes();
 
         // Further spawns
@@ -76,7 +74,7 @@ public class FishSpawner : MonoBehaviour
     {
         while (fishContainer.childCount < targetFishCount)
         {
-            SpawnFish();
+            SpawnFish(spawnPosition: selectRandomSpawnPosition(), fishSO: selectRandomFish(), useLifeTime: true, useFadeIn: false);
         }
     }
 
@@ -89,7 +87,7 @@ public class FishSpawner : MonoBehaviour
             // Add fish if we don't have enough to reach the targetFishCount
             if (currentFishCount < targetFishCount)
             {
-                SpawnFish();
+                SpawnFish(spawnPosition: selectRandomSpawnPosition(), fishSO: selectRandomFish(), useLifeTime: true, useFadeIn: true);
 
                 // Random spawn delay
                 float spawnDelay = Random.Range(minSpawnDelay, maxSpawnDelay);
@@ -106,19 +104,16 @@ public class FishSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnFish()
+    private void SpawnFish(Vector2 spawnPosition, FishSO fishSO, bool useLifeTime, bool useFadeIn)
     {
-        Vector2 spawnPosition = selectSpawnPosition();
-
-        FishSO fish = selectFish();
-
-        GameObject newFish = Instantiate(fishPrefab, spawnPosition, Quaternion.identity, fishContainer);
-        
-        newFish.GetComponent<Fish>().fishSO = fish;
+        GameObject newFishObj = Instantiate(fishPrefab, spawnPosition, Quaternion.identity, fishContainer);
+        Fish newFish = newFishObj.GetComponent<Fish>();
+        newFish.fishSO = fishSO;
+        newFish.StartFish(useLifeTime: useLifeTime, useFadeIn: useFadeIn);
     }
 
     // Select random and valid spawn position (in the spawn zone and fish not too close from each other)
-    private Vector2 selectSpawnPosition()
+    private Vector2 selectRandomSpawnPosition()
     {
         Vector2 spawnPosition;
         bool validPosition = false;
@@ -148,7 +143,7 @@ public class FishSpawner : MonoBehaviour
     }
 
     // Select a valid fish type to be spawned + depending of the spawn chance
-    private FishSO selectFish()
+    private FishSO selectRandomFish()
     {
         // Filter valid types fish depending of the map and time of the day
         FishSO[] validFishes = GameManager.Instance.FishRegistry.AllFish
@@ -156,7 +151,7 @@ public class FishSpawner : MonoBehaviour
                      && f.spawnTimes.Contains(GameManager.Instance.CurrentTimeOfDay)))
             .ToArray();
 
-        // Tirage pond�r� selon spawnChance
+        // Random weighted choice
         int totalWeight = validFishes.Sum(f => f.spawnChance);
         int rand = Random.Range(0, totalWeight);
         FishSO selectedType = null;

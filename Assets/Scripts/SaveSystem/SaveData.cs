@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+[System.Serializable]
 public class SaveData
 {
     public string currentTimeOfDayName;
@@ -15,18 +16,21 @@ public class SaveData
     public List<RecipeSaveData> recipes = new();
 }
 
+[System.Serializable]
 public class IngredientSaveData
 {
     public string ingredientName;
     public int playerQuantityPossessed;
 }
 
+[System.Serializable]
 public class PlayerEquipmentSaveData
 {
     public string playerEquipmentName;
     public int level;
 }
 
+[System.Serializable]
 public class RecipeSaveData
 {
     public string recipeName;

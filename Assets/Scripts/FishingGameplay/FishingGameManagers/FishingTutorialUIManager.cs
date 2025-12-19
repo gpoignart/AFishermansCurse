@@ -14,9 +14,9 @@ public class FishingTutorialUIManager : MonoBehaviour
 
     // Tutorial texts
     private string moveText =
-        "You’ve arrived at your fishing spot.\nTry moving around by holding the horizontal arrow keys, or A and D.";
+        "You’ve arrived at your fishing spot.\nTry moving around by holding the Horizontal Arrow Keys, or A and D.";
     private string flipText =
-        "You can turn around by pressing F.";
+        "You can turn around by pressing W or the Up Arrow.";
     private string detectFishText =
         "You notice a fish in the water.\nPosition your fishing rod directly above it to start fishing.";
     private string hookText =
