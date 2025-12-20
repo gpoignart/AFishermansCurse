@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CarpToothSO
   m_EditorClassIdentifier: 
   ingredientName: Carp Tooth
-  playerQuantityPossessed: 1
-  sprite: {fileID: -2413806693520163455, guid: d5c7b0bab38e4d14083b1c8d10989964, type: 3}
+  playerQuantityPossessed: 3
+  sprite: {fileID: 21300000, guid: 36de506e38584bf448b2d09706391125, type: 3}
   color: {r: 0.42767292, g: 0.42767292, b: 0.42767292, a: 1}

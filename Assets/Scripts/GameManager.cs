@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     private bool isRecipeBookUnlocked;
     private Vector2 fishingPlayerPosition;
     private Vector2 fishingPlayerOrientation;
+    private int monsterApparitionSide;
 
     // READ-ONLY ATTRIBUTES, CAN BE READ ANYWHERE
     public TimeOfDayRegistry TimeOfDayRegistry => timeOfDayRegistry;
@@ -77,6 +78,7 @@ public class GameManager : MonoBehaviour
     public bool IsRecipeBookUnlocked => isRecipeBookUnlocked;
     public Vector2 FishingPlayerPosition => fishingPlayerPosition;
     public Vector2 FishingPlayerOrientation => fishingPlayerOrientation;
+    public int MonsterApparitionSide => monsterApparitionSide;
 
     // Internal attributes    
     private Dictionary<IngredientSO, int> obtainedIngredientLastDayAndNight;
@@ -147,6 +149,14 @@ public class GameManager : MonoBehaviour
         isRecipeBookUnlocked = false;
         fishingPlayerPosition = defaultFishingPlayerPosition;
         fishingPlayerOrientation = defaultFishingPlayerOrientation;
+
+        AddIngredient(IngredientRegistry.carpMeatSO, 90);
+        AddIngredient(IngredientRegistry.carpToothSO, 90);
+        AddIngredient(IngredientRegistry.shinyFinSO, 90);
+        AddIngredient(IngredientRegistry.troutMeatSO, 90);
+        AddIngredient(IngredientRegistry.glimmeringScaleSO, 90);
+        AddIngredient(IngredientRegistry.shadowingEyeSO, 90);
+        AddIngredient(IngredientRegistry.mysticEssenceSO, 90);
     }
 
 
@@ -315,7 +325,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    // INVENTORY, EQUIPMENT & PLAYER FUNCTIONS
+    // PUBLIC HELPING FUNCTIONS
 
     // Called to add ingredient to inventory and in the temporary ingredients dictionary
     public void AddIngredient(IngredientSO ingredient, int amount)
@@ -355,8 +365,14 @@ public class GameManager : MonoBehaviour
         fishingPlayerOrientation = orientation;
     }
 
+    // Called when modifying monster side apparition
+    public void UpdateMonsterSideApparition(int side)
+    {
+        monsterApparitionSide = side;
+    }
 
-    // HELPING FONCTIONS
+
+    // INTERNAL HELPING FONCTIONS
 
     // Update the game (called at each frame of the game)
     private void Update()

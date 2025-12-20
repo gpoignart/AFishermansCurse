@@ -25,7 +25,7 @@ public class MonsterGameManager : MonoBehaviour
     // Parameters
     private float loseTime = 3f;
     private float warningDuration = 1.5f;
-    private float winMessageDuration = 3f;
+    private float winMessageDuration = 2f;
 
     // Internal references
     private float loseTimer;
@@ -68,9 +68,8 @@ public class MonsterGameManager : MonoBehaviour
             MonsterUIManager.Instance.HideTutorialPanel();
             MonsterUIManager.Instance.HideMonsterRanAwayText();
 
-            // Choose random side of spawn
-            int side = Random.Range(0, 2);
-            Vector3 spawnPos = (side == 0)
+            // Position depending on side
+            Vector3 spawnPos = (GameManager.Instance.MonsterApparitionSide == 0)
                 ? GetRandomPoint(leftSpawn)
                 : GetRandomPoint(rightSpawn);
 
@@ -82,7 +81,7 @@ public class MonsterGameManager : MonoBehaviour
             currentMonsterObj = Instantiate(currentMonsterSO.monsterPrefab, spawnPos, Quaternion.identity, monsterContainer);
 
             // Show noise UI
-            StartCoroutine(MonsterUIManager.Instance.ShowNoiseWarningForSeconds(side, warningDuration));
+            StartCoroutine(MonsterUIManager.Instance.ShowNoiseWarningForSeconds(GameManager.Instance.MonsterApparitionSide, warningDuration));
 
             // Start timer
             loseTimer = 0f;
@@ -149,7 +148,7 @@ public class MonsterGameManager : MonoBehaviour
     }
 
     public void PlayerWin()
-    {
+    {        
         if (GameManager.Instance.IsFirstNight && currentTutorialState == MonsterTutorialState.FlashlightMonster)
         {
             ChangeTutorialState(MonsterTutorialState.MonsterRanAway);
@@ -165,7 +164,8 @@ public class MonsterGameManager : MonoBehaviour
     public IEnumerator PlayPlayerWin()
     {
         yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(MonsterUIManager.Instance.ShowMonsterRanAwayTextForSeconds(winMessageDuration));
+        MonsterUIManager.Instance.ShowMonsterRanAwayText();
+        yield return new WaitForSeconds(winMessageDuration);
         GameManager.Instance.WinAgainstMonster();
     }
 
@@ -245,16 +245,21 @@ public class MonsterGameManager : MonoBehaviour
                 // Hide elements
                 MonsterUIManager.Instance.HideSpotTheMonsterText();
                 MonsterUIManager.Instance.HideMonsterRanAwayText();
-                // Choose right side
-                int side = 1;
-                // Choose spawn position
-                Vector3 spawnPos = GetRandomPoint(rightSpawn);
+
+                // Position depending on side
+                Vector3 spawnPos = (GameManager.Instance.MonsterApparitionSide == 0)
+                    ? GetRandomPoint(leftSpawn)
+                    : GetRandomPoint(rightSpawn);
+
                 // Tutorial monster
                 MonsterSO currentMonsterSO = GameManager.Instance.MonsterRegistry.theEyesSO;
+
                 // Spawn the monster
                 currentMonsterObj = Instantiate(currentMonsterSO.monsterPrefab, spawnPos, Quaternion.identity, monsterContainer);
+
                 // Show noise UI
-                MonsterUIManager.Instance.ShowNoiseWarning(side);
+                MonsterUIManager.Instance.ShowNoiseWarning(GameManager.Instance.MonsterApparitionSide);
+                
                 // No timer & no flashlight
                 loseTimer = 0f;
                 isTimerActive = false;

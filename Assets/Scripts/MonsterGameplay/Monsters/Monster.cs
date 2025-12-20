@@ -21,6 +21,7 @@ public abstract class Monster : MonoBehaviour
             isHit = true;
             MonsterGameManager.Instance.StopMonsterTimer();
             StartCoroutine(PlayMonsterReaction());
+            AudioManager.Instance.PlayMonsterRanAwaySFX();
         }
     }
 

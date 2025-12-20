@@ -110,7 +110,6 @@ public class RecipeBookUIManager : MonoBehaviour
             TextMeshProUGUI text = newRecipeIngredientLine.transform.Find("RecipeIngredientText").GetComponent<TextMeshProUGUI>();
 
             img.sprite = recipeIngredient.ingredientSO.sprite;
-            img.color = recipeIngredient.ingredientSO.color;
             text.text = $"{recipeIngredient.quantity} x {recipeIngredient.ingredientSO.ingredientName}";
         }
 

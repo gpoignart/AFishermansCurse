@@ -127,11 +127,33 @@ public class FishingGameManager : MonoBehaviour
             // The first night, the tutorial monster appears always after the first interval
             if (GameManager.Instance.IsFirstNight)
             {
+                // Right side for the tutorial
+                GameManager.Instance.UpdateMonsterSideApparition(1);
+
+                // Play sfx
+                AudioManager.Instance.PlayMonsterScreamRightSFX();
+                yield return new WaitForSeconds(1f);
+
                 GameManager.Instance.EnterMonsterView();
             }
             // The other nights, a monster can appear with a monsterSpawnChance at each interval
             else if (Random.Range(0, 100) <= monsterSpawnChance)
             {
+                // Choose monster apparition side
+                int side = Random.Range(0, 2);
+                GameManager.Instance.UpdateMonsterSideApparition(side);
+
+                // Play sfx
+                if (side == 0)
+                {
+                    AudioManager.Instance.PlayMonsterScreamLeftSFX();
+                }
+                else
+                {
+                    AudioManager.Instance.PlayMonsterScreamRightSFX();
+                }
+                yield return new WaitForSeconds(1f);
+
                 GameManager.Instance.EnterMonsterView();
             }
         }
@@ -238,6 +260,9 @@ public class FishingGameManager : MonoBehaviour
 
         // Play catch animation
         StartCoroutine(PlayerController.Instance.OnCatchAnimation(1.5f));
+
+        // Play catching sfx
+        AudioManager.Instance.PlayCatchingFishSFX();
 
         // Show the loot for a few seconds if not in tutorial
         if (!GameManager.Instance.IsFishingTutorialEnabled)

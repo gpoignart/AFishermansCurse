@@ -122,6 +122,8 @@ public class RecipeBookGameManager : MonoBehaviour
     // Update inventory according to the recipe
     private void MakeRecipe(RecipeSO recipe)
     {
+        AudioManager.Instance.PlayMakeRecipeSFX();
+        
         if (recipe.isFinalRecipe)
         {
             GameManager.Instance.EnterEndEvent();

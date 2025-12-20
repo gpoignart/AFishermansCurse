@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
 
     // Musics
     [SerializeField] private AudioClip menuAndEventMusic;
@@ -15,12 +16,20 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip fishingNightMusic;
     [SerializeField] private AudioClip monsterMusic;
 
+    // Sound effects
+    [SerializeField] private AudioClip catchingFish;
+    [SerializeField] private AudioClip monsterRanAway;
+    [SerializeField] private AudioClip monsterScreamLeft;
+    [SerializeField] private AudioClip monsterScreamRight;
+    [SerializeField] private AudioClip makeRecipe;
+
     // Parameters
-    private float fadeDuration = 0.5f;
+    private float musicFadeDuration = 0.5f;
     private float musicVolume = 1f;
 
     // Internal references
     private float fishingNightMusicTime;
+    private Coroutine fadeCoroutine;
 
 
     // Make this class a singleton
@@ -40,6 +49,9 @@ public class AudioManager : MonoBehaviour
     {
         musicSource.playOnAwake = false;
         musicSource.loop = true;
+
+        sfxSource.playOnAwake = false;
+        sfxSource.loop = false;
     }
 
     public void PlayMenuAndEventMusic()
@@ -83,6 +95,31 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(FadeOutAndStop());
     }
 
+    public void PlayMonsterScreamLeftSFX()
+    {
+        PlaySFX(monsterScreamLeft);
+    }
+
+    public void PlayMonsterScreamRightSFX()
+    {
+        PlaySFX(monsterScreamRight);
+    }
+
+    public void PlayMonsterRanAwaySFX()
+    {
+        PlaySFX(monsterRanAway);
+    }
+
+    public void PlayCatchingFishSFX()
+    {
+        PlaySFX(catchingFish);
+    }
+
+    public void PlayMakeRecipeSFX()
+    {
+        PlaySFX(makeRecipe);
+    }
+
 
     // Helping functions
 
@@ -90,7 +127,10 @@ public class AudioManager : MonoBehaviour
     {
         if (musicSource.clip == music && musicSource.isPlaying) { return; }
         
-        StartCoroutine(FadeOutIn(music, resumeTime));
+        // To avoid collision, only one fadeCoroutine
+        if (fadeCoroutine != null) { StopCoroutine(fadeCoroutine); }
+
+        fadeCoroutine = StartCoroutine(FadeOutIn(music, resumeTime));
     }
 
     private IEnumerator FadeOutAndStop()
@@ -99,7 +139,7 @@ public class AudioManager : MonoBehaviour
 
         while (musicSource.volume > 0f)
         {
-            musicSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            musicSource.volume -= startVolume * Time.deltaTime / musicFadeDuration;
             yield return null;
         }
 
@@ -114,7 +154,7 @@ public class AudioManager : MonoBehaviour
         // Fade out
         while (musicSource.isPlaying && musicSource.volume > 0f)
         {
-            musicSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            musicSource.volume -= startVolume * Time.deltaTime / musicFadeDuration;
             yield return null;
         }
 
@@ -129,10 +169,15 @@ public class AudioManager : MonoBehaviour
         // Fade in
         while (musicSource.volume < musicVolume)
         {
-            musicSource.volume += Time.deltaTime / fadeDuration * musicVolume;
+            musicSource.volume += Time.deltaTime / musicFadeDuration * musicVolume;
             yield return null;
         }
 
         musicSource.volume = musicVolume;
+    }
+
+    public void PlaySFX(AudioClip sfx)
+    {
+        sfxSource.PlayOneShot(sfx);
     }
 }

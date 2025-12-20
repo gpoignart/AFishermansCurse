@@ -135,7 +135,6 @@ public class FishingUIManager : MonoBehaviour
         loot.SetActive(true);
 
         lootImage.sprite = ingredient.sprite;
-        lootImage.color = ingredient.color;
 
         yield return StartCoroutine(FadeIn(loot, fadeDuration));
 
@@ -151,7 +150,6 @@ public class FishingUIManager : MonoBehaviour
     {
         loot.SetActive(true);
         lootImage.sprite = ingredient.sprite;
-        lootImage.color = ingredient.color;
     }
 
     // Hide the loot

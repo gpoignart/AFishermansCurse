@@ -107,7 +107,6 @@ public class InventoryViewUIManager : MonoBehaviour
     {
         ingredientTexts[index].text = "x " + ingredient.playerQuantityPossessed;
         ingredientImages[index].sprite = ingredient.sprite;
-        ingredientImages[index].color = ingredient.color;
     }
 
     // Display the UI for the Inventory state

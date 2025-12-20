@@ -77,13 +77,9 @@ public class MonsterUIManager : MonoBehaviour
     }
 
     // The monster ran away text
-    public IEnumerator ShowMonsterRanAwayTextForSeconds(float duration)
+    public void ShowMonsterRanAwayText()
     {
         monsterRanAwayText.SetActive(true);
-
-        yield return new WaitForSeconds(duration);
-
-        HideMonsterRanAwayText();
     }
     
     public void HideMonsterRanAwayText()

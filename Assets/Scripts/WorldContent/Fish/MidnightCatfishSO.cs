@@ -12,7 +12,7 @@ public class MidnightCatfishSO : FishSO
         this.spawnChance = 10;
         this.catchingDifficulties = new FishCatchingDifficulty[]
         {
-            new FishCatchingDifficulty(time: GameManager.Instance.TimeOfDayRegistry.nightSO, safeZoneMoveSpeed: 170f, requiredTimeInsideZone: 3f,allowedTimeOutsideZone: 2.5f, safeZoneWidth: 110f)
+            new FishCatchingDifficulty(time: GameManager.Instance.TimeOfDayRegistry.nightSO, safeZoneMoveSpeed: 170f, requiredTimeInsideZone: 3f,allowedTimeOutsideZone: 2.5f, safeZoneWidth: 100f)
         };
     }
 }

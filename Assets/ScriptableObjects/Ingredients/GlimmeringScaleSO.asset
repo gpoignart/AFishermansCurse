@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GlimmeringScaleSO
   m_EditorClassIdentifier: 
   ingredientName: Glimmering Scale
-  playerQuantityPossessed: 0
-  sprite: {fileID: -2413806693520163455, guid: d5c7b0bab38e4d14083b1c8d10989964, type: 3}
+  playerQuantityPossessed: 3
+  sprite: {fileID: 21300000, guid: 3d775da242d07064f92039cbf6694bef, type: 3}
   color: {r: 1, g: 0.8350516, b: 0.028301716, a: 1}

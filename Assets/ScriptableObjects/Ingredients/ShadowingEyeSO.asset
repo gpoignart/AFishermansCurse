@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingredientName: Shadowing Eye
   playerQuantityPossessed: 0
-  sprite: {fileID: -2413806693520163455, guid: d5c7b0bab38e4d14083b1c8d10989964, type: 3}
+  sprite: {fileID: 21300000, guid: 220face91b2a5fa43a89e130064354d4, type: 3}
   color: {r: 0.5339694, g: 0, b: 1, a: 1}
