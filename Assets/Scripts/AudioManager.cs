@@ -65,17 +65,17 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMenuAndEventMusic()
     {
-        PlayMusicIfNotPlaying(menuAndEventMusic);
+        PlayMusic(menuAndEventMusic);
     }
 
     public void PlayMapMusic()
     {
-        PlayMusicIfNotPlaying(mapMusic);
+        PlayMusic(mapMusic);
     }
 
     public void PlayFishingDayMusic()
     {
-        PlayMusicIfNotPlaying(fishingDayMusic);
+        PlayMusic(fishingDayMusic);
     }
 
     public void InitializeFishingNightMusicTime()
@@ -85,7 +85,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayFishingNightMusic()
     {
-        PlayMusicIfNotPlaying(fishingNightMusic, fishingNightMusicTime);
+        PlayMusic(fishingNightMusic, fishingNightMusicTime);
     }
 
     public void SaveFishingNightMusicTime()
@@ -96,7 +96,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMonsterMusic()
     {
-        PlayMusicIfNotPlaying(monsterMusic);
+        PlayMusic(monsterMusic);
     }
 
     public void StopMusic()
@@ -165,12 +165,17 @@ public class AudioManager : MonoBehaviour
 
     // Helping functions
 
-    private void PlayMusicIfNotPlaying(AudioClip music, float resumeTime = 0f)
+    private void PlayMusic(AudioClip music, float resumeTime = 0f)
     {
+        // To avoid collision, we stop the previous coroutine if in progress
+        if (fadeCoroutine != null) 
+        {
+            StopCoroutine(fadeCoroutine);
+            musicSource.volume = musicVolume;
+        }
+
+        // We don't change the music if it is already playing
         if (musicSource.clip == music && musicSource.isPlaying) { return; }
-        
-        // To avoid collision, only one fadeCoroutine
-        if (fadeCoroutine != null) { StopCoroutine(fadeCoroutine); }
 
         fadeCoroutine = StartCoroutine(FadeOutIn(music, resumeTime));
     }
