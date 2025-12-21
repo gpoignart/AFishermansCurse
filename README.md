@@ -28,26 +28,25 @@
 
 ### Script
 Organized by gameplay domain:
-
-#### MenusGameplay
-#### FishingGameplay
-#### MonsterGameplay
-#### MapSelectionGameplay
-#### InventoryGameplay
-#### TransitionGameplay
-#### EventGameplay
-#### WorldContent
-#### SaveSystem
+- **MenusGameplay/**
+- **FishingGameplay/**
+- **MonsterGameplay/**
+- **MapSelectionGameplay/**
+- **InventoryGameplay/**
+- **TransitionGameplay/**
+- **EventGameplay/**
+- **WorldContent/**
+- **SaveSystem/**
 - **GameManager**
 - **AudioManager**
 
 ### Scenes
-#### Main
-#### MapSelectionView
-#### FishingView
-#### MonsterView
-#### InventoryView
-#### TransitionView
-#### EventView
-#### EndScreenView
-#### CreditsView
+- **Main**
+- **MapSelectionView**
+- **FishingView**
+- **MonsterView**
+- **InventoryView**
+- **TransitionView**
+- **EventView**
+- **EndScreenView**
+- **CreditsView**
