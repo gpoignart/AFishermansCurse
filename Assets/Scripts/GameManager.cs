@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     private Vector2 fishingPlayerPosition;
     private Vector2 fishingPlayerOrientation;
     private int monsterApparitionSide;
+    private bool isGameEnded;
 
     // READ-ONLY ATTRIBUTES, CAN BE READ ANYWHERE
     public TimeOfDayRegistry TimeOfDayRegistry => timeOfDayRegistry;
@@ -79,9 +80,10 @@ public class GameManager : MonoBehaviour
     public Vector2 FishingPlayerPosition => fishingPlayerPosition;
     public Vector2 FishingPlayerOrientation => fishingPlayerOrientation;
     public int MonsterApparitionSide => monsterApparitionSide;
+    public bool IsGameEnded => isGameEnded;
 
     // Internal parameters
-    private int monsterSpawnChance = 50;
+    private int monsterSpawnChance = 60;
     private float monsterSpawnInterval = 10f;
 
     // Internal attributes
@@ -101,7 +103,8 @@ public class GameManager : MonoBehaviour
         InventoryView,
         FishingView,
         MonsterView,
-        EndScreenView
+        EndScreenView,
+        CreditsView
     }
     private GameView lastView;
     private GameView currentView;
@@ -153,28 +156,132 @@ public class GameManager : MonoBehaviour
         isFishingTutorialEnabled = true;
         isMapSelectionExplanationEnabled = true;
         isRecipeBookUnlocked = false;
+        isGameEnded = false;
         fishingPlayerPosition = defaultFishingPlayerPosition;
         fishingPlayerOrientation = defaultFishingPlayerOrientation;
-
-        AddIngredient(IngredientRegistry.carpMeatSO, 90);
-        AddIngredient(IngredientRegistry.carpToothSO, 90);
-        AddIngredient(IngredientRegistry.shinyFinSO, 90);
-        AddIngredient(IngredientRegistry.troutMeatSO, 90);
-        AddIngredient(IngredientRegistry.glimmeringScaleSO, 90);
-        AddIngredient(IngredientRegistry.shadowingEyeSO, 90);
-        AddIngredient(IngredientRegistry.mysticEssenceSO, 90);
     }
 
 
     // NAVIGATION FONCTIONS
+
+    // Update the game (called at each frame of the game)
+    private void Update()
+    {
+        // Handle the game update logic for views
+        switch (currentView)
+        {
+            case GameView.Main:
+                break;
+                
+            case GameView.EventView:
+                break;
+            
+            case GameView.TransitionView:
+                break;
+
+            case GameView.MapSelectionView:
+                break;
+
+            case GameView.InventoryView:
+                break;
+
+            case GameView.FishingView:
+                if (!IsFishingTutorialEnabled) { UpdateTimerAndCheckIfOut(); } // No timer during fishing tutorial
+                if (CurrentTimeOfDay == TimeOfDayRegistry.nightSO) { MonsterSpawnLoop(); }
+                break;
+
+            case GameView.MonsterView:
+                if (!IsFirstNight) { UpdateTimerAndCheckIfOut(); } // No timer during monster tutorial
+                break;
+            
+            case GameView.EndScreenView:
+                break;
+            
+            case GameView.CreditsView:
+                break;
+        }
+    }
+
+    // Pass from one view to another
+    private void ChangeView(GameView newView)
+    {
+        if (!canChangeView) { return; }
+
+        lastView = currentView;
+        currentView = newView;
+
+        switch (currentView)
+        {
+            case GameView.Main:
+                SceneManager.LoadScene("Main");
+                AudioManager.Instance.PlayMenuAndEventMusic();
+                break;
+
+            case GameView.EventView:
+                SceneManager.LoadScene("EventView");
+                AudioManager.Instance.PlayMenuAndEventMusic();
+                break;
+
+            case GameView.TransitionView:
+                SceneManager.LoadScene("TransitionView");
+                AudioManager.Instance.StopMusic();
+                if (currentTransition == TransitionRegistry.endNightSO || currentTransition == TransitionRegistry.endRecipeBookEventSO)
+                {
+                    AudioManager.Instance.PlayEndNightTransitionSFX();
+                }
+                else if (currentTransition == TransitionRegistry.endDaySO)
+                {
+                    AudioManager.Instance.PlayEndDayTransitionSFX();
+                }
+                else if (currentTransition == TransitionRegistry.deathAgainstMonsterSO)
+                {
+                    AudioManager.Instance.PlayerMonsterGotPlayerTransitionSFX();
+                }
+                break;
+
+            case GameView.MapSelectionView:
+                SceneManager.LoadScene("MapSelectionView");
+                AudioManager.Instance.PlayMapMusic();
+                break;
+
+            case GameView.InventoryView:
+                SceneManager.LoadScene("InventoryView");
+                // The inventory just keep playing the music of the scene from which it has been loaded
+                break;
+
+            case GameView.FishingView:
+                SceneManager.LoadScene("FishingView");
+                if (currentTimeOfDay == TimeOfDayRegistry.daySO)
+                { AudioManager.Instance.PlayFishingDayMusic(); }
+                else { AudioManager.Instance.PlayFishingNightMusic(); }
+                break;
+
+            case GameView.MonsterView:
+                SceneManager.LoadScene("MonsterView");
+                AudioManager.Instance.SaveFishingNightMusicTime();
+                AudioManager.Instance.PlayMonsterMusic();
+                break;
+
+            case GameView.EndScreenView:
+                SceneManager.LoadScene("EndScreenView");
+                AudioManager.Instance.PlayMenuAndEventMusic();
+                break;
+
+            case GameView.CreditsView:
+                SceneManager.LoadScene("CreditsView");
+                AudioManager.Instance.PlayMenuAndEventMusic();
+                break;
+        }
+    }
     
     // Called by map selection to entering menu
     public void EnterMenu()
     {
+        SaveGame();
         ChangeView(GameView.Main);
     }
 
-    // Called by the menu manager to start a new game
+    // Called in menu to start a new game
     public void StartNewGame()
     {
         SaveSystem.DeleteSave();
@@ -184,14 +291,22 @@ public class GameManager : MonoBehaviour
         ChangeView(GameView.EventView);
     }
 
-    // Called by the menu manager to continue game
+    // Called in menu to continue game
     public void ContinueGame()
     {
         LoadGame();
-        ChangeView(GameView.MapSelectionView);
+
+        if (isGameEnded)
+        {
+            ChangeView(GameView.EndScreenView);
+        }
+        else
+        {
+            ChangeView(GameView.MapSelectionView); 
+        }
     }
 
-    // Called by the menu manager to quit game
+    // Called in menu to quit game
     public void QuitGame()
     {
         SaveGame();
@@ -201,6 +316,18 @@ public class GameManager : MonoBehaviour
         #else
             Application.Quit();
         #endif
+    }
+
+    // Called in menu to enter credits
+    public void EnterCredits()
+    {
+        ChangeView(GameView.CreditsView);
+    }
+
+    // Called in menu to exit credits
+    public void ExitCredits()
+    {
+        ChangeView(lastView);
     }
 
     // Called at the end of an event
@@ -242,14 +369,6 @@ public class GameManager : MonoBehaviour
         isMapSelectionExplanationEnabled = false;
     }
 
-    // Called in the MapSelection Scene when clicking on a map
-    public void SelectMap(MapSO mapSelected)
-    {
-        currentMap = mapSelected;
-        StartTimer();
-        ChangeView(GameView.FishingView);
-    }
-
     // Called when clicking on the inventory button
     public void EnterInventory()
     {
@@ -259,18 +378,33 @@ public class GameManager : MonoBehaviour
     // Called in the Inventory Scene when clicking Exit
     public void ExitInventory()
     {
-        if (lastView == GameView.MapSelectionView)
+        ChangeView(lastView);
+    }
+
+    // Called in the MapSelection Scene when clicking on a map
+    public void SelectMap(MapSO mapSelected)
+    {
+        currentMap = mapSelected;
+        StartTimer();
+        ChangeView(GameView.FishingView);
+    }
+
+    // Called at night in the fishing view to go to the monster view: all the monsterSpawnInterval, try to spawn a monster with a monsterSpawnChance
+    private void MonsterSpawnLoop()
+    {
+        // Ensure we are in the fishing view
+        if (currentView != GameView.FishingView) { return; }
+
+        monsterSpawnTimer += Time.deltaTime;
+
+        if (monsterSpawnTimer >= monsterSpawnInterval)
         {
-            ChangeView(GameView.MapSelectionView);   
-            SaveGame();
-        }
-        else if (lastView == GameView.FishingView)
-        {
-            ChangeView(GameView.FishingView);
+            monsterSpawnTimer = 0f;
+            StartCoroutine(TrySpawnMonster());
         }
     }
 
-    // Called in need of passing in monster view
+    // Called by MonsterSpawnLoop() in TrySpawnMonster() if need of passing in monster view
     public void EnterMonsterView()
     {
         ChangeView(GameView.MonsterView);
@@ -327,6 +461,8 @@ public class GameManager : MonoBehaviour
     // Called in the InventoryView when the player make the final remedy
     public void EnterEndEvent()
     {
+        isGameEnded = true;
+
         currentEvent = eventRegistry.endSO;
         ChangeView(GameView.EventView);
     }
@@ -374,106 +510,13 @@ public class GameManager : MonoBehaviour
 
 
     // INTERNAL HELPING FONCTIONS
-
-    // Update the game (called at each frame of the game)
-    private void Update()
+    
+    private void InitializeObtainedIngredientsLastDayAndNight()
     {
-        // Handle the game update logic for views
-        switch (currentView)
+        obtainedIngredientLastDayAndNight = new Dictionary<IngredientSO, int>();
+        foreach (var ingredient in ingredientRegistry.AllIngredients)
         {
-            case GameView.Main:
-                break;
-                
-            case GameView.EventView:
-                break;
-            
-            case GameView.TransitionView:
-                break;
-
-            case GameView.MapSelectionView:
-                break;
-
-            case GameView.InventoryView:
-                break;
-
-            case GameView.FishingView:
-                if (!IsFishingTutorialEnabled) { UpdateTimerAndCheckIfOut(); } // No timer during fishing tutorial
-                if (CurrentTimeOfDay == TimeOfDayRegistry.nightSO) { MonsterSpawnLoop(); }
-                break;
-
-            case GameView.MonsterView:
-                if (!IsFirstNight) { UpdateTimerAndCheckIfOut(); } // No timer during monster tutorial
-                break;
-            
-            case GameView.EndScreenView:
-                break;
-        }
-    }
-
-    // Pass from one view to another
-    private void ChangeView(GameView newView)
-    {
-        if (!canChangeView) { return; }
-
-        lastView = currentView;
-        currentView = newView;
-
-        switch (currentView)
-        {
-            case GameView.Main:
-                SceneManager.LoadScene("Main");
-                AudioManager.Instance.PlayMenuAndEventMusic();
-                break;
-
-            case GameView.EventView:
-                SceneManager.LoadScene("EventView");
-                AudioManager.Instance.PlayMenuAndEventMusic();
-                break;
-
-            case GameView.TransitionView:
-                SceneManager.LoadScene("TransitionView");
-                AudioManager.Instance.StopMusic();
-                if (currentTransition == TransitionRegistry.endNightSO || currentTransition == TransitionRegistry.endRecipeBookEventSO)
-                {
-                    AudioManager.Instance.PlayEndNightSFX();
-                }
-                else if (currentTransition == TransitionRegistry.endDaySO)
-                {
-                    AudioManager.Instance.PlayEndDaySFX();
-                }
-                else if (currentTransition == TransitionRegistry.deathAgainstMonsterSO)
-                {
-                    AudioManager.Instance.PlayerMonsterGotPlayerSFX();
-                }
-                break;
-
-            case GameView.MapSelectionView:
-                SceneManager.LoadScene("MapSelectionView");
-                AudioManager.Instance.PlayMapMusic();
-                break;
-
-            case GameView.InventoryView:
-                SceneManager.LoadScene("InventoryView");
-                // The inventory just keep playing the music of the scene from which it has been loaded
-                break;
-
-            case GameView.FishingView:
-                SceneManager.LoadScene("FishingView");
-                if (currentTimeOfDay == TimeOfDayRegistry.daySO)
-                { AudioManager.Instance.PlayFishingDayMusic(); }
-                else { AudioManager.Instance.PlayFishingNightMusic(); }
-                break;
-
-            case GameView.MonsterView:
-                SceneManager.LoadScene("MonsterView");
-                AudioManager.Instance.SaveFishingNightMusicTime();
-                AudioManager.Instance.PlayMonsterMusic();
-                break;
-
-            case GameView.EndScreenView:
-                SceneManager.LoadScene("EndScreenView");
-                AudioManager.Instance.PlayMenuAndEventMusic();
-                break;
+            obtainedIngredientLastDayAndNight[ingredient] = 0;
         }
     }
 
@@ -499,87 +542,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // All the monsterSpawnCheckInterval, try to spawn a monster with a monsterSpawnChance
-    private void MonsterSpawnLoop()
-    {
-        // Ensure we are in the fishing view
-        if (currentView != GameView.FishingView) { return; }
-
-        monsterSpawnTimer += Time.deltaTime;
-
-        if (monsterSpawnTimer >= monsterSpawnInterval)
-        {
-            monsterSpawnTimer = 0f;
-            StartCoroutine(TrySpawnMonster());
-        }
-    }
-
-    private IEnumerator TrySpawnMonster()
-    {
-        // Ensure we are in the fishing view
-        if (currentView != GameView.FishingView) { yield break; }
-
-        // The first night, the tutorial monster appears always after the first interval
-        if (IsFirstNight)
-        {
-            // Player can't change view
-            canChangeView = false;
-
-            // Disable inventory button
-            FishingUIManager.Instance.DisableInventoryButton();
-
-            // Right side for the tutorial
-            monsterApparitionSide = 1;
-
-            // Play sfx
-            AudioManager.Instance.PlayMonsterScreamRightSFX();
-            yield return new WaitForSeconds(1f);
-
-            // Player can change view
-            canChangeView = true;
-
-            EnterMonsterView();
-        }
-        // The other nights, a monster can appear with a monsterSpawnChance at each interval
-        else if (Random.Range(0, 100) <= monsterSpawnChance)
-        {
-            // Player can't change view
-            canChangeView = false;
-
-            // Disable inventory button
-            FishingUIManager.Instance.DisableInventoryButton();
-
-            // Choose monster apparition side
-            int side = Random.Range(0, 2);
-            monsterApparitionSide = side;
-
-            // Play sfx
-            if (side == 0)
-            {
-                AudioManager.Instance.PlayMonsterScreamLeftSFX();
-            }
-            else
-            {
-                AudioManager.Instance.PlayMonsterScreamRightSFX();
-            }
-            yield return new WaitForSeconds(1f);
-
-            // Player can change view
-            canChangeView = true;
-            
-            EnterMonsterView();
-        }
-    }
-
-    private void InitializeObtainedIngredientsLastDayAndNight()
-    {
-        obtainedIngredientLastDayAndNight = new Dictionary<IngredientSO, int>();
-        foreach (var ingredient in ingredientRegistry.AllIngredients)
-        {
-            obtainedIngredientLastDayAndNight[ingredient] = 0;
-        }
-    }
-
+    // Called at each change of day/night
     private void SaveAndChangeCurrentTimeOfDay()
     {
         if (currentTimeOfDay == TimeOfDayRegistry.daySO)
@@ -618,7 +581,66 @@ public class GameManager : MonoBehaviour
         fishingPlayerPosition = defaultFishingPlayerPosition;
         fishingPlayerOrientation = defaultFishingPlayerOrientation;
 
+        // Autosave
         SaveGame();
+    }
+
+    // Called for trying to spawn a monster
+    private IEnumerator TrySpawnMonster()
+    {
+        // Ensure we are in the fishing view
+        if (currentView != GameView.FishingView) { yield break; }
+
+        // The first night, the tutorial monster appears always after the first interval
+        if (IsFirstNight)
+        {
+            // Player can't change view
+            canChangeView = false;
+
+            // Disable inventory button so the player understand he can't change view
+            FishingUIManager.Instance.DisableInventoryButton();
+
+            // Right side for the tutorial
+            monsterApparitionSide = 1;
+
+            // Play sfx
+            AudioManager.Instance.PlayMonsterScreamRightSFX();
+            yield return new WaitForSeconds(1.5f);
+
+            // Player can change view
+            canChangeView = true;
+
+            EnterMonsterView();
+        }
+        // The other nights, a monster can appear with a monsterSpawnChance at each interval
+        else if (Random.Range(0, 100) <= monsterSpawnChance)
+        {
+            // Player can't change view
+            canChangeView = false;
+
+            // Disable inventory button so the player understand he can't change view
+            FishingUIManager.Instance.DisableInventoryButton();
+
+            // Choose monster apparition side
+            int side = Random.Range(0, 2);
+            monsterApparitionSide = side;
+
+            // Play sfx
+            if (side == 0)
+            {
+                AudioManager.Instance.PlayMonsterScreamLeftSFX();
+            }
+            else
+            {
+                AudioManager.Instance.PlayMonsterScreamRightSFX();
+            }
+            yield return new WaitForSeconds(1.5f);
+
+            // Player can change view
+            canChangeView = true;
+            
+            EnterMonsterView();
+        }
     }
 
 
@@ -636,6 +658,7 @@ public class GameManager : MonoBehaviour
         data.isFishingTutorialEnabled = isFishingTutorialEnabled;
         data.isMapSelectionExplanationEnabled = isMapSelectionExplanationEnabled;
         data.isRecipeBookUnlocked = isRecipeBookUnlocked;
+        data.isGameEnded = isGameEnded;
 
         data.ingredients = ingredientRegistry.AllIngredients
             .Select(i => new IngredientSaveData
@@ -679,6 +702,7 @@ public class GameManager : MonoBehaviour
         isFishingTutorialEnabled = data.isFishingTutorialEnabled;
         isMapSelectionExplanationEnabled = data.isMapSelectionExplanationEnabled;
         isRecipeBookUnlocked = data.isRecipeBookUnlocked;
+        isGameEnded = data.isGameEnded;
 
         foreach (var ingredientData in data.ingredients)
         {

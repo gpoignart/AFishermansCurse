@@ -52,6 +52,7 @@ public class RecipeBookGameManager : MonoBehaviour
 
     public void OnPreviousButtonPressed()
     {
+        AudioManager.Instance.PlayTurnRecipeBookPageSFX();
         currentPageIndex -= 2;
         UpdateCurrentRecipes();
         UpdateUI();
@@ -59,6 +60,7 @@ public class RecipeBookGameManager : MonoBehaviour
 
     public void OnNextButtonPressed()
     {
+        AudioManager.Instance.PlayTurnRecipeBookPageSFX();
         currentPageIndex += 2;
         UpdateCurrentRecipes();
         UpdateUI();

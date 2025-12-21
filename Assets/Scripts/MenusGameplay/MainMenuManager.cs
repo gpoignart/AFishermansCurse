@@ -31,15 +31,18 @@ public class MainMenuManager : MonoBehaviour
         GameManager.Instance.StartNewGame();
     }
 
-    // Continue Game
     public void OnContinueButtonPressed()
     {
         GameManager.Instance.ContinueGame();
     }
 
-    // Quit game
     public void OnQuitButtonPressed()
     {
         GameManager.Instance.QuitGame();
+    }
+
+    public void OnCreditsButtonPressed()
+    {
+        GameManager.Instance.EnterCredits();
     }
 }

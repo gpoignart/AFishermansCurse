@@ -23,10 +23,11 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip monsterRanAway;
     [SerializeField] private AudioClip monsterScreamLeft;
     [SerializeField] private AudioClip monsterScreamRight;
-    [SerializeField] private AudioClip monsterGotPlayer;
+    [SerializeField] private AudioClip monsterGotPlayerTransition;
+    [SerializeField] private AudioClip endDayTransition;
+    [SerializeField] private AudioClip endNightTransition;
     [SerializeField] private AudioClip makeRecipe;
-    [SerializeField] private AudioClip endDay;
-    [SerializeField] private AudioClip endNight;
+    [SerializeField] private AudioClip turnRecipeBookPage;
 
     // Parameters
     private float musicFadeDuration = 0.5f;
@@ -121,9 +122,9 @@ public class AudioManager : MonoBehaviour
         PlaySFX(monsterRanAway);
     }
 
-    public void PlayerMonsterGotPlayerSFX()
+    public void PlayerMonsterGotPlayerTransitionSFX()
     {
-        PlaySFX(monsterGotPlayer);
+        PlaySFX(monsterGotPlayerTransition);
     }
 
     public void PlayCatchingFishSFX()
@@ -141,19 +142,24 @@ public class AudioManager : MonoBehaviour
         PlaySFX(makeRecipe);
     }
 
+    public void PlayTurnRecipeBookPageSFX()
+    {
+        PlaySFX(turnRecipeBookPage);
+    }
+
     public void PlayFishSwamAwaySFX()
     {
         PlaySFX(fishSwamAway);
     }
 
-    public void PlayEndDaySFX()
+    public void PlayEndDayTransitionSFX()
     {
-        PlaySFX(endDay);
+        PlaySFX(endDayTransition);
     }
 
-    public void PlayEndNightSFX()
+    public void PlayEndNightTransitionSFX()
     {
-        PlaySFX(endNight);
+        PlaySFX(endNightTransition);
     }
 
 

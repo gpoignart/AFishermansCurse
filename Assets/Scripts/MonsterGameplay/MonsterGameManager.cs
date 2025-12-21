@@ -24,7 +24,7 @@ public class MonsterGameManager : MonoBehaviour
     
     // Parameters
     private float loseTime = 3f;
-    private float warningDuration = 1.5f;
+    private float warningDuration = 0.7f;
     private float winMessageDuration = 2f;
 
     // Internal references

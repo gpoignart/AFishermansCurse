@@ -5,7 +5,7 @@ public class EndNightSO : TransitionSO
 {
     public override void Initialize()
     {
-        this.text = "The night has finally passed...";
+        this.text = "Day finally breaks...";
         this.duration = 3f;
     }
 }

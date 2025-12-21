@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class TransitionUIManager : MonoBehaviour
@@ -6,7 +7,7 @@ public class TransitionUIManager : MonoBehaviour
     // Allow to call TransitionUIManager.Instance anywhere (singleton)
     public static TransitionUIManager Instance { get; private set; }
 
-    [SerializeField] private SpriteRenderer backgroundSpriteRenderer;
+    [SerializeField] private Image backgroundImage;
     [SerializeField] private TextMeshProUGUI transitionText;
 
     // Make this class a singleton
@@ -23,8 +24,7 @@ public class TransitionUIManager : MonoBehaviour
 
     private void Start()
     {
-        backgroundSpriteRenderer.sprite = GameManager.Instance.CurrentTransition.backgroundSprite;
-        backgroundSpriteRenderer.color = GameManager.Instance.CurrentTransition.backgroundColor;
+        backgroundImage.sprite = GameManager.Instance.CurrentTransition.backgroundSprite;
         transitionText.text = GameManager.Instance.CurrentTransition.text;
     }
 }
