@@ -17,7 +17,7 @@ public class FlashlightSO : PlayerEquipmentSO
             "Increases beam's size"
         };
         this.beamSize = new Vector2(130f, 130f);
-        this.beamFollowSpeed = 2f;
+        this.beamFollowSpeed = 1.5f;
     }
 
     public override void UpgradeTo(int newLevel)
@@ -26,7 +26,7 @@ public class FlashlightSO : PlayerEquipmentSO
         if (this.level == 2)
         {
             // Increase the speed of the beam
-            this.beamFollowSpeed *= 3f;
+            this.beamFollowSpeed *= 4f;
         }
         else if (this.level == 3)
         {
