@@ -51,8 +51,8 @@ public class MapSelectionGameManager : MonoBehaviour
         // Update ingredient bubbles
         for (int i = 0; i < GameManager.Instance.MapRegistry.AllMaps.Length; i++)
         {
-            List<IngredientSO> ingredients = GameManager.Instance.IngredientRegistry.GetAvailableIngredientsFromMap(GameManager.Instance.MapRegistry.AllMaps[i], GameManager.Instance.CurrentTimeOfDay);
-            MapSelectionUIManager.Instance.UpdateIngredientBubbles(i, ingredients);
+            FishSO[] fishes = GameManager.Instance.FishRegistry.GetFishFromMapAndTime(GameManager.Instance.MapRegistry.AllMaps[i], GameManager.Instance.CurrentTimeOfDay);
+            MapSelectionUIManager.Instance.UpdateBubbles(i, fishes);
         }
 
         // Gives explanations the first time we enter the map

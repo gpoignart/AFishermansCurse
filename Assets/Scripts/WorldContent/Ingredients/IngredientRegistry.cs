@@ -40,27 +40,4 @@ public class IngredientRegistry
     {
         return AllIngredients.FirstOrDefault(i => i.ingredientName == ingredientName);
     }
-
-    public List<IngredientSO> GetAvailableIngredientsFromMap(MapSO map, TimeOfDaySO currentTime)
-    {
-        List<IngredientSO> ingredients = new List<IngredientSO>();
-
-        FishSO[] allFish = GameManager.Instance.FishRegistry.AllFish;
-
-        foreach (var fish in allFish)
-        {
-            if (!fish.spawnMaps.Contains(map)) continue;
-
-            bool timeMatch = fish.catchingDifficulties.Any(diff => diff.time == currentTime);
-            if (!timeMatch) continue;
-
-            foreach (var ingredient in fish.drops)
-            {
-                if (!ingredients.Contains(ingredient))
-                    ingredients.Add(ingredient);
-            }
-        }
-
-        return ingredients;
-    }
 }

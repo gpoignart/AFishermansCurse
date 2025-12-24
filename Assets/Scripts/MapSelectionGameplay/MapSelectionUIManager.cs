@@ -15,7 +15,7 @@ public class MapSelectionUIManager : MonoBehaviour
     // UI elements
     [SerializeField] private Image backgroundImage;
     [SerializeField] private Image[] mapButtonImages;
-    [SerializeField] private Transform[] mapIngredientBubbleContainers;
+    [SerializeField] private Transform[] mapBubbleContainers;
     [SerializeField] private TextMeshProUGUI[] mapButtonTexts;
     [SerializeField] private TextMeshProUGUI dayAndNightCounterText;
     [SerializeField] private TextMeshProUGUI chooseAMapText;
@@ -66,38 +66,74 @@ public class MapSelectionUIManager : MonoBehaviour
         mapButtonImages[index].sprite = mapLogo;
     }
 
-    public void UpdateIngredientBubbles(int mapIndex, List<IngredientSO> ingredients)
+    public void UpdateBubbles(int indexMap, FishSO[] fishes)
     {
-        Transform bubbleContainer = mapIngredientBubbleContainers[mapIndex];
-
+        Transform bubbleContainer = mapBubbleContainers[indexMap];
         int bubbleCount = bubbleContainer.childCount;
 
         for (int i = 0; i < bubbleCount; i++)
         {
             Transform bubble = bubbleContainer.GetChild(i);
 
-            // Set bubble color
+            // If there is no fish for this bubble, hide it
+            if (i >= fishes.Length)
+            {
+                bubble.gameObject.SetActive(false);
+                continue;
+            }
+
+            bubble.gameObject.SetActive(true);
+
+            // Fish bubble
+            FishSO fish = fishes[i];
+            Transform fishBubble = bubble.Find("FishBubble");
+            Image fishBubbleImage = fishBubble.GetComponent<Image>();
+            
             if (GameManager.Instance.CurrentTimeOfDay == GameManager.Instance.TimeOfDayRegistry.daySO)
             {
-                bubble.GetComponent<Image>().color = GameManager.Instance.MapRegistry.AllMaps[mapIndex].dayBubbleColor;
+                fishBubbleImage.color = GameManager.Instance.MapRegistry.AllMaps[indexMap].dayFishBubbleColor;
             }
             else
             {
-                bubble.GetComponent<Image>().color = GameManager.Instance.MapRegistry.AllMaps[mapIndex].nightBubbleColor;
+                fishBubbleImage.color = GameManager.Instance.MapRegistry.AllMaps[indexMap].nightFishBubbleColor;                
+            }
+            
+            Image fishImage = fishBubble.GetChild(0).GetComponent<Image>();
+            fishImage.sprite = fish.sprite;
+            fishImage.preserveAspect = true;
+
+            // Ingredient bubbles
+            int ingredientIndex = 0;
+
+            foreach (IngredientSO ingredient in fish.drops)
+            {
+                string ingredientBubbleName = $"IngredientBubble{ingredientIndex + 1}";
+                Transform ingredientBubble = bubble.Find(ingredientBubbleName);
+
+                ingredientBubble.gameObject.SetActive(true);
+
+                Image ingredientBubbleImage = ingredientBubble.GetComponent<Image>();
+
+                if (GameManager.Instance.CurrentTimeOfDay == GameManager.Instance.TimeOfDayRegistry.daySO)
+                {
+                    ingredientBubbleImage.color = GameManager.Instance.MapRegistry.AllMaps[indexMap].dayIngredientBubbleColor;
+                }
+                else
+                {
+                    ingredientBubbleImage.color = GameManager.Instance.MapRegistry.AllMaps[indexMap].nightIngredientBubbleColor;                
+                }
+                
+                Image ingredientImage = ingredientBubble.GetChild(0).GetComponent<Image>();
+                ingredientImage.sprite = ingredient.sprite;
+
+                ingredientIndex++;
             }
 
-            // Set ingredients images
-            Image ingredientImage = bubble.GetChild(0).GetComponent<Image>();
-
-            if (i < ingredients.Count)
+            // Hide unused ingredient bubbles
+            for (int j = ingredientIndex + 1; j <= 2; j++)
             {
-                ingredientImage.sprite = ingredients[i].sprite;
-                bubble.gameObject.SetActive(true);
-            }
-            else
-            {
-                // Not enough ingredient, we desactive the bubble
-                bubble.gameObject.SetActive(false);
+                Transform unusedBubble = bubble.Find($"IngredientBubble{j}");
+                unusedBubble.gameObject.SetActive(false);
             }
         }
     }

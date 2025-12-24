@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class FishRegistry
@@ -57,6 +58,16 @@ public class FishRegistry
     {
         if (ingredientToFish.TryGetValue(ingredient, out FishSO fish)) { return fish; }
         return null;
+    }
+
+    public FishSO[] GetFishFromMapAndTime(MapSO map, TimeOfDaySO timeOfDay)
+    {
+        return AllFish
+            .Where(fish =>
+                fish.spawnMaps.Contains(map) &&
+                fish.spawnTimes.Contains(timeOfDay)
+            )
+            .ToArray();
     }
 }
 

@@ -9,8 +9,10 @@ public abstract class MapSO : ScriptableObject
     public Sprite nightTopBackgroundSprite;
     public Sprite dayLogoSprite;
     public Sprite nightLogoSprite;
-    public Color dayBubbleColor;
-    public Color nightBubbleColor;
+    public Color dayFishBubbleColor;
+    public Color dayIngredientBubbleColor;
+    public Color nightFishBubbleColor;
+    public Color nightIngredientBubbleColor;
 
     public abstract void Initialize();
 }
