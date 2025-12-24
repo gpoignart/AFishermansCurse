@@ -17,7 +17,7 @@ public class RecipeBookObtentionSO : EventSO
             new EventLine(text: "There, on the boat… the monster had dropped something. A book."),
             new EventLine(text: "I open it… and see recipes carefully written inside."),
             new EventLine(text: "Recipes that felt as if they had been written for me."),
-            new EventLine(text: "Most of them are meant to improve my equipment... but this last one…"),
+            new EventLine(text: "Most of them are meant to improve my equipment... but this last one..."),
             new EventLine(text: "Could this place… really help me?"),
             new EventLine(text: "I have nothing left to lose… I have to try.")
         };

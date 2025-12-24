@@ -847,7 +847,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 245881736}
         m_TargetAssemblyTypeName: FishingGameManager, Assembly-CSharp
         m_MethodName: OnHookButtonPressed
         m_Mode: 1
