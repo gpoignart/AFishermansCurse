@@ -9,10 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8187294139206944233}
-  - component: {fileID: 6087367238114634928}
   - component: {fileID: 7998486903643441085}
   m_Layer: 0
-  m_Name: FishPrefab
+  m_Name: FishCaughtPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,26 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5829279136298351726}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.4609436, w: 0.8874295}
   m_LocalPosition: {x: -1024.774, y: -560.3416, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6087367238114634928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5829279136298351726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed8f6dfcf39a6c744a1e149c75c9fc2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fishSO: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 54.896}
 --- !u!212 &7998486903643441085
 SpriteRenderer:
   m_ObjectHideFlags: 0

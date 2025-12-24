@@ -132,7 +132,7 @@ public class GameManager : MonoBehaviour
 
         // Initialize internal references
         InitializeObtainedIngredientsLastDayAndNight();
-        defaultFishingPlayerPosition = new Vector2(2f, 2.8f);
+        defaultFishingPlayerPosition = new Vector2(3f, 3.3f);
         defaultFishingPlayerOrientation = new Vector2(1f, 1f);
 
         // Initialize registers

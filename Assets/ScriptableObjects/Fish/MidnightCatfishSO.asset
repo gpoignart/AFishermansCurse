@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MidnightCatfishSO
   m_EditorClassIdentifier: 
   fishName: MidnightCatfish
-  sprite: {fileID: 21300000, guid: c0742ea1029e88f46a52d94ee33ec97e, type: 3}
+  sprite: {fileID: 21300000, guid: bbf350a47bfb24b47b657d6f04b8434f, type: 3}
   spawnMaps:
   - {fileID: 11400000, guid: 2ef49a78ecbaddc40935407bb079f66c, type: 2}
   spawnTimes:

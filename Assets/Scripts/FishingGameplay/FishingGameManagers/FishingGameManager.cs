@@ -206,7 +206,7 @@ public class FishingGameManager : MonoBehaviour
         GameManager.Instance.AddIngredient(pendingLoot, 1);
 
         // Play catch animation
-        StartCoroutine(PlayerController.Instance.OnCatchAnimation(1.5f));
+        StartCoroutine(PlayerController.Instance.OnCatchAnimation(currentFishBelow.fishSO, 1.5f));
 
         // Play catching sfx
         if (currentFishBelow.fishSO == GameManager.Instance.FishRegistry.midnightCatfishSO || currentFishBelow.fishSO == GameManager.Instance.FishRegistry.mysticFishSO)

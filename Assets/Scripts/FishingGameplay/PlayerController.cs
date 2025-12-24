@@ -6,11 +6,16 @@ public class PlayerController : MonoBehaviour
     // Allow to call PlayerController.Instance anywhere (singleton)
     public static PlayerController Instance { get; private set; }
 
+    // Game elements
     [SerializeField] private Transform fishContainer;
     [SerializeField] private Transform fishingRodTip;
+    [SerializeField] private Transform fishCaughtAnchor;
+    [SerializeField] private GameObject fishCaughtPrefab;
+
+    // Sprites
     [SerializeField] private Sprite playerWaitingSprite;
     [SerializeField] private Sprite playerCatchingSprite;
-    [SerializeField] private Sprite playerAfraidSprite;
+    [SerializeField] private Sprite playerScaredSprite;
 
     // Parameters
     private float detectionRadius = 0.4f;
@@ -68,16 +73,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator OnCatchAnimation(float duration)
+    public IEnumerator OnCatchAnimation(FishSO fishCaughtSO, float duration)
     {
         spriteRenderer.sprite = playerCatchingSprite;
+
+        // Instantiate fish
+        GameObject fishCaught = Instantiate(fishCaughtPrefab, fishCaughtAnchor.position, fishCaughtPrefab.transform.rotation, fishCaughtAnchor);
+        
+        // Keep the fish toward left
+        bool facingLeft = transform.localScale.x > 0;
+        Vector2 scale = fishCaught.transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * (facingLeft ? 1f : -1f);
+        fishCaught.transform.localScale = scale;
+        
+        fishCaught.GetComponent<SpriteRenderer>().sprite = fishCaughtSO.sprite;
+
         yield return new WaitForSeconds(duration);
+
+        Destroy(fishCaught);
         spriteRenderer.sprite = playerWaitingSprite;
     }
 
     public void OnMonsterApproach()
     {
-        spriteRenderer.sprite = playerAfraidSprite;
+        spriteRenderer.sprite = playerScaredSprite;
     }
 
     // Calculate edges of screen to force the player inside when moving

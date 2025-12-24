@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: CarpSO
   m_EditorClassIdentifier: 
   fishName: Carp
-  sprite: {fileID: 21300000, guid: 04690a5f5cf700740a0a8207a15ee1b8, type: 3}
+  sprite: {fileID: 21300000, guid: b1b1e74204113f44e8f24175f7dfab87, type: 3}
   spawnMaps:
-  - {fileID: 11400000, guid: bce46c8000792094fa6fde8765bb8c49, type: 2}
-  - {fileID: 11400000, guid: 5ae9edb074f58264691736a7cd7728a7, type: 2}
+  - {fileID: 11400000, guid: 2ef49a78ecbaddc40935407bb079f66c, type: 2}
+  - {fileID: 11400000, guid: 34dfc978e6f89b84286da0d60bb9903b, type: 2}
   spawnTimes:
   - {fileID: 11400000, guid: 3c477c3a73369b443af7b7e9632cc91c, type: 2}
   - {fileID: 11400000, guid: 5169ba54d93560e43b170091f8176e18, type: 2}
@@ -34,5 +34,5 @@ MonoBehaviour:
   - time: {fileID: 11400000, guid: 5169ba54d93560e43b170091f8176e18, type: 2}
     safeZoneMoveSpeed: 100
     requiredTimeInsideZone: 2.5
-    allowedTimeOutsideZone: 2.5
+    allowedTimeOutsideZone: 3
     safeZoneWidth: 200
