@@ -74,6 +74,7 @@ public class FishingUIManager : MonoBehaviour
             HideTutorialPanel();
         }
         InitializeCommandsPanel();
+        AbleInventoryButton();
         hookButton.SetActive(false);
         dragBar.SetActive(false);
         loot.SetActive(false);

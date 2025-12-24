@@ -1827,7 +1827,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 245881736}
         m_TargetAssemblyTypeName: FishingGameManager, Assembly-CSharp
         m_MethodName: OnInventoryButtonPressed
         m_Mode: 1
@@ -2497,7 +2497,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 245881736}
         m_TargetAssemblyTypeName: FishingGameManager, Assembly-CSharp
         m_MethodName: OnExtendCommandsButtonPressed
         m_Mode: 1
@@ -2630,7 +2630,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 245881736}
         m_TargetAssemblyTypeName: FishingGameManager, Assembly-CSharp
         m_MethodName: OnCollapseCommandsButtonPressed
         m_Mode: 1
@@ -3205,7 +3205,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 245881736}
         m_TargetAssemblyTypeName: FishingGameManager, Assembly-CSharp
         m_MethodName: OnTutorialNextButtonPressed
         m_Mode: 1
