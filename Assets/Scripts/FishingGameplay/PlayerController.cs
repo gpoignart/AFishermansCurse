@@ -130,7 +130,7 @@ public class PlayerController : MonoBehaviour
         transform.position = newPosition;
 
         // Inform the FishingGameManager the player has moved
-        if (Vector3.Distance(transform.position, firstPosition) > 3f)
+        if (Vector3.Distance(transform.position, firstPosition) > 2f)
         {
             FishingGameManager.Instance.PlayerHasMoved();
         }
