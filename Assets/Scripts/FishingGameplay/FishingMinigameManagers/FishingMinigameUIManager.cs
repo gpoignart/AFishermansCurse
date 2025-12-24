@@ -25,6 +25,7 @@ public class FishingMinigameUIManager : MonoBehaviour
     public Vector2 GetLeftBoundaryPosition() { return leftBoundaryUI.anchoredPosition; }
     public Vector2 GetRightBoundaryPosition() { return rightBoundaryUI.anchoredPosition; }
     public Vector2 GetSafeZonePosition() { return safeZoneUI.anchoredPosition; }
+    public Vector2 GetNeedlePosition() { return needleUI.anchoredPosition; }
     public float GetNeedleWidth() { return needleUI.rect.width; }
 
     // Set needle position

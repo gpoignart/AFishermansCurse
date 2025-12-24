@@ -49,7 +49,7 @@ public class FishingMinigameManager : MonoBehaviour
         needleRightBoundaryPosition = new Vector2(FishingMinigameUIManager.Instance.GetRightBoundaryPosition().x - needleHalfWidth, FishingMinigameUIManager.Instance.GetRightBoundaryPosition().y);
 
         // Start and target position for needle
-        FishingMinigameUIManager.Instance.SetNeedlePosition(needleLeftBoundaryPosition);
+        FishingMinigameUIManager.Instance.SetNeedlePosition(GetRandomNeedlePosition());
 
         needleTargetPosition = needleLeftBoundaryPosition;
 
@@ -110,6 +110,12 @@ public class FishingMinigameManager : MonoBehaviour
     {
         float randomX = Random.Range(safeZoneLeftBoundaryPosition.x, safeZoneRightBoundaryPosition.x);
         return new Vector2(randomX, FishingMinigameUIManager.Instance.GetSafeZonePosition().y);
+    }
+
+    private Vector2 GetRandomNeedlePosition()
+    {
+        float randomX = Random.Range(needleLeftBoundaryPosition.x, needleRightBoundaryPosition.x);
+        return new Vector2(randomX, FishingMinigameUIManager.Instance.GetNeedlePosition().y);
     }
 }
 
