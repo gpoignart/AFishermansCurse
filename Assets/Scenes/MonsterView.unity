@@ -447,7 +447,6 @@ MonoBehaviour:
   leftSpawn: {fileID: 1325816496}
   rightSpawn: {fileID: 1597884848}
   monsterContainer: {fileID: 431043092}
-  loseTime: 3
 --- !u!4 &207695580
 Transform:
   m_ObjectHideFlags: 0
@@ -620,7 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}

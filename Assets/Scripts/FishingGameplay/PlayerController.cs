@@ -22,9 +22,10 @@ public class PlayerController : MonoBehaviour
     private float detectionRadius = 0.4f;
 
     // Internal properties
-    private float minX, maxX;
-    private Vector3 firstPosition;
     private SpriteRenderer spriteRenderer;
+    private float minX, maxX;
+    private bool hasMoved = false;
+    private float accumulatedMovement = 0f;
     private GameObject fishCaught = null;
 
     // Make this class a singleton
@@ -48,7 +49,6 @@ public class PlayerController : MonoBehaviour
         transform.localScale = GameManager.Instance.FishingPlayerOrientation;
         
         // Initialize internal references
-        firstPosition = transform.position;
         spriteRenderer.sprite = playerWaitingSprite;
 
         CalculateScreenEdges();
@@ -146,9 +146,11 @@ public class PlayerController : MonoBehaviour
         // Apply the new position
         transform.position = newPosition;
 
-        // Inform the FishingGameManager the player has moved
-        if (Vector3.Distance(transform.position, firstPosition) > 2f)
+        // Inform the FishingGameManager the player has moved during tutorial
+        accumulatedMovement += Mathf.Abs(horizontal) * GameManager.Instance.PlayerEquipmentRegistry.boatSO.speed * Time.deltaTime;
+        if (!hasMoved && accumulatedMovement > 2f)
         {
+            hasMoved = true;  
             FishingGameManager.Instance.PlayerHasMoved();
         }
     }

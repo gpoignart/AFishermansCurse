@@ -12,7 +12,7 @@ public class RecipeBookObtentionSO : EventSO
             new EventLine(text: "The curse followed me here… in the form of that monster in the water."),
             new EventLine(text: "And… I survived."),
             new EventLine(text: "I knew it. I knew I would never be free."),
-            new EventLine(text: "Even here, it hunts me. Always trying to take my life… never quite succeeding. Just enough to keep me suffering."),
+            new EventLine(text: "Even here, it hunts me. Always trying to ruin my life... never letting me lose it. Only keeping me alive to suffer."),
             new EventLine(text: "Suddenly, I noticed something."),
             new EventLine(text: "There, on the boat… the monster had dropped something. A book."),
             new EventLine(text: "I open it… and see recipes carefully written inside."),

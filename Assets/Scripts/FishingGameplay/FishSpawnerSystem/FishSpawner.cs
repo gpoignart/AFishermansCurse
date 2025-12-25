@@ -50,7 +50,7 @@ public class FishSpawner : MonoBehaviour
         zoneOffset = spawnZone.offset;
 
         // Spawn position at the right of the screen
-        Vector2 localPoint = new Vector2( zoneSize.x / 2f - 0.5f, zoneSize.y / 2f - 0.5f) + zoneOffset;
+        Vector2 localPoint = new Vector2( zoneSize.x / 2f - 0.5f, zoneSize.y / 2f - 0.2f) + zoneOffset;
         Vector2 spawnPosition = (Vector2) spawnZone.transform.position + localPoint;
 
         // Spawn tutorial fish

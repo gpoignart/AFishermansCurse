@@ -28,7 +28,9 @@ public class FishingGameManager : MonoBehaviour
         Flip,
         DetectFish,
         Hook,
-        Fishing,
+        Fishing1,
+        Fishing2,
+        Fishing3,
         Loot,
         Inventory,
         Timer,
@@ -92,6 +94,14 @@ public class FishingGameManager : MonoBehaviour
         // Handle the game update logic for tutorial states
         switch (currentTutorialState)
         {
+            case FishingTutorialState.Fishing1:
+                if (Input.GetKeyDown(KeyCode.Return)) { OnTutorialNextButtonPressed(); } // Click on next button with return
+                break;
+
+            case FishingTutorialState.Fishing2:
+                if (Input.GetKeyDown(KeyCode.Return)) { OnTutorialNextButtonPressed(); } // Click on next button with return
+                break;
+
             case FishingTutorialState.Loot:
                 if (Input.GetKeyDown(KeyCode.Return)) { OnTutorialNextButtonPressed(); } // Click on next button with return
                 break;
@@ -159,7 +169,7 @@ public class FishingGameManager : MonoBehaviour
     public void OnHookButtonPressed()
     {
         if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState < FishingTutorialState.Hook) { return; }
-        if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState == FishingTutorialState.Hook) { ChangeTutorialState(FishingTutorialState.Fishing); }
+        if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState == FishingTutorialState.Hook) { ChangeTutorialState(FishingTutorialState.Fishing1); }
 
         currentFishBelow.DisableLifeTimeRoutine(); // When we hook a fish, he won't disapear naturally
         ChangeState(FishingGameState.Fishing);
@@ -193,13 +203,9 @@ public class FishingGameManager : MonoBehaviour
     // Called by the FishingMinigameManager when success
     public void FishingMinigameSuccess()
     {
-        if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState < FishingTutorialState.Fishing) { return; }
+        if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState <= FishingTutorialState.Fishing1) { return; }
 
         ChangeState(FishingGameState.Moving);
-
-        // Obtain the ingredient
-        pendingLoot = currentFishBelow.fishSO.drops[Random.Range(0, currentFishBelow.fishSO.drops.Length)];
-        GameManager.Instance.AddIngredient(pendingLoot, 1);
 
         // Play catch animation
         StartCoroutine(PlayerController.Instance.OnCatchAnimation(currentFishBelow.fishSO, 1.5f));
@@ -213,6 +219,19 @@ public class FishingGameManager : MonoBehaviour
         {
             AudioManager.Instance.PlayCatchingFishSFX();
         }
+        
+        // In the tutorial fishing step 2, we can catch fish but don't obtain loot
+        if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState == FishingTutorialState.Fishing2)
+        { 
+            StartCoroutine(RespawnFishInTutorial(1.5f));
+            currentFishBelow.Destroy();
+            currentFishBelow = null;
+            return;
+        }
+
+        // Obtain the ingredient
+        pendingLoot = currentFishBelow.fishSO.drops[Random.Range(0, currentFishBelow.fishSO.drops.Length)];
+        GameManager.Instance.AddIngredient(pendingLoot, 1);
 
         // Show the loot for a few seconds if not in tutorial
         if (!GameManager.Instance.IsFishingTutorialEnabled)
@@ -220,7 +239,7 @@ public class FishingGameManager : MonoBehaviour
             StartCoroutine(FishingUIManager.Instance.ShowLootForSeconds(pendingLoot, 1f, 0.25f));
         }
         // Next step if in tutorial state (must do after obtained the ingredient)
-        else if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState == FishingTutorialState.Fishing)
+        else if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState == FishingTutorialState.Fishing3)
         {
             ChangeTutorialState(FishingTutorialState.Loot);
         }
@@ -233,8 +252,8 @@ public class FishingGameManager : MonoBehaviour
     // Called by the FishingMinigameManager when fail
     public void FishingMinigameFail()
     {
-        // In tutorial : we don't quit the minigame while it is not winned
-        if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState <= FishingTutorialState.Fishing) { return; }
+        // Tutorial steps
+        if (GameManager.Instance.IsFishingTutorialEnabled && currentTutorialState <= FishingTutorialState.Fishing1) { return; }
 
         ChangeState(FishingGameState.Moving);
 
@@ -244,18 +263,39 @@ public class FishingGameManager : MonoBehaviour
         // Play lose fish SFX
         AudioManager.Instance.PlayFishSwamAwaySFX();
 
-        // Show the loseFishText
-        StartCoroutine(FishingUIManager.Instance.ShowLoseFishTextForSeconds(1.5f, 0.25f));
+        // Show the loseFish
+        StartCoroutine(FishingUIManager.Instance.ShowLoseFishForSeconds(1.5f, 0.25f));
 
         // Delete the fish with fade out
         currentFishBelow.Destroy();
         currentFishBelow = null;
+
+        // Tutorial parts
+        if (GameManager.Instance.IsFishingTutorialEnabled && (currentTutorialState == FishingTutorialState.Fishing2 || currentTutorialState == FishingTutorialState.Fishing3))
+        {
+            StartCoroutine(RespawnFishInTutorial(2));
+        }
+    }
+
+    public IEnumerator RespawnFishInTutorial(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        FishSpawner.Instance.SpawnTutorialFish();
     }
 
     public void OnTutorialNextButtonPressed()
     {
         if (!GameManager.Instance.IsFishingTutorialEnabled) { return; }
-        if (currentTutorialState == FishingTutorialState.Loot)
+
+        if (currentTutorialState == FishingTutorialState.Fishing1)
+        {
+            ChangeTutorialState(FishingTutorialState.Fishing2);
+        }
+        else if (currentTutorialState == FishingTutorialState.Fishing2)
+        {
+            ChangeTutorialState(FishingTutorialState.Fishing3);
+        }
+        else if (currentTutorialState == FishingTutorialState.Loot)
         {
             ChangeTutorialState(FishingTutorialState.Inventory);
         }
@@ -389,28 +429,44 @@ public class FishingGameManager : MonoBehaviour
                 FishingTutorialUIManager.Instance.ShowHookTutorialStepUI();
                 break;
 
-            case FishingTutorialState.Fishing:
-                FishingTutorialUIManager.Instance.ShowFishingTutorialStepUI();
+            case FishingTutorialState.Fishing1:
+                FishingTutorialUIManager.Instance.ShowFishing1TutorialStepUI();
+                break;
+
+            case FishingTutorialState.Fishing2:
+                FishingTutorialUIManager.Instance.ShowFishing2TutorialStepUI();
+                FishingUIManager.Instance.ShowProgressBar();
+                FishingMinigameManager.Instance.ResetMinigameTimes();
+                break;
+
+            case FishingTutorialState.Fishing3:
+                FishingTutorialUIManager.Instance.ShowFishing3TutorialStepUI();
+                FishingUIManager.Instance.ShowProgressBar();
+                FishingMinigameManager.Instance.ResetMinigameTimes();
                 break;
 
             case FishingTutorialState.Loot:
                 FishingTutorialUIManager.Instance.ShowLootTutorialStepUI();
+                FishingUIManager.Instance.ShowProgressBar();
                 FishingUIManager.Instance.ShowLoot(pendingLoot);
                 break;
 
             case FishingTutorialState.Inventory:
                 FishingTutorialUIManager.Instance.ShowInventoryTutorialStepUI();
+                FishingUIManager.Instance.ShowProgressBar();
                 FishingUIManager.Instance.ShowInventoryButton();
                 break;
 
             case FishingTutorialState.Timer:
                 FishingTutorialUIManager.Instance.ShowTimerTutorialStepUI();
+                FishingUIManager.Instance.ShowProgressBar();
                 FishingUIManager.Instance.ShowInventoryButton();
                 FishingUIManager.Instance.ShowTimer();
                 break;
             
             case FishingTutorialState.End:
                 FishingUIManager.Instance.ShowTimer();
+                FishingUIManager.Instance.ShowProgressBar();
                 FishingUIManager.Instance.ShowInventoryButton();
                 FishingUIManager.Instance.AbleInventoryButton();
                 FishingUIManager.Instance.ShowCommandsPanel();
@@ -430,6 +486,7 @@ public class FishingGameManager : MonoBehaviour
                 FishingUIManager.Instance.HideInventoryButton();
                 FishingUIManager.Instance.DisableInventoryButton();
                 FishingUIManager.Instance.HideCommandsPanel();
+                FishingUIManager.Instance.HideProgressBar();
                 break;
 
             case FishingTutorialState.Move:
@@ -448,22 +505,35 @@ public class FishingGameManager : MonoBehaviour
                 FishingTutorialUIManager.Instance.HideHookTutorialStepUI();
                 break;
 
-            case FishingTutorialState.Fishing:
-                FishingTutorialUIManager.Instance.HideFishingTutorialStepUI();
+            case FishingTutorialState.Fishing1:
+                FishingTutorialUIManager.Instance.HideFishing1TutorialStepUI();
+                break;
+
+            case FishingTutorialState.Fishing2:
+                FishingTutorialUIManager.Instance.HideFishing2TutorialStepUI();
+                FishingUIManager.Instance.HideProgressBar();
+                break;
+
+            case FishingTutorialState.Fishing3:
+                FishingTutorialUIManager.Instance.HideFishing3TutorialStepUI();
+                FishingUIManager.Instance.HideProgressBar();
                 break;
 
             case FishingTutorialState.Loot:
                 FishingTutorialUIManager.Instance.HideLootTutorialStepUI();
+                FishingUIManager.Instance.HideProgressBar();
                 FishingUIManager.Instance.HideLoot();
                 break;
 
             case FishingTutorialState.Inventory:
                 FishingTutorialUIManager.Instance.HideInventoryTutorialStepUI();
+                FishingUIManager.Instance.HideProgressBar();
                 FishingUIManager.Instance.HideInventoryButton();
                 break;
             
             case FishingTutorialState.Timer:
                 FishingTutorialUIManager.Instance.HideTimerTutorialStepUI();
+                FishingUIManager.Instance.HideProgressBar();
                 FishingUIManager.Instance.HideInventoryButton();
                 FishingUIManager.Instance.HideTimer();
                 break;

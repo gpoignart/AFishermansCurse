@@ -23,11 +23,13 @@ public class MonsterGameManager : MonoBehaviour
     [SerializeField] private Transform monsterContainer;
     
     // Parameters
-    [SerializeField] private float loseTime = 2f;
+    private float defaultLoseTime = 2f;
+    private float tutorialLoseTime = 10f;
     private float warningDuration = 0.7f;
     private float winMessageDuration = 2f;
 
     // Internal references
+    private float loseTime;
     private float loseTimer;
     private bool isTimerActive;
     private bool isFlashlightActive;
@@ -46,6 +48,7 @@ public class MonsterGameManager : MonoBehaviour
         NoFlashlight1,
         NoFlashlight2,
         FlashlightMonster,
+        Death,
         MonsterRanAway,
         End
     }
@@ -84,6 +87,7 @@ public class MonsterGameManager : MonoBehaviour
             StartCoroutine(MonsterUIManager.Instance.ShowNoiseWarningForSeconds(GameManager.Instance.MonsterApparitionSide, warningDuration));
 
             // Start timer
+            loseTime = defaultLoseTime;
             loseTimer = 0f;
             isTimerActive = true;
 
@@ -150,7 +154,7 @@ public class MonsterGameManager : MonoBehaviour
 
     public void PlayerWin()
     {        
-        if (GameManager.Instance.IsFirstNight && currentTutorialState == MonsterTutorialState.FlashlightMonster)
+        if (GameManager.Instance.IsFirstNight && (currentTutorialState == MonsterTutorialState.FlashlightMonster || currentTutorialState == MonsterTutorialState.Death))
         {
             ChangeTutorialState(MonsterTutorialState.MonsterRanAway);
         }
@@ -172,7 +176,14 @@ public class MonsterGameManager : MonoBehaviour
 
     public void PlayerLose()
     {
-        GameManager.Instance.DeathAgainstMonster();
+        if (GameManager.Instance.IsFirstNight && (currentTutorialState == MonsterTutorialState.FlashlightMonster || currentTutorialState == MonsterTutorialState.Death))
+        {
+            ChangeTutorialState(MonsterTutorialState.Death);
+        }
+        else
+        {
+            GameManager.Instance.DeathAgainstMonster();
+        }
     }
 
 
@@ -223,6 +234,16 @@ public class MonsterGameManager : MonoBehaviour
                 MonsterTutorialUIManager.Instance.ShowFlashlightMonsterTutorialStepUI();
                 FlashlightController.Instance.StartFlashlight();
                 isFlashlightActive = true;
+                isTimerActive = true;
+                break;
+            
+            case MonsterTutorialState.Death:
+                MonsterTutorialUIManager.Instance.ShowDeathTutorialStepUI();
+                loseTime = tutorialLoseTime;
+                loseTimer = 0f;
+                FlashlightController.Instance.StartFlashlight();
+                isFlashlightActive = true;
+                isTimerActive = true;
                 break;
 
             case MonsterTutorialState.MonsterRanAway:
@@ -231,6 +252,7 @@ public class MonsterGameManager : MonoBehaviour
                 break;
             
             case MonsterTutorialState.End:
+                loseTime = defaultLoseTime;
                 MonsterUIManager.Instance.HideTutorialPanel();
                 GameManager.Instance.WinAgainstMonster();
                 break;
@@ -261,8 +283,11 @@ public class MonsterGameManager : MonoBehaviour
                 // Show noise UI
                 MonsterUIManager.Instance.ShowNoiseWarning(GameManager.Instance.MonsterApparitionSide);
                 
-                // No timer & no flashlight
+                // In tutorial, different lose time than normal
+                loseTime = tutorialLoseTime;
                 loseTimer = 0f;
+
+                // No timer & no flashlight for now
                 isTimerActive = false;
                 isFlashlightActive = false;
                 FlashlightController.Instance.HideFlashlightBeam();
@@ -278,6 +303,10 @@ public class MonsterGameManager : MonoBehaviour
 
             case MonsterTutorialState.FlashlightMonster:
                 MonsterTutorialUIManager.Instance.HideFlashlightMonsterTutorialStepUI();
+                break;
+            
+            case MonsterTutorialState.Death:
+                MonsterTutorialUIManager.Instance.HideDeathTutorialStepUI();
                 break;
 
             case MonsterTutorialState.MonsterRanAway:

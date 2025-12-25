@@ -21,5 +21,5 @@ MonoBehaviour:
   nightLogoSprite: {fileID: 21300000, guid: 48a41ad27098b374ebb0da2763f0a01d, type: 3}
   dayFishBubbleColor: {r: 0.30119452, g: 0.61006284, b: 0.38417408, a: 1}
   dayIngredientBubbleColor: {r: 0.30704865, g: 0.72327036, b: 0.6103419, a: 1}
-  nightFishBubbleColor: {r: 0.22955963, g: 0.45911938, b: 0.40039477, a: 1}
-  nightIngredientBubbleColor: {r: 0.16557875, g: 0.57861626, b: 0.54460144, a: 1}
+  nightFishBubbleColor: {r: 0.20808114, g: 0.3962264, b: 0.34756812, a: 1}
+  nightIngredientBubbleColor: {r: 0.14162801, g: 0.48427665, b: 0.45518386, a: 1}

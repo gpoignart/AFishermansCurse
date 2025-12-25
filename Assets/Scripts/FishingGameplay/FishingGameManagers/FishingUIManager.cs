@@ -31,6 +31,9 @@ public class FishingUIManager : MonoBehaviour
     private GameObject dragBar;
 
     [SerializeField]
+    private GameObject progressBar;
+
+    [SerializeField]
     private GameObject commandsPanel;
 
     [SerializeField]
@@ -43,7 +46,7 @@ public class FishingUIManager : MonoBehaviour
     private GameObject loot;
 
     [SerializeField]
-    private GameObject loseFishText;
+    private GameObject loseFish;
 
     [SerializeField]
     private Image lootImage;
@@ -74,7 +77,7 @@ public class FishingUIManager : MonoBehaviour
         hookButton.SetActive(false);
         dragBar.SetActive(false);
         loot.SetActive(false);
-        loseFishText.SetActive(false);
+        loseFish.SetActive(false);
 
         // Initialize backgrounds sprites
         if (GameManager.Instance.CurrentTimeOfDay == GameManager.Instance.TimeOfDayRegistry.daySO)
@@ -144,24 +147,40 @@ public class FishingUIManager : MonoBehaviour
         loot.SetActive(false);
     }
 
-    // Show the loseFishText for duration seconds
-    public IEnumerator ShowLoseFishTextForSeconds(float duration, float fadeDuration)
+    // Show the loseFish for duration seconds
+    public IEnumerator ShowLoseFishForSeconds(float duration, float fadeDuration)
     {
-        loseFishText.SetActive(true);
+        loseFish.SetActive(true);
 
-        yield return StartCoroutine(FadeIn(loseFishText, fadeDuration));
+        yield return StartCoroutine(FadeIn(loseFish, fadeDuration));
 
         yield return new WaitForSeconds(duration);
         
-        yield return StartCoroutine(FadeOut(loseFishText, fadeDuration));
+        yield return StartCoroutine(FadeOut(loseFish, fadeDuration));
+    }
 
-        loseFishText.SetActive(false);
+    // Hide lose fish
+    public void HideLoseFish()
+    {
+        loot.SetActive(false);
     }
 
     // Hide the UI for the fishing state
     public void HideFishingStateUI()
     {
         dragBar.SetActive(false);
+    }
+
+    // Show progress bar
+    public void ShowProgressBar()
+    {
+        progressBar.SetActive(true);
+    }
+
+    // Hide progress bar
+    public void HideProgressBar()
+    {
+        progressBar.SetActive(false);
     }
 
     // Tutorial panel

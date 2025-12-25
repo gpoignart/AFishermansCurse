@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 
 public class MapSelectionUIManager : MonoBehaviour
 {
@@ -14,15 +15,15 @@ public class MapSelectionUIManager : MonoBehaviour
 
     // UI elements
     [SerializeField] private Image backgroundImage;
-    [SerializeField] private Image[] mapButtonImages;
-    [SerializeField] private Transform[] mapBubbleContainers;
-    [SerializeField] private TextMeshProUGUI[] mapButtonTexts;
     [SerializeField] private TextMeshProUGUI dayAndNightCounterText;
     [SerializeField] private TextMeshProUGUI chooseAMapText;
     [SerializeField] private GameObject explanationPanel;
     [SerializeField] private TextMeshProUGUI explanationText;
     [SerializeField] private GameObject explanationNextButton;
     [SerializeField] private CanvasGroup mapSelectionButtons;
+    [SerializeField] private Image[] mapButtonImages;
+    [SerializeField] private Transform[] mapBubbleContainers;
+    [SerializeField] private TextMeshProUGUI[] mapButtonTexts;
     
     // Make this class a singleton
     private void Awake()
@@ -130,10 +131,10 @@ public class MapSelectionUIManager : MonoBehaviour
             }
 
             // Hide unused ingredient bubbles
-            for (int j = ingredientIndex + 1; j <= 2; j++)
+            for (int j = ingredientIndex + 1; j <= 3; j++)
             {
                 Transform unusedBubble = bubble.Find($"IngredientBubble{j}");
-                unusedBubble.gameObject.SetActive(false);
+                if (unusedBubble != null) { unusedBubble.gameObject.SetActive(false); }
             }
         }
     }
@@ -171,5 +172,14 @@ public class MapSelectionUIManager : MonoBehaviour
     public void AbleMapSelectionButtons()
     {
         mapSelectionButtons.interactable = true;
+    }
+
+    public void ChangeMapBubbleContainersOpacity(float opacity)
+    {
+        foreach (Transform bubbleContainer in mapBubbleContainers)
+        {
+            CanvasGroup canvasGroup = bubbleContainer.GetComponent<CanvasGroup>();
+            canvasGroup.alpha = opacity;
+        }
     }
 }

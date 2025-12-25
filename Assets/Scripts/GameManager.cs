@@ -134,7 +134,7 @@ public class GameManager : MonoBehaviour
 
         // Initialize internal references
         InitializeObtainedIngredientsLastDayAndNight();
-        defaultFishingPlayerPosition = new Vector2(3f, 3.3f);
+        defaultFishingPlayerPosition = new Vector2(3f, 3.5f);
         defaultFishingPlayerOrientation = new Vector2(1f, 1f);
 
         // Initialize registers
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
 
         // Initialize attributes
         currentTimeOfDay = TimeOfDayRegistry.daySO;
-        currentMap = MapRegistry.shadowmoonRiverSO; // Default map, for the first day of fishing
+        currentMap = MapRegistry.shadowmoonRiverSO; // Default map, for the first day of fishing (tutorial)
         daysCount = 1;
         nightsCount = 0;
         isFirstDay = true;

@@ -11,8 +11,9 @@ public class MapSelectionGameManager : MonoBehaviour
     private string[] explanationTexts =
     {
         "Here is the global map. At the start of each day and night, you choose where to fish.",
-        "Each location changes with time. Day and night affect which fish can be found. Rarer fish tend to appear after dark.",
-        "Now… choose where you want to fish tonight."
+        "The fish you can catch depend on both the location and the time of day.",
+        "Next to each location, you can see the fish that can appear there, along with the ingredients you can collect from them.",
+        "Now, choose where you want to fish."
     };
     private int indexOfExplanation;
 
@@ -46,7 +47,8 @@ public class MapSelectionGameManager : MonoBehaviour
             {
                 MapSelectionUIManager.Instance.UpdateMapButton(i, GameManager.Instance.MapRegistry.AllMaps[i].mapName, GameManager.Instance.MapRegistry.AllMaps[i].nightLogoSprite);   
             }
-        }
+        }    
+        MapSelectionUIManager.Instance.AbleMapSelectionButtons();
 
         // Update ingredient bubbles
         for (int i = 0; i < GameManager.Instance.MapRegistry.AllMaps.Length; i++)
@@ -54,12 +56,14 @@ public class MapSelectionGameManager : MonoBehaviour
             FishSO[] fishes = GameManager.Instance.FishRegistry.GetFishFromMapAndTime(GameManager.Instance.MapRegistry.AllMaps[i], GameManager.Instance.CurrentTimeOfDay);
             MapSelectionUIManager.Instance.UpdateBubbles(i, fishes);
         }
+        MapSelectionUIManager.Instance.ChangeMapBubbleContainersOpacity(1f);
 
         // Gives explanations the first time we enter the map
         if (GameManager.Instance.IsMapSelectionExplanationEnabled)
         {
             indexOfExplanation = 0;
             MapSelectionUIManager.Instance.DisableMapSelectionButtons();
+            MapSelectionUIManager.Instance.ChangeMapBubbleContainersOpacity(0.5f);
             MapSelectionUIManager.Instance.HideChooseAMapText();
             MapSelectionUIManager.Instance.ShowExplanationPanel();
             MapSelectionUIManager.Instance.UpdateExplanationText(explanationTexts[indexOfExplanation]);
@@ -120,6 +124,7 @@ public class MapSelectionGameManager : MonoBehaviour
         if (indexOfExplanation == explanationTexts.Length - 1)
         {
             MapSelectionUIManager.Instance.AbleMapSelectionButtons();
+            MapSelectionUIManager.Instance.ChangeMapBubbleContainersOpacity(1f);
             MapSelectionUIManager.Instance.HideExplanationNextButton();
             GameManager.Instance.EndOfMapSelectionExplanation();
         }

@@ -19,7 +19,7 @@ public class FlashlightController : MonoBehaviour
 
     // Internal attributes
     private RectTransform beamParent;
-    private float camStartX;
+    private float camDefaultX;
 
     private void Awake()
     {
@@ -29,6 +29,8 @@ public class FlashlightController : MonoBehaviour
             return;
         }
         Instance = this;
+
+        camDefaultX = cam.localPosition.x;
     }
 
     public void StartFlashlight()
@@ -36,13 +38,21 @@ public class FlashlightController : MonoBehaviour
         StartCoroutine(CenterMouseCoroutine());
         Cursor.visible = false;
 
+        // Setup flashlight visuals
         beam.sizeDelta = GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamSize;
         timerRing.rectTransform.sizeDelta = GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamTimerSize;
+        beam.localPosition = Vector2.zero;
         ShowFlashlightBeam();
 
         beamParent = beam.parent as RectTransform;
-        camStartX = cam.localPosition.x;
-        
+
+        // Reset camera to center
+        cam.localPosition = new Vector3(
+            camDefaultX,
+            cam.localPosition.y,
+            cam.localPosition.z
+        );
+
         ResetTimerRing();
     }
 
@@ -111,7 +121,7 @@ public class FlashlightController : MonoBehaviour
         float mouse01 = Mathf.Clamp01(Input.mousePosition.x / Screen.width);
         float normalized = (mouse01 - 0.5f) * 2f;   // -1 to +1
 
-        float targetX = camStartX + normalized * maxPan;
+        float targetX = camDefaultX + normalized * maxPan;
 
         cam.localPosition = Vector3.Lerp(
             cam.localPosition,

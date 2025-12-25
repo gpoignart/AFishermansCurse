@@ -18,9 +18,11 @@ public class MonsterTutorialUIManager : MonoBehaviour
     private string noFlashlightText2 =
         "You are being watched by a monster. You clearly heard its scream to your right.";
     private string flashlightMonsterText =
-        "Hurry, move your flashlight with your mouse towards him to blind him and make him run away.";
+        "Hurry! Before the ring around the beam empties, grab your mouse and move your flashlight towards the monster to make him run away.";
+    private string deathText =
+        "You can't let yourself be fooled by this monster now. Try again!";
     private string monsterRanAwayText =
-        "The monster left. Who knows what would have happened if you had taken longer to react? And who knows if other monsters won't come in the coming nights?";
+        "The monster left. He seemed interested in your fishing catch. You hope no other monsters will try to steal your ingredients in the coming nights.";
     
     // Make this class a singleton
     private void Awake()
@@ -49,6 +51,12 @@ public class MonsterTutorialUIManager : MonoBehaviour
         tutorialNextButton.SetActive(false);
     }
 
+    public void ShowDeathTutorialStepUI()
+    {
+        tutorialText.text = deathText;
+        tutorialNextButton.SetActive(false);
+    }
+
     public void ShowMonsterRanAwayTutorialStepUI()
     {
         tutorialText.text = monsterRanAwayText;
@@ -65,6 +73,12 @@ public class MonsterTutorialUIManager : MonoBehaviour
     }
 
     public void HideFlashlightMonsterTutorialStepUI()
+    {
+        tutorialText.text = "";
+        tutorialNextButton.SetActive(true);
+    }
+
+    public void HideDeathTutorialStepUI()
     {
         tutorialText.text = "";
         tutorialNextButton.SetActive(true);

@@ -111,6 +111,12 @@ public class FishingMinigameManager : MonoBehaviour
         FishingMinigameUIManager.Instance.UpdateProgressBar(timeInsideZone, difficulty.requiredTimeInsideZone, timeOutsideZone, difficulty.allowedTimeOutsideZone);
     }
 
+    public void ResetMinigameTimes()
+    {
+        timeInsideZone = 0f;
+        timeOutsideZone = 0f;
+    }
+
     private Vector2 GetRandomSafeZonePosition()
     {
         float randomX = Random.Range(safeZoneLeftBoundaryPosition.x, safeZoneRightBoundaryPosition.x);

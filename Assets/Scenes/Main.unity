@@ -936,7 +936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -1592,7 +1592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2094,7 +2094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2361,7 +2361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2608,6 +2608,8 @@ MonoBehaviour:
     introductionSO: {fileID: 11400000, guid: a535184e6a8ee8941808b8bd511538ae, type: 2}
     recipeBookObtentionSO: {fileID: 11400000, guid: 3d24d8b04183b844096d2ae088c0777d, type: 2}
     endSO: {fileID: 11400000, guid: 6341b184f90a2b2429f04c698204bef6, type: 2}
+  monsterSpawnChance: 60
+  monsterSpawnInterval: 10
 --- !u!1 &1457813405
 GameObject:
   m_ObjectHideFlags: 0

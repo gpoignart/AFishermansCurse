@@ -21,10 +21,14 @@ public class FishingTutorialUIManager : MonoBehaviour
         "You notice a fish in the water.\nPosition your fishing rod directly above it to start fishing.";
     private string hookText =
         "Press Space or click the hook button to hook the fish.";
-    private string fishingText =
-        "The fish is resisting.\nHold the Spacebar to move the yellow bar to the right, release it to move left.\nKeep the yellow bar inside the green zone as long as possible to catch the fish. Staying outside for too long will cause it to escape.";
+    private string fishing1Text =
+        "The fish is resisting.\nHold the Spacebar to move the yellow bar to the right, and release it to move it back to the left.\nTake a moment to get used to the yellow bar movement, then click NEXT.";
+    private string fishing2Text =
+        "You can now see your progress bar.\nKeeping the yellow bar in the green zone fills the green side on the right, while leaving it fills the red side on the left. Fill the green side to catch the fish, but beware: if the red side fills first, the fish escapes.\nExperiment a bit before clicking NEXT.";
+    private string fishing3Text =
+        "Now, try to catch the next fish.";
     private string lootText =
-        "By catching this fish, you collect a special ingredient.\nYour loot appears in the bottom right corner.\nDifferent fish provide different ingredients.";
+        "By catching a fish, you collect a special ingredient.\nDifferent fish provide different ingredients.";
     private string inventoryText =
         "Ingredients gathered during your journey may prove essential.\nYou can review your collected ingredients and current equipment in your inventory, accessible at the end of the tutorial.";
     private string timerText =
@@ -66,9 +70,21 @@ public class FishingTutorialUIManager : MonoBehaviour
         tutorialNextButton.SetActive(false);
     }
 
-    public void ShowFishingTutorialStepUI()
+    public void ShowFishing1TutorialStepUI()
     {
-        tutorialText.text = fishingText;
+        tutorialText.text = fishing1Text;
+        tutorialNextButton.SetActive(true);
+    }
+
+    public void ShowFishing2TutorialStepUI()
+    {
+        tutorialText.text = fishing2Text;
+        tutorialNextButton.SetActive(true);
+    }
+
+    public void ShowFishing3TutorialStepUI()
+    {
+        tutorialText.text = fishing3Text;
         tutorialNextButton.SetActive(false);
     }
 
@@ -110,14 +126,26 @@ public class FishingTutorialUIManager : MonoBehaviour
         tutorialText.text = "";         
     }
 
-    public void HideFishingTutorialStepUI()
+    public void HideFishing1TutorialStepUI()
+    {
+        tutorialText.text = "";        
+        tutorialNextButton.SetActive(false); 
+    }
+
+    public void HideFishing2TutorialStepUI()
+    {
+        tutorialText.text = "";
+        tutorialNextButton.SetActive(false);
+    }
+
+    public void HideFishing3TutorialStepUI()
     {
         tutorialText.text = "";         
     }
 
     public void HideLootTutorialStepUI()
     {
-        tutorialText.text = "";  
+        tutorialText.text = "";
         tutorialNextButton.SetActive(false);    
     }
 
