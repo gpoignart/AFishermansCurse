@@ -43,17 +43,7 @@ public class EventManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (isTyping)
-            {
-                // Skip actual text
-                StopCoroutine(typingCoroutine);
-                text.text = GameManager.Instance.CurrentEvent.eventLines[indexOfText].text;
-                isTyping = false;
-            }
-            else
-            {
-                OnNextButtonPressed();
-            }
+            OnNextButtonPressed();
         }
     }
 
@@ -82,15 +72,25 @@ public class EventManager : MonoBehaviour
     // Called when the player clicks next button or presses Return
     public void OnNextButtonPressed()
     {
-        indexOfText++;
-
-        if (indexOfText >= numberOfLines)
+        if (isTyping)
         {
-            GameManager.Instance.ExitEvent();
+            // Skip actual text
+            StopCoroutine(typingCoroutine);
+            text.text = GameManager.Instance.CurrentEvent.eventLines[indexOfText].text;
+            isTyping = false;
         }
         else
         {
-            ShowText(indexOfText);
+            indexOfText++;
+
+            if (indexOfText >= numberOfLines)
+            {
+                GameManager.Instance.ExitEvent();
+            }
+            else
+            {
+                ShowText(indexOfText);
+            }
         }
     }
 }
