@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     // Sprites
     [SerializeField] private Sprite playerWaitingSprite;
+    [SerializeField] private Sprite playerFishingSprite;
     [SerializeField] private Sprite playerCatchingSprite;
     [SerializeField] private Sprite playerScaredSprite;
     [SerializeField] private Sprite playerLoseFishSprite;
@@ -75,6 +76,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnWaiting()
+    {
+        // Destroy the fish caught before changing sprite
+        if (fishCaught != null) { Destroy(fishCaught); }
+        
+        spriteRenderer.sprite = playerWaitingSprite;        
+    }
+
+    public void OnFishing()
+    {
+        // Destroy the fish caught before changing sprite
+        if (fishCaught != null) { Destroy(fishCaught); }
+
+        spriteRenderer.sprite = playerFishingSprite;
+    }
+
     public IEnumerator OnCatchAnimation(FishSO fishCaughtSO, float duration)
     {
         spriteRenderer.sprite = playerCatchingSprite;
@@ -95,7 +112,7 @@ public class PlayerController : MonoBehaviour
         // Destroy the fish
         Destroy(fishCaught);
         fishCaught = null;
-        spriteRenderer.sprite = playerWaitingSprite;
+        FishingGameManager.Instance.OnEndAnimation();
     }
 
     public IEnumerator OnLoseFishAnimation(float duration)
@@ -106,6 +123,8 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.sprite = playerLoseFishSprite;
         yield return new WaitForSeconds(duration);
         spriteRenderer.sprite = playerWaitingSprite;
+        
+        FishingGameManager.Instance.OnEndAnimation();
     }
 
     public void OnMonsterApproach()

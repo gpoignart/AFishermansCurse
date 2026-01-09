@@ -2599,6 +2599,8 @@ MonoBehaviour:
     mysticFishSO: {fileID: 11400000, guid: 9e4ddc93d3594814fb84e8d588e39489, type: 2}
   monsterRegistry:
     theEyesSO: {fileID: 11400000, guid: 39f29b9a112034c4e807b157b6248f34, type: 2}
+    theOffendedSO: {fileID: 11400000, guid: 23abc082fad5c5248a514ed7669c912c, type: 2}
+    theJesterSO: {fileID: 11400000, guid: 74abd86a4054c00478da2d35ec84c11e, type: 2}
   transitionRegistry:
     endDaySO: {fileID: 11400000, guid: 413538ab5894e934ba589c52dd62f857, type: 2}
     endNightSO: {fileID: 11400000, guid: a2b0fd5f73fee3f47a56fd6798d6c673, type: 2}
@@ -2608,8 +2610,6 @@ MonoBehaviour:
     introductionSO: {fileID: 11400000, guid: a535184e6a8ee8941808b8bd511538ae, type: 2}
     recipeBookObtentionSO: {fileID: 11400000, guid: 3d24d8b04183b844096d2ae088c0777d, type: 2}
     endSO: {fileID: 11400000, guid: 6341b184f90a2b2429f04c698204bef6, type: 2}
-  monsterSpawnChance: 60
-  monsterSpawnInterval: 10
 --- !u!1 &1457813405
 GameObject:
   m_ObjectHideFlags: 0

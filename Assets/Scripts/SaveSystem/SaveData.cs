@@ -16,6 +16,7 @@ public class SaveData
     public List<IngredientSaveData> ingredients = new();
     public List<PlayerEquipmentSaveData> playerEquipments = new();
     public List<RecipeSaveData> recipes = new();
+    public List<MonsterSaveData> monsters = new();
 }
 
 [System.Serializable]
@@ -37,4 +38,11 @@ public class RecipeSaveData
 {
     public string recipeName;
     public bool hasAlreadyBeenUsed;
+}
+
+[System.Serializable]
+public class MonsterSaveData
+{
+    public string monsterName;
+    public bool hasBeenEncountered;
 }

@@ -85,8 +85,8 @@ public class GameManager : MonoBehaviour
     public bool IsGameEnded => isGameEnded;
 
     // Internal parameters
-    [SerializeField] private int monsterSpawnChance = 60;
-    [SerializeField] private float monsterSpawnInterval = 10f;
+    private int monsterSpawnChance = 60;
+    private float monsterSpawnInterval = 10f;
 
     // Internal attributes
     private bool canChangeView = true;
@@ -94,6 +94,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<IngredientSO, int> obtainedIngredientLastDayAndNight;
     private Vector2 defaultFishingPlayerPosition;
     private Vector2 defaultFishingPlayerOrientation;
+    private bool isTimerPaused; // indicate if the timer is paused
 
     // Internal game views
     private enum GameView
@@ -189,12 +190,12 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameView.FishingView:
-                if (!IsFishingTutorialEnabled) { UpdateTimerAndCheckIfOut(); } // No timer during fishing tutorial
+                if (!IsFishingTutorialEnabled && !isTimerPaused) { UpdateTimerAndCheckIfOut(); } // No timer during fishing tutorial or when timer paused
                 if (CurrentTimeOfDay == TimeOfDayRegistry.nightSO) { MonsterSpawnLoop(); }
                 break;
 
             case GameView.MonsterView:
-                if (!IsFirstNight) { UpdateTimerAndCheckIfOut(); } // No timer during monster tutorial
+                if (!IsFirstNight && !isTimerPaused) { UpdateTimerAndCheckIfOut(); } // No timer during monster tutorial or when timer paused
                 break;
             
             case GameView.EndScreenView:
@@ -233,7 +234,6 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameView.MonsterView:
-                Cursor.lockState = CursorLockMode.None; // In case exit when locked
                 Cursor.visible = true;
                 break;
 
@@ -290,8 +290,7 @@ public class GameManager : MonoBehaviour
 
             case GameView.FishingView:
                 SceneManager.LoadScene("FishingView");
-                if (currentTimeOfDay == TimeOfDayRegistry.daySO)
-                { AudioManager.Instance.PlayFishingDayMusic(); }
+                if (currentTimeOfDay == TimeOfDayRegistry.daySO) { AudioManager.Instance.PlayFishingDayMusic(); }
                 else { AudioManager.Instance.PlayFishingNightMusic(); }
                 break;
 
@@ -483,6 +482,18 @@ public class GameManager : MonoBehaviour
 
         // The next day start
         SaveAndChangeCurrentTimeOfDay();
+    }
+
+    // Called if we want to pause timer
+    public void PauseTimer()
+    {
+        isTimerPaused = true;
+    }
+
+    // Called to resume time
+    public void ResumeTimer()
+    {
+        isTimerPaused = false;
     }
 
     // Called when the time is out, we exit the fishing/monster view and return to the map selection
@@ -729,6 +740,14 @@ public class GameManager : MonoBehaviour
                 hasAlreadyBeenUsed = r.hasAlreadyBeenUsed
             })
             .ToList();
+        
+        data.monsters = monsterRegistry.AllMonsters
+            .Select(m => new MonsterSaveData
+            {
+                monsterName = m.monsterName,
+                hasBeenEncountered = m.hasBeenEncountered
+            })
+            .ToList();
 
         SaveSystem.Save(data);
     }
@@ -772,6 +791,12 @@ public class GameManager : MonoBehaviour
         {
             RecipeSO recipe = recipeRegistry.GetByName(recipeData.recipeName);
             recipe.hasAlreadyBeenUsed = recipeData.hasAlreadyBeenUsed;
+        }
+
+        foreach (var monsterData in data.monsters)
+        {
+            MonsterSO monster = monsterRegistry.GetByName(monsterData.monsterName);
+            monster.hasBeenEncountered = monsterData.hasBeenEncountered;
         }
     }
 }

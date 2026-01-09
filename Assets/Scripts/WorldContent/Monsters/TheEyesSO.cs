@@ -10,5 +10,9 @@ public class TheEyesSO : MonsterSO
     public override void Initialize()
     {
         this.monsterName = "TheEyes";
+        this.loseTime = 3f;
+        this.isApparitionReversed = false;
+        this.isWarningFake = false;
+        this.hasBeenEncountered = false;
     }
 }

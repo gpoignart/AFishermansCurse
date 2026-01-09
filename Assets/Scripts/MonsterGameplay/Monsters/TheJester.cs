@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class TheEyes : Monster
+public class TheJester : Monster
 {
-    public TheEyesSO theEyesSO;
+    public TheJesterSO theJesterSO;
     
     protected override void Start()
     {
@@ -11,29 +11,28 @@ public class TheEyes : Monster
         base.Start();
 
         // Assign the right monsterSO
-        theEyesSO = GameManager.Instance.MonsterRegistry.theEyesSO;
+        theJesterSO = GameManager.Instance.MonsterRegistry.theJesterSO;
 
-        // Eyes appear immediately but very faint
-        spriteRenderer.sprite = theEyesSO.eyesNormal;
+        // Sprite
+        spriteRenderer.sprite = theJesterSO.normalSprite;
         spriteRenderer.color = new Color(1f, 1f, 1f, 0.05f);
     }
 
     protected override IEnumerator MonsterTimeOut()
     {
         MonsterGameManager.Instance.PlayerLose();
-
         yield return null;
     }
 
     protected override IEnumerator MonsterHit()
     {
         yield return StartCoroutine(MonsterHitReaction());
-
+        
         // After the reaction
         MonsterGameManager.Instance.PlayerWin();
     }
 
-    private IEnumerator MonsterHitReaction()
+    public IEnumerator MonsterHitReaction()
     {
         AudioManager.Instance.PlayMonsterRanAwaySFX();
 
@@ -47,8 +46,8 @@ public class TheEyes : Monster
             yield return null;
         }
 
-        // Switch sprite → squint eyes
-        spriteRenderer.sprite = theEyesSO.eyesSquint;
+        // Switch sprite
+        spriteRenderer.sprite = theJesterSO.caughtSprite;
         yield return new WaitForSeconds(0.5f);
 
         // Fade out

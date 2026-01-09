@@ -5,7 +5,7 @@ public class FlashlightSO : PlayerEquipmentSO
 {
     public Vector2 beamSize;
     public Vector2 beamTimerSize;
-    public float beamFollowSpeed;
+    public float beamSpeed;
 
     public override void Initialize()
     {
@@ -19,7 +19,7 @@ public class FlashlightSO : PlayerEquipmentSO
         };
         this.beamSize = new Vector2(100f, 100f);
         this.beamTimerSize = beamSize * 1.17f;
-        this.beamFollowSpeed = 1f;
+        this.beamSpeed = 500f;
     }
 
     public override void UpgradeTo(int newLevel)
@@ -34,7 +34,7 @@ public class FlashlightSO : PlayerEquipmentSO
         else if (this.level == 3)
         {
             // Increase the speed of the beam
-            this.beamFollowSpeed *= 4f;
+            this.beamSpeed *= 2f;
         }
     }
 }

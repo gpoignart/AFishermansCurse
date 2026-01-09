@@ -13,13 +13,18 @@ public class FlashlightController : MonoBehaviour
     [SerializeField] private Color endColorTimerRing;
 
     // Parameters
-    private float hitRadius = 150f; // Distance threshold for hit
+    private float hitRadius = 130f; // Distance threshold for hit
     private float maxPan = 6f; // How far camera pans left/right
-    private float followSpeed = 5f; // Camera movement smoothness
 
     // Internal attributes
     private RectTransform beamParent;
     private float camDefaultX;
+    private Vector2 beamPosition;
+    private Vector2 beamLimits;
+
+    // Read-only public attribute
+    public RectTransform BeamParent => beamParent;
+    public Vector2 BeamPosition => beamPosition;
 
     private void Awake()
     {
@@ -35,16 +40,20 @@ public class FlashlightController : MonoBehaviour
 
     public void StartFlashlight()
     {
-        StartCoroutine(CenterMouseCoroutine());
+        // Setup flashlight visuals
         Cursor.visible = false;
 
-        // Setup flashlight visuals
         beam.sizeDelta = GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamSize;
         timerRing.rectTransform.sizeDelta = GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamTimerSize;
-        beam.localPosition = Vector2.zero;
-        ShowFlashlightBeam();
 
         beamParent = beam.parent as RectTransform;
+
+        beamLimits = beamParent.rect.size * 0.5f;
+
+        beamPosition = Vector2.zero;
+        beam.localPosition = beamPosition;
+
+        ShowFlashlightBeam();
 
         // Reset camera to center
         cam.localPosition = new Vector3(
@@ -56,11 +65,11 @@ public class FlashlightController : MonoBehaviour
         ResetTimerRing();
     }
 
-    public void UpdateFlashlight(float loseTimer, float loseTime)
+    public void UpdateFlashlight(float loseTimer, float loseTime, bool isChecking)
     {
         UpdateBeamPosition();
         UpdateCameraPan();
-        CheckHitMonster();
+        if (isChecking) { CheckHitMonster(); }
         UpdateTimerRing(loseTimer, loseTime);
     }
 
@@ -89,44 +98,45 @@ public class FlashlightController : MonoBehaviour
         beam.gameObject.SetActive(false);
     }
 
-    private IEnumerator CenterMouseCoroutine()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        yield return null;
-        Cursor.lockState = CursorLockMode.None;
-    }
-
     // Beam follows mouse inside the UI canvas
     private void UpdateBeamPosition()
     {
-        Vector2 targetPos;
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            beamParent,
-            Input.mousePosition,
-            Camera.main,
-            out targetPos
-        );
+        Vector2 input = new Vector2(x, y);
+
+        beamPosition += input
+            * GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamSpeed
+            * Time.deltaTime;
+
+        beamPosition.x = Mathf.Clamp(beamPosition.x, -beamLimits.x, beamLimits.x);
+        beamPosition.y = Mathf.Clamp(beamPosition.y, -beamLimits.y, beamLimits.y);
 
         beam.localPosition = Vector2.Lerp(
             beam.localPosition,
-            targetPos,
-            Time.deltaTime * GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamFollowSpeed
+            beamPosition,
+            Time.deltaTime * GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamSpeed
         );
     }
 
-    // Camera pans horizontally based on mouse X
+    // Camera pans horizontally based on the flashlight beam movements
     private void UpdateCameraPan()
     {
-        float mouse01 = Mathf.Clamp01(Input.mousePosition.x / Screen.width);
-        float normalized = (mouse01 - 0.5f) * 2f;   // -1 to +1
+        float normalizedX = Mathf.InverseLerp(
+            -beamLimits.x,
+            beamLimits.x,
+            beam.localPosition.x
+        );
 
-        float targetX = camDefaultX + normalized * maxPan;
+        float centered = (normalizedX - 0.5f) * 2f;
+
+        float targetX = camDefaultX + centered * maxPan;
 
         cam.localPosition = Vector3.Lerp(
             cam.localPosition,
             new Vector3(targetX, cam.localPosition.y, cam.localPosition.z),
-            Time.deltaTime * followSpeed
+            Time.deltaTime * GameManager.Instance.PlayerEquipmentRegistry.flashlightSO.beamSpeed
         );
     }
 
@@ -134,9 +144,11 @@ public class FlashlightController : MonoBehaviour
     private void CheckHitMonster()
     {
         if (MonsterGameManager.Instance.CurrentMonsterObj == null) { return; }
-        
+
         // Convert monster world position → UI space
-        Vector2 screenPos = Camera.main.WorldToScreenPoint(MonsterGameManager.Instance.CurrentMonsterObj.transform.position);
+        Vector2 screenPos = Camera.main.WorldToScreenPoint(
+            MonsterGameManager.Instance.CurrentMonsterObj.transform.position
+        );
 
         Vector2 monsterUIpos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -150,7 +162,9 @@ public class FlashlightController : MonoBehaviour
 
         if (distance < hitRadius)
         {
-            MonsterGameManager.Instance.CurrentMonsterObj.GetComponent<Monster>().HitByFlashlight();
+            MonsterGameManager.Instance.CurrentMonsterObj
+                .GetComponent<Monster>()
+                .HitByFlashlight();
         }
     }
 }

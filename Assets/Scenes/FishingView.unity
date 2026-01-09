@@ -1500,6 +1500,7 @@ MonoBehaviour:
   fishCaughtAnchor: {fileID: 339534582}
   fishCaughtPrefab: {fileID: 5829279136298351726, guid: d56009884ebf3b4449877a22bca9693c, type: 3}
   playerWaitingSprite: {fileID: 21300000, guid: b0c0311925cb81e46903f1f711cb6829, type: 3}
+  playerFishingSprite: {fileID: 21300000, guid: 7b9feb4e459c0804fbf44bb66804594a, type: 3}
   playerCatchingSprite: {fileID: 21300000, guid: f48a770d5f84ef5468c0cedc5eef48ee, type: 3}
   playerScaredSprite: {fileID: 21300000, guid: bd4905b3a2f568042b193d281dfdd528, type: 3}
   playerLoseFishSprite: {fileID: 21300000, guid: 6fd35650fa3e59240b1ec3321b65a19e, type: 3}
@@ -1590,7 +1591,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 516, y: -446}
+  m_AnchoredPosition: {x: 604, y: -446}
   m_SizeDelta: {x: -1659.89, y: -950.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &618042942

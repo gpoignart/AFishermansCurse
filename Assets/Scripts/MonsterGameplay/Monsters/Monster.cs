@@ -13,24 +13,26 @@ public abstract class Monster : MonoBehaviour
         isHit = false;
     }
 
-    // Called by the flashlight controller when hit the monster
-    public void HitByFlashlight()
+    // Will be called by the flashlight controller
+    public virtual void HitByFlashlight()
     {
-        if (!isHit)
-        {
-            isHit = true;
-            MonsterGameManager.Instance.StopMonsterTimer();
-            StartCoroutine(PlayMonsterReaction());
-            AudioManager.Instance.PlayMonsterRanAwaySFX();
-        }
+        if (isHit) return;
+
+        isHit = true;
+        MonsterGameManager.Instance.StopMonsterTimer();
+        StartCoroutine(MonsterHit());
     }
 
-    public IEnumerator PlayMonsterReaction()
+    // Will be called by the game manager
+    public void FlashlightTimeOut()
     {
-        yield return StartCoroutine(MonsterReaction()); // Wait the end of monster reaction
-        MonsterGameManager.Instance.PlayerWin();
+        MonsterGameManager.Instance.StopMonsterTimer();
+        StartCoroutine(MonsterTimeOut());
     }
 
-    // Must be implemented by all childs
-    protected abstract IEnumerator MonsterReaction();
+    // Must be implemented by all child
+    protected abstract IEnumerator MonsterHit();
+
+    // Must be implemented by all child
+    protected abstract IEnumerator MonsterTimeOut();
 }

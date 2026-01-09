@@ -12,8 +12,7 @@ public class MapSelectionGameManager : MonoBehaviour
     {
         "Here is the global map. At the start of each day and night, you choose where to fish.",
         "The fish you can catch depend on both the location and the time of day.",
-        "Next to each location, you can see the fish that can appear there, along with the ingredients you can collect from them.",
-        "Now, choose where you want to fish."
+        "Next to each location, you can see the fish that can appear there, along with the ingredients you can collect from them."
     };
     private int indexOfExplanation;
 
@@ -117,17 +116,20 @@ public class MapSelectionGameManager : MonoBehaviour
     // Called when the player clicks explanation next button
     public void OnExplanationNextButtonPressed()
     {
-        indexOfExplanation ++;
-        MapSelectionUIManager.Instance.UpdateExplanationText(explanationTexts[indexOfExplanation]);
-
-        // If last explanation, all others buttons availables, and we hide the next button
+        AudioManager.Instance.PlayPressingButtonSFX();
+        
+        // If that was the last explanation, all others buttons availables, and we hide the explanation panel
         if (indexOfExplanation == explanationTexts.Length - 1)
         {
             MapSelectionUIManager.Instance.AbleMapSelectionButtons();
             MapSelectionUIManager.Instance.ChangeMapBubbleContainersOpacity(1f);
-            MapSelectionUIManager.Instance.HideExplanationNextButton();
+            MapSelectionUIManager.Instance.HideExplanationPanel();
+            MapSelectionUIManager.Instance.ShowChooseAMapText();
             GameManager.Instance.EndOfMapSelectionExplanation();
+            return;
         }
-        AudioManager.Instance.PlayPressingButtonSFX();
+
+        indexOfExplanation ++;
+        MapSelectionUIManager.Instance.UpdateExplanationText(explanationTexts[indexOfExplanation]);
     }
 }

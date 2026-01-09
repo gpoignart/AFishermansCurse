@@ -7,6 +7,7 @@ public class MonsterUIManager : MonoBehaviour
 
     // Noise warning UI
     [SerializeField] private RectTransform noiseWarningUI;
+    [SerializeField] private RectTransform fakeNoiseWarningUI;
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private GameObject spotTheMonsterText;
     [SerializeField] private GameObject monsterRanAwayText;
@@ -25,44 +26,48 @@ public class MonsterUIManager : MonoBehaviour
     }
 
     // Noise warning
-    public void ShowNoiseWarning(int side)
+    public void ShowNoiseWarning(int side, bool fake = false)
     {
-        if (noiseWarningUI == null) return;
-
-        noiseWarningUI.gameObject.SetActive(true);
-
         float marginX = 180f;
         float marginY = 150f;
+
+        RectTransform currentNoiseWarningUI;
+
+        if (!fake) { currentNoiseWarningUI = noiseWarningUI; }
+        else { currentNoiseWarningUI = fakeNoiseWarningUI; }
+
+        currentNoiseWarningUI.gameObject.SetActive(true);
         
         // LEFT
         if (side == 0)
         {
-            noiseWarningUI.anchorMin = new Vector2(0f, 0.5f);
-            noiseWarningUI.anchorMax = new Vector2(0f, 0.5f);
-            noiseWarningUI.anchoredPosition = new Vector2(marginX, marginY);
+            currentNoiseWarningUI.anchorMin = new Vector2(0f, 0.5f);
+            currentNoiseWarningUI.anchorMax = new Vector2(0f, 0.5f);
+            currentNoiseWarningUI.anchoredPosition = new Vector2(marginX, marginY);
         }
         // RIGHT
         else 
         {
-            noiseWarningUI.anchorMin = new Vector2(1f, 0.5f);
-            noiseWarningUI.anchorMax = new Vector2(1f, 0.5f);
-            noiseWarningUI.anchoredPosition = new Vector2(-marginX, marginY);
+            currentNoiseWarningUI.anchorMin = new Vector2(1f, 0.5f);
+            currentNoiseWarningUI.anchorMax = new Vector2(1f, 0.5f);
+            currentNoiseWarningUI.anchoredPosition = new Vector2(-marginX, marginY);
         }
     }
 
-    public IEnumerator ShowNoiseWarningForSeconds(int side, float duration)
+    public IEnumerator ShowNoiseWarningForSeconds(int side, float duration, bool fake = false)
     {
-        ShowNoiseWarning(side);
+        ShowNoiseWarning(side, fake);
 
         StopAllCoroutines();
         yield return new WaitForSeconds(duration);
 
-        HideNoiseWarning();
+        HideNoiseWarning(fake);
     }
 
-    public void HideNoiseWarning()
+    public void HideNoiseWarning(bool fake = false)
     {
-        if (noiseWarningUI != null) { noiseWarningUI.gameObject.SetActive(false); }
+        if (!fake) { noiseWarningUI.gameObject.SetActive(false); }
+        else { fakeNoiseWarningUI.gameObject.SetActive(false); }
     }
 
     // Spot the monster text

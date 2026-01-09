@@ -19,7 +19,6 @@ public class MapSelectionUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI chooseAMapText;
     [SerializeField] private GameObject explanationPanel;
     [SerializeField] private TextMeshProUGUI explanationText;
-    [SerializeField] private GameObject explanationNextButton;
     [SerializeField] private CanvasGroup mapSelectionButtons;
     [SerializeField] private Image[] mapButtonImages;
     [SerializeField] private Transform[] mapBubbleContainers;
@@ -153,15 +152,15 @@ public class MapSelectionUIManager : MonoBehaviour
     {
         explanationPanel.SetActive(false);   
     }
-    
+
+    public void ShowChooseAMapText()
+    {
+        chooseAMapText.gameObject.SetActive(true);
+    }
+
     public void HideChooseAMapText()
     {
         chooseAMapText.gameObject.SetActive(false);
-    }
-
-    public void HideExplanationNextButton()
-    {
-        explanationNextButton.SetActive(false);
     }
 
     public void DisableMapSelectionButtons()

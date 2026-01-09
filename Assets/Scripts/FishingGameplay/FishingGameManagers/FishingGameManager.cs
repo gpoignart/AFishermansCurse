@@ -8,13 +8,14 @@ public class FishingGameManager : MonoBehaviour
     public static FishingGameManager Instance { get; private set; }
 
     // Internal states
-    private enum FishingGameState
+    public enum FishingGameState
     {
         Moving,
         Hooking,
         Fishing
     }
     private FishingGameState currentState;
+    public FishingGameState CurrentState =>  currentState; // Read-only
 
     // Internal references
     private Fish currentFishBelow = null;
@@ -277,6 +278,18 @@ public class FishingGameManager : MonoBehaviour
         }
     }
 
+    public void OnEndAnimation()
+    {
+        if (currentState == FishingGameState.Fishing)
+        {
+            PlayerController.Instance.OnFishing();
+        }
+        else
+        {
+            PlayerController.Instance.OnWaiting();
+        }
+    }
+
     public IEnumerator RespawnFishInTutorial(float duration)
     {
         yield return new WaitForSeconds(duration);
@@ -357,6 +370,7 @@ public class FishingGameManager : MonoBehaviour
             case FishingGameState.Fishing:
                 FishingUIManager.Instance.ShowFishingStateUI();
                 FishingMinigameManager.Instance.StartMiniGame(currentFishBelow);
+                PlayerController.Instance.OnFishing();
                 AudioManager.Instance.PlayFishingRodPullSFX();
                 Debug.Log("Entering Fishing state");
                 break;
