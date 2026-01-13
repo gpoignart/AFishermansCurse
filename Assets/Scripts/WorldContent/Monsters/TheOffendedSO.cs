@@ -4,7 +4,9 @@ using System.Collections;
 [CreateAssetMenu(menuName = "Monster/TheOffended")]
 public class TheOffendedSO : MonsterSO
 {
-    public Sprite sprite;
+    public Sprite spriteLeft;
+    public Sprite spriteRight;
+    public Sprite spriteAngry;
 
     public override void Initialize()
     {

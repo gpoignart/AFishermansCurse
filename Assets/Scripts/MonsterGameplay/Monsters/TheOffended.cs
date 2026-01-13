@@ -14,8 +14,15 @@ public class TheOffended : Monster
         theOffendedSO = GameManager.Instance.MonsterRegistry.theOffendedSO;
         
         // Sprite assignation
-        spriteRenderer.sprite = theOffendedSO.sprite;
-        spriteRenderer.color = new Color(1f, 1f, 1f, 0.05f);
+        if (GameManager.Instance.MonsterApparitionSide == 0)
+        {
+            spriteRenderer.sprite = theOffendedSO.spriteLeft;            
+        }
+        else
+        {
+            spriteRenderer.sprite = theOffendedSO.spriteRight;
+        }
+        spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
     }
 
     public void ReinitializeTheOffended()
@@ -25,8 +32,21 @@ public class TheOffended : Monster
 
     protected override IEnumerator MonsterHit()
     {
+        yield return StartCoroutine(MonsterHitReaction());
+
+        // If we are in the tutorial, reinitialize the sprite after reaction
+        if (!theOffendedSO.hasBeenEncountered && GameManager.Instance.MonsterApparitionSide == 0)
+        {
+            spriteRenderer.sprite = theOffendedSO.spriteLeft;
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+        }
+        else if (!theOffendedSO.hasBeenEncountered && GameManager.Instance.MonsterApparitionSide == 1)
+        {
+            spriteRenderer.sprite = theOffendedSO.spriteRight;        
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);    
+        }
+
         MonsterGameManager.Instance.PlayerLose();
-        yield return null;
     }
 
     protected override IEnumerator MonsterTimeOut()
@@ -58,5 +78,21 @@ public class TheOffended : Monster
             spriteRenderer.color = new Color(1f, 1f, 1f, alpha);
             yield return null;
         }
+    }
+
+    public IEnumerator MonsterHitReaction()
+    {
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 4f;
+            float alpha = Mathf.Lerp(0.2f, 1f, t);
+            spriteRenderer.color = new Color(1f, 1f, 1f, alpha);
+            yield return null;
+        }
+
+        // Switch sprite
+        spriteRenderer.sprite = theOffendedSO.spriteAngry;
+        yield return new WaitForSeconds(0.5f);
     }
 }

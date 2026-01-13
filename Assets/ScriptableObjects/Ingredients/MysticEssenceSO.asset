@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MysticEssenceSO
   m_EditorClassIdentifier: 
   ingredientName: Mystic Essence
-  playerQuantityPossessed: 27
+  playerQuantityPossessed: 82
   sprite: {fileID: 21300000, guid: ae243b6a930158b49be50a19c00ff9bc, type: 3}
