@@ -77,9 +77,11 @@ public class InventoryViewGameManager : MonoBehaviour
         AudioManager.Instance.PlayPressingButtonSFX();
     }
     
-    // Show ingredient panel, called by the ingredientHoverUI
-    public void OnIngredientHoverEnter(RectTransform hoveredBox, IngredientSO ingredient)
+    // Show ingredient panel
+    public void OnIngredientHoverEnter(int index)
     {
+        IngredientSO ingredient = GameManager.Instance.IngredientRegistry.AllIngredients[index];
+
         FishSO fish = GameManager.Instance.FishRegistry.GetFishFromIngredient(ingredient);
 
         // Determine fish spawn times
@@ -98,14 +100,14 @@ public class InventoryViewGameManager : MonoBehaviour
 
         // Create the array
         Sprite[] mapSprites = new Sprite[totalIcons];
-        int index = 0;
+        int i = 0;
         foreach (MapSO map in fish.spawnMaps)
         {
-            if (day) { mapSprites[index++] = map.dayLogoSprite; }
-            if (night) { mapSprites[index++] = map.nightLogoSprite; }
+            if (day) { mapSprites[i++] = map.dayLogoSprite; }
+            if (night) { mapSprites[i++] = map.nightLogoSprite; }
         }
 
-        InventoryViewUIManager.Instance.ShowIngredientPanelUI(hoveredBox, ingredient.ingredientName, ingredient.sprite, fish.sprite, mapSprites);
+        InventoryViewUIManager.Instance.ShowIngredientPanelUI(ingredient.ingredientName, ingredient.sprite, fish.sprite, mapSprites);
     }
 
     // Hide ingredient panel (hover exit)

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class InventoryViewUIManager : MonoBehaviour
 {
@@ -25,16 +26,18 @@ public class InventoryViewUIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI boatDetailsText;
     [SerializeField] private TextMeshProUGUI flashinglightDetailsText;
 
-    [SerializeField] private Image[] ingredientBoxes;
     [SerializeField] private Image[] ingredientImages;
     [SerializeField] private TextMeshProUGUI[] ingredientTexts;
 
-    [SerializeField] private RectTransform ingredientInfoPanelRect;
+    [SerializeField] private GameObject ingredientInfoPanel;
     [SerializeField] private TextMeshProUGUI ingredientPanelIngredientName;
     [SerializeField] private Image ingredientPanelIngredientImage;
     [SerializeField] private Image ingredientPanelFishImage;
     [SerializeField] private Transform ingredientPanelMapsContainer;
     [SerializeField] private GameObject ingredientPanelMapIconPrefab;
+
+    // Internal reference
+    private Coroutine repositionCoroutine;
 
     // Make this class a singleton
     private void Awake()
@@ -123,62 +126,38 @@ public class InventoryViewUIManager : MonoBehaviour
         }
     }
 
-    // Update the ingredients UI and attribute the right ingredient to the hover
+    // Update the ingredients UI
     public void UpdateIngredientUI(int index, IngredientSO ingredient)
     {
         ingredientTexts[index].text = "x " + ingredient.playerQuantityPossessed;
         ingredientImages[index].sprite = ingredient.sprite;
-
-        IngredientHoverManager hover = ingredientBoxes[index].GetComponent<IngredientHoverManager>();
-        hover.ingredient = ingredient;
     }
 
-
     // Show the ingredients panel UI
-    public void ShowIngredientPanelUI(RectTransform hoveredBox, string ingredientName, Sprite ingredientSprite, Sprite fishSprite, Sprite[] mapSprites)
+    public void ShowIngredientPanelUI(string ingredientName, Sprite ingredientSprite, Sprite fishSprite, Sprite[] mapSprites)
     {
-        // To do first to read the size
         UpdateIngredientPanelUI(ingredientName, ingredientSprite, fishSprite, mapSprites);
-        ingredientInfoPanelRect.gameObject.SetActive(true);
+        ingredientInfoPanel.SetActive(true);
 
-        // Place the panel ahead the hovered box without being out of the screen bounds
+        StartCoroutine(ForcePanelLayoutNextFrame());
+    }
+
+    private IEnumerator ForcePanelLayoutNextFrame()
+    {
+        yield return new WaitForEndOfFrame();
         Canvas.ForceUpdateCanvases();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(ingredientInfoPanelRect);
 
-        RectTransform canvasRect = ingredientInfoPanelRect.GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-
-        Vector2 ingredientInfoPanelSize = ingredientInfoPanelRect.rect.size;
-        Vector2 canvasSize = canvasRect.rect.size;
-
-        Vector3[] corners = new Vector3[4];
-        hoveredBox.GetWorldCorners(corners);
-        Vector3 topCenterWorld = (corners[1] + corners[2]) * 0.5f;
-
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            canvasRect,
-            RectTransformUtility.WorldToScreenPoint(null, topCenterWorld),
-            null,
-            out localPoint
-        );
-
-        float clampedX = Mathf.Clamp(
-            localPoint.x,
-            -canvasSize.x / 2 + ingredientInfoPanelSize.x / 2,
-            canvasSize.x / 2 - ingredientInfoPanelSize.x / 2
-        );
-
-        ingredientInfoPanelRect.localPosition = new Vector2(
-            clampedX,
-            ingredientInfoPanelRect.localPosition.y
+        LayoutRebuilder.ForceRebuildLayoutImmediate(
+            ingredientInfoPanel.GetComponent<RectTransform>()
         );
     }
 
     // Hide the ingredients panel UI
     public void HideIngredientPanelUI()
     {
-        ingredientInfoPanelRect.gameObject.SetActive(false);
+        ingredientInfoPanel.SetActive(false);
     }
+
 
     // Update the ingredients panel UI
     public void UpdateIngredientPanelUI(string ingredientName, Sprite ingredientSprite, Sprite fishSprite, Sprite[] mapSprites)
@@ -186,7 +165,7 @@ public class InventoryViewUIManager : MonoBehaviour
         ingredientPanelIngredientName.text = ingredientName;
         ingredientPanelIngredientImage.sprite = ingredientSprite;
         ingredientPanelFishImage.sprite = fishSprite;
-        ingredientPanelFishImage.SetNativeSize();
+        //ingredientPanelFishImage.SetNativeSize();
 
         // Delete previous map icons       
         foreach (Transform child in ingredientPanelMapsContainer) { Destroy(child.gameObject); }
@@ -197,11 +176,6 @@ public class InventoryViewUIManager : MonoBehaviour
             GameObject icon = Instantiate(ingredientPanelMapIconPrefab, ingredientPanelMapsContainer);
             icon.GetComponent<Image>().sprite = map;
         }
-
-        // Force layout rebuild
-        LayoutRebuilder.ForceRebuildLayoutImmediate(
-            GetComponent<RectTransform>()
-        );
     }
 
 

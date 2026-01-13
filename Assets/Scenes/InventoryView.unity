@@ -164,13 +164,13 @@ MonoBehaviour:
   boatDetailsText: {fileID: 966065850}
   flashinglightDetailsText: {fileID: 915328220}
   ingredientBoxes:
-  - {fileID: 1678389432}
-  - {fileID: 748746721}
-  - {fileID: 104409220}
-  - {fileID: 1582273484}
-  - {fileID: 1273998045}
-  - {fileID: 231630148}
-  - {fileID: 2001673548}
+  - {fileID: 1678389431}
+  - {fileID: 748746720}
+  - {fileID: 104409219}
+  - {fileID: 1582273483}
+  - {fileID: 1273998044}
+  - {fileID: 231630147}
+  - {fileID: 2001673547}
   ingredientImages:
   - {fileID: 1966210000}
   - {fileID: 250842630}
@@ -187,7 +187,7 @@ MonoBehaviour:
   - {fileID: 1153784390}
   - {fileID: 1764776999}
   - {fileID: 1860498645}
-  ingredientInfoPanelRect: {fileID: 105157077}
+  ingredientInfoPanel: {fileID: 105157076}
   ingredientPanelIngredientName: {fileID: 484057488}
   ingredientPanelIngredientImage: {fileID: 1088298309}
   ingredientPanelFishImage: {fileID: 363584452}
@@ -363,10 +363,10 @@ RectTransform:
   - {fileID: 2002671116}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -205.34987, y: 106.00003}
-  m_SizeDelta: {x: 226.95, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -261.99988, y: -67.999985}
+  m_SizeDelta: {x: 226.94995, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &104409220
 MonoBehaviour:
@@ -415,10 +415,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 104409218}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7198945a0cd682419db48131d41fa68, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 0}
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &105157076
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,9 +487,9 @@ RectTransform:
   - {fileID: 301741525}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -580.73, y: 401.66}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 172.65002}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &105157079
@@ -1258,10 +1290,10 @@ RectTransform:
   - {fileID: 1078403703}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 555.65, y: 106.00003}
-  m_SizeDelta: {x: 226.95, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 499, y: -67.999985}
+  m_SizeDelta: {x: 226.94995, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &231630148
 MonoBehaviour:
@@ -1310,10 +1342,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 231630146}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7198945a0cd682419db48131d41fa68, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 0}
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 5
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 5
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &245492197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2555,7 +2619,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -2804,7 +2868,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ingredient Name
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b57d35d704ce3664d9dbdac709ab8263, type: 2}
   m_sharedMaterial: {fileID: 7303519830868731357, guid: b57d35d704ce3664d9dbdac709ab8263, type: 2}
@@ -3280,27 +3344,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 545702957}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!1 &624598966
 GameObject:
   m_ObjectHideFlags: 0
@@ -4120,10 +4174,10 @@ RectTransform:
   - {fileID: 250842629}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -460.3499, y: 106.00003}
-  m_SizeDelta: {x: 226.95, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -517, y: -67.999985}
+  m_SizeDelta: {x: 226.94995, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &748746721
 MonoBehaviour:
@@ -4172,10 +4226,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 748746719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7198945a0cd682419db48131d41fa68, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 0}
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &767161161
 GameObject:
   m_ObjectHideFlags: 0
@@ -6254,10 +6340,10 @@ RectTransform:
   - {fileID: 1133970906}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 300.6501, y: 106.00003}
-  m_SizeDelta: {x: 226.95, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 244, y: -67.999985}
+  m_SizeDelta: {x: 226.94995, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1273998045
 MonoBehaviour:
@@ -6306,10 +6392,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1273998043}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7198945a0cd682419db48131d41fa68, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 0}
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 4
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 4
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1354187876
 GameObject:
   m_ObjectHideFlags: 0
@@ -6420,7 +6538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -641.35, y: 229.00006}
+  m_AnchoredPosition: {x: 191, y: -81}
   m_SizeDelta: {x: 362.77, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1402510890
@@ -7032,10 +7150,10 @@ RectTransform:
   - {fileID: 2002966712}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 45.650105, y: 106.00003}
-  m_SizeDelta: {x: 226.95, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -10.999939, y: -67.999985}
+  m_SizeDelta: {x: 226.94995, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1582273484
 MonoBehaviour:
@@ -7084,10 +7202,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1582273482}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7198945a0cd682419db48131d41fa68, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 0}
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1583203538
 GameObject:
   m_ObjectHideFlags: 0
@@ -7278,10 +7428,10 @@ RectTransform:
   - {fileID: 1966209999}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -709.25995, y: 106.00003}
-  m_SizeDelta: {x: 226.95, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -765.9099, y: -67.999985}
+  m_SizeDelta: {x: 226.94995, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1678389432
 MonoBehaviour:
@@ -7330,10 +7480,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1678389430}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7198945a0cd682419db48131d41fa68, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 0}
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1701393924
 GameObject:
   m_ObjectHideFlags: 0
@@ -8231,10 +8413,10 @@ RectTransform:
   - {fileID: 2053069933}
   m_Father: {fileID: 2026134032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 812, y: 106}
-  m_SizeDelta: {x: 226.95, y: 100}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 755.35, y: -68.000015}
+  m_SizeDelta: {x: 226.94995, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2001673548
 MonoBehaviour:
@@ -8283,10 +8465,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 2001673546}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7198945a0cd682419db48131d41fa68, type: 3}
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ingredient: {fileID: 0}
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverEnter
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 6
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 79490123}
+          m_TargetAssemblyTypeName: InventoryViewGameManager, Assembly-CSharp
+          m_MethodName: OnIngredientHoverExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 6
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2002671115
 GameObject:
   m_ObjectHideFlags: 0
@@ -8516,8 +8730,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3, y: -283}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 4.825, y: -62}
+  m_SizeDelta: {x: 1777.8, y: 271.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2036834127
 GameObject:
