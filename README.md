@@ -15,8 +15,6 @@
 - **Musics/**
 - **Sounds/**
 
-### Prefabs
-
 ### ScriptableObjects
 - **Fish**
 - **Monster**
